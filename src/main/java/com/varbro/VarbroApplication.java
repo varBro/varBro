@@ -1,4 +1,4 @@
-package com.varbro.varbro;
+package com.varbro;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
