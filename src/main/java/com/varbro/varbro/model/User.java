@@ -1,4 +1,4 @@
-package com.varbro.user;
+package com.varbro.varbro.model;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

@@ -3,15 +3,11 @@
       xmlns:th="http://www.thymeleaf.org"
       layout:decorate="~{fragments/layout}">
 <head>
-    <title>Index</title>
+    <title>Secured</title>
 </head>
 <body>
 <div layout:fragment="content" th:remove="tag">
-    <h1>Hello Spring Security</h1>
-    <p>This is an unsecured page, but you can access the secured pages after authenticating.</p>
-    <ul>
-        <li> <a href="/user" th:href="@{/user}">Log in</a></li>
-    </ul>
+    <h1>You logged in successfully!</h1>
 </div>
 </body>
 </html>
