@@ -1,15 +1,31 @@
 h1 {
-    color: #78ab46;
+    color: #000000;
 }
 
-footer {
-    position: fixed;
-    height: 50px;
-    bottom: 0;
+#cover {
+    background-size: cover;
+    height: 100%;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+#cover-caption {
     width: 100%;
-    background-color: #ccc
+    position: relative;
+    z-index: 1;
 }
 
-footer p {
-    padding: 15px;
+/* only used for background overlay not needed for centering */
+form:before {
+    content: '';
+    height: 100%;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    background-color: rgba(0,0,0,0.3);
+    z-index: -1;
+    border-radius: 10px;
 }
