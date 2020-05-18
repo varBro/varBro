@@ -23,7 +23,8 @@ public class User {
         LOGISTICS,
         DISTRIBUTION,
         HR,
-        FINANCE
+        FINANCE,
+        IT
     }
 
     public User() {
