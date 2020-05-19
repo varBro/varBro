@@ -6,7 +6,6 @@ spring:
     cache: false
     check-template: true
     check-template-location: true
-    content-type: text/html
     enabled: true
     encoding: UTF-8
     mode: HTML
@@ -15,6 +14,8 @@ spring:
     # excluded-view-names:
     # template-resolver-order:
     # view-names:
+    servlet:
+      content-type: text/html
 
 logging:
   level:
