@@ -23,6 +23,7 @@ public class AdminController {
 
     @PostMapping("/admin/add-user")
     public String adminAddUserSubmit(@ModelAttribute User user) {
+        // TODO: push to database
         return "admin/user-submitted";
     }
 

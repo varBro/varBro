@@ -1,27 +1,61 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Admin Page</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet"
-          type="text/css" th:href="@{/webjars/bootstrap/4.5.0/css/bootstrap.min.css}"/>
-    <link href="/static/css/main.css" rel="stylesheet" type="text/css" th:href="@{/css/main.css}"/>
-</head>
-<title>New User</title>
+    <title>Add user</title>
 </head>
 <body>
+<ol layout:fragment="breadcrumbs" class="breadcrumb pl-5">
+    <li class="breadcrumb-item"><a href="/default">Home</a></li>
+    <li class="breadcrumb-item"><a href="/admin/add-user">Add user</a></li>
+    <li class="breadcrumb-item active">New user</li>
+</ol>
+<section layout:fragment="content">
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
             <h2>User added successfully!</h2>
 
-            <p th:text="'email: ' + ${user.email}" />
-            <p th:text="'phone: ' + ${user.phoneNumber}" />
-            <p th:text="'salary: ' + ${user.salary}" />
-            <a href="">Edit user</a>
-            <a href="/admin/add-user">Add another user</a>
-            <a href="/admin">Go back to admin panel</a>
+            <div class="profile-user-info">
+                <div class="profile-info-row">
+                    <div class="profile-info-name"> Name </div>
+                    <div class="profile-info-value">
+                        <span th:text="${user.name}"></span>
+                    </div>
+                </div>
+                <div class="profile-info-row">
+                    <div class="profile-info-name"> Last name </div>
+                    <div class="profile-info-value">
+                        <span th:text="${user.surname}"></span>
+                    </div>
+                </div>
+                <div class="profile-info-row">
+                    <div class="profile-info-name"> E-mail </div>
+                    <div class="profile-info-value">
+                        <span th:text="${user.email}"></span>
+                    </div>
+                </div>
+                <div class="profile-info-row">
+                    <div class="profile-info-name"> Phone number </div>
+                    <div class="profile-info-value">
+                        <span th:text="${user.phoneNumber}"></span>
+                    </div>
+                </div>
+                <div class="profile-info-row">
+                    <div class="profile-info-name"> Department </div>
+                    <div class="profile-info-value">
+                        <span th:text="${user.department}"></span>
+                    </div>
+                </div>
+                <div class="profile-info-row">
+                    <div class="profile-info-name"> Salary </div>
+                    <div class="profile-info-value">
+                        <span th:text="${user.salary}"></span>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
+</section>
 </body>
 </html>

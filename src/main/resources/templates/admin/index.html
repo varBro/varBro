@@ -1,14 +1,13 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Admin Page</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet"
-          type="text/css" th:href="@{/webjars/bootstrap/4.5.0/css/bootstrap.min.css}"/>
-    <link href="/static/css/main.css" rel="stylesheet" type="text/css" th:href="@{/css/main.css}"/>
-</head>
-    <title>Secured</title>
+    <title>Admin's panel</title>
 </head>
 <body>
+<ol layout:fragment="breadcrumbs" class="breadcrumb pl-5">
+    <li class="breadcrumb-item active"><a href="#">Home</a></li>
+</ol>
+<section layout:fragment="content">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
@@ -25,5 +24,6 @@
         </div>
     </div>
 </div>
+</section>
 </body>
 </html>

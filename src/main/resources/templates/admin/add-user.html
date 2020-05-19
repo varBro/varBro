@@ -1,20 +1,14 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Admin Page</title>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"
-            th:href="@{/webjars/jquery/3.4.1/jquery.min.js}"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"
-            th:href="@{/webjars/popper/1.16.0/popper.min.js}"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
-            th:href="@{/webjars/bootstrap/4.5.0/js/bootstrap.min.js}"></script>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet"
-          type="text/css" th:href="@{/webjars/bootstrap/4.5.0/css/bootstrap.min.css}"/>
-    <link href="/static/css/main.css" rel="stylesheet" type="text/css" th:href="@{/css/main.css}"/>
-</head>
-<title>Add User</title>
+    <title>Add user</title>
 </head>
 <body>
+<ol layout:fragment="breadcrumbs" class="breadcrumb pl-5">
+    <li class="breadcrumb-item"><a href="/default">Home</a></li>
+    <li class="breadcrumb-item active">Add user</li>
+</ol>
+<section layout:fragment="content">
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
@@ -23,11 +17,11 @@
             <form action="#" th:action="@{/admin/add-user}" th:object="${user}" method="post">
                 <div class="form-group">
                     <label for="userName">Name</label>
-                    <input type="email" class="form-control" id="userName" placeholder="Enter name">
+                    <input type="text" class="form-control" id="userName" placeholder="Enter name" th:field="*{name}">
                 </div>
                 <div class="form-group">
                     <label for="userLastName">Last name</label>
-                    <input type="email" class="form-control" id="userLastName" placeholder="Enter last name">
+                    <input type="text" class="form-control" id="userLastName" placeholder="Enter last name" th:field="*{surname}">
                 </div>
                 <div class="form-group">
                     <label for="userEmail">Email address</label>
@@ -38,20 +32,15 @@
                     <input type="text" class="form-control" id="userPhone" placeholder="Enter phone number" th:field="*{phoneNumber}">
                 </div>
                 <div class="form-group">
+                    <label for="userDepartment">Choose department</label>
+                    <select class="form-control selectpicker" th:field="*{department}" id="userDepartment">
+                        <option value="">Nothing selected</option>
+                        <option th:each="department : ${T(com.varbro.varbro.model.User.Department).values()}"
+                                th:value="${department}"
+                                th:text="${department}">department
+                        </option>
 
-                    <div class="dropright">
-                        <button type="button" id="userDepartment" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Department
-                        </button>
-                        <div class="dropdown-menu" aria-labelledby="userDepartment">
-                            <a class="dropdown-item" href="#">Production</a>
-                            <a class="dropdown-item" href="#">Logistics</a>
-                            <a class="dropdown-item" href="#">Distribution</a>
-                            <a class="dropdown-item" href="#">HR</a>
-                            <a class="dropdown-item" href="#">Finance</a>
-                            <a class="dropdown-item" href="#">IT</a>
-                        </div>
-                    </div>
+                    </select>
                 </div>
                 <div class="form-group">
                     <label for="userSalary">Salary</label>
@@ -63,5 +52,6 @@
         </div>
     </div>
 </div>
+</section>
 </body>
 </html>
