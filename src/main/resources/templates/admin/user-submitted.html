@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Admin Page</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet"
+          type="text/css" th:href="@{/webjars/bootstrap/4.5.0/css/bootstrap.min.css}"/>
+    <link href="/static/css/main.css" rel="stylesheet" type="text/css" th:href="@{/css/main.css}"/>
+</head>
+<title>New User</title>
+</head>
+<body>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <h2>User added successfully!</h2>
+
+            <p th:text="'email: ' + ${user.email}" />
+            <p th:text="'phone: ' + ${user.phoneNumber}" />
+            <p th:text="'salary: ' + ${user.salary}" />
+            <a href="">Edit user</a>
+            <a href="/admin/add-user">Add another user</a>
+            <a href="/admin">Go back to admin panel</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

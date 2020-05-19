@@ -23,7 +23,7 @@ public class AdminController {
 
     @PostMapping("/admin/add-user")
     public String adminAddUserSubmit(@ModelAttribute User user) {
-        return "admin/user-submited";
+        return "admin/user-submitted";
     }
 
     @GetMapping("/admin/users")
