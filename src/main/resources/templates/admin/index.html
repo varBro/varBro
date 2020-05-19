@@ -1,13 +1,29 @@
-<!DOCTYPE html>
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      xmlns:th="http://www.thymeleaf.org"
-      layout:decorate="~{fragments/layout}">
+      layout:decorate="~{layouts/layout}" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Secured</title>
+    <title>Admin's panel</title>
 </head>
 <body>
-<div layout:fragment="content" th:remove="tag">
-    <h1>Welcome Mr. Admin!</h1>
+<ol layout:fragment="breadcrumbs" class="breadcrumb pl-5">
+    <li class="breadcrumb-item active"><a href="#">Home</a></li>
+</ol>
+<section layout:fragment="content">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="content">
+                    <div class="title m-b-md">
+                        Admin Panel
+                    </div>
+                    <div class="links">
+                        <a th:href="@{admin/users}">Search Users</a>
+                        <a th:href="@{admin/add-user}">Add User</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+</section>
 </body>
 </html>
