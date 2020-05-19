@@ -1,0 +1,57 @@
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Add user</title>
+</head>
+<body>
+<ol layout:fragment="breadcrumbs" class="breadcrumb pl-5">
+    <li class="breadcrumb-item"><a href="/default">Home</a></li>
+    <li class="breadcrumb-item active">Add user</li>
+</ol>
+<section layout:fragment="content">
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <h2>New user:</h2>
+
+            <form action="#" th:action="@{/admin/add-user}" th:object="${user}" method="post">
+                <div class="form-group">
+                    <label for="userName">Name</label>
+                    <input type="text" class="form-control" id="userName" placeholder="Enter name" th:field="*{name}">
+                </div>
+                <div class="form-group">
+                    <label for="userLastName">Last name</label>
+                    <input type="text" class="form-control" id="userLastName" placeholder="Enter last name" th:field="*{surname}">
+                </div>
+                <div class="form-group">
+                    <label for="userEmail">Email address</label>
+                    <input type="email" class="form-control" id="userEmail" placeholder="Enter email" th:field="*{email}">
+                </div>
+                <div class="form-group">
+                    <label for="userPhone">Phone number</label>
+                    <input type="text" class="form-control" id="userPhone" placeholder="Enter phone number" th:field="*{phoneNumber}">
+                </div>
+                <div class="form-group">
+                    <label for="userDepartment">Choose department</label>
+                    <select class="form-control selectpicker" th:field="*{department}" id="userDepartment">
+                        <option value="">Nothing selected</option>
+                        <option th:each="department : ${T(com.varbro.varbro.model.User.Department).values()}"
+                                th:value="${department}"
+                                th:text="${department}">department
+                        </option>
+
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="userSalary">Salary</label>
+                    <input type="text" class="form-control" id="userSalary" placeholder="Enter salary" th:field="*{salary}">
+                </div>
+                <button type="submit" class="btn btn-primary">Add user</button>
+                <!--<input type="reset" value="Reset">-->
+            </form>
+        </div>
+    </div>
+</div>
+</section>
+</body>
+</html>

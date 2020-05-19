@@ -17,8 +17,9 @@ public class User {
     private String email;
     private String phoneNumber;
     private int salary;
+    private Department department;
 
-    private enum department {
+    public static enum Department {
         PRODUCTION,
         LOGISTICS,
         DISTRIBUTION,
@@ -37,6 +38,22 @@ public class User {
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.salary = salary;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
     }
 
     public String getPassword() {
@@ -61,6 +78,14 @@ public class User {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public Department getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(Department department) {
+        this.department = department;
     }
 
     public int getSalary() {
