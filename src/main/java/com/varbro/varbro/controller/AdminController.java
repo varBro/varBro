@@ -18,7 +18,7 @@ public class AdminController {
     @GetMapping("/admin/add-user")
     public String adminAddUserForm(Model model) {
         model.addAttribute("user", new User());
-        return "/admin/add-user";
+        return "admin/add-user";
     }
 
     @PostMapping("/admin/add-user")
