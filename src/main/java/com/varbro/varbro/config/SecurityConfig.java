@@ -11,12 +11,24 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+import javax.sql.DataSource;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private LoggingAccessDeniedHandler accessDeniedHandler;
+
+    @Autowired
+    DataSource dataSource;
+
+    @Autowired
+    public void configAuthentication(AuthenticationManagerBuilder auth) throws Exception {
+        auth.jdbcAuthentication().dataSource(dataSource)
+                .usersByUsernameQuery("select email, password from user where email=?")
+                .authoritiesByUsernameQuery("select email, role from user_roles where username=?");
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -28,8 +40,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 "/css/**",
                 "/img/**",
                 "/webjars/**").permitAll()
-                .antMatchers("/user/**").hasRole("USER")
+                .antMatchers("/user/**").permitAll()
                 .antMatchers("/admin/**").hasRole("ADMIN")
+                //.antMatchers("/user/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
