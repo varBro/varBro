@@ -23,10 +23,10 @@
                     </div>
                     <div class="profile-info-row" th:each="user : ${users}">
                         <div class="profile-info-value">
-                            <span th:text="${user.name}"></span>
+                            <a th:text="${user.name}" th:href="@{/user/{id}(id=${user.id})}"></a>
                         </div>
                         <div class="profile-info-value">
-                            <span th:text="${user.surname}"></span>
+                            <a th:text="${user.surname}" th:href="@{/user/{id}(id=${user.id})}"></a>
                         </div>
                         <div class="profile-info-value">
                             <span th:text="${user.department}"></span>
@@ -38,7 +38,7 @@
                             <span th:text="${user.email}"></span>
                         </div>
                         <div class="profile-info-value" sec:authorize="hasRole('ADMIN')">
-                           <a class="btn btn-primary" th:href="@{/user/{id}/edit(id=${user.userId})}" role="button">Edit</a>
+                           <a class="btn btn-primary btn-sm" th:href="@{/user/{id}/edit(id=${user.id})}" role="button">Edit</a>
                         </div>
                     </div>
                 </div>

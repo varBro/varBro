@@ -22,6 +22,13 @@ public class UserController {
         return "user/index";
     }
 
+    @GetMapping("/users")
+    public String showAll(Model model)
+    {
+        model.addAttribute("users", userRepository.findAll());
+        return "user/users";
+    }
+
     @GetMapping("/user/{id}")
     public String showUser(@PathVariable("id") long id, Model model)
     {
@@ -46,6 +53,16 @@ public class UserController {
     public ModelAndView editUser(@ModelAttribute User user)
     {
         userRepository.save(user);
-        return new ModelAndView("redirect:/user/" + user.getUserId());
+        return new ModelAndView("redirect:/user/" + user.getId());
+    }
+
+    @GetMapping("/user/{id}/delete")
+    public ModelAndView deleteUser(@PathVariable("id") long id)
+    {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + id));
+
+        userRepository.delete(user);
+        return new ModelAndView("redirect:/users");
     }
 }

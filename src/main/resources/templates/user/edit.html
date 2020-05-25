@@ -15,7 +15,8 @@
             <div class="col-md-8">
                 <h2>New user:</h2>
 
-                <form action="#" th:action="@{/user/{id}/edit(id=${user.userId})}" th:object="${user}" method="post">
+                <form action="#" th:action="@{/user/{id}/edit(id=${user.id})}" th:object="${user}" method="post">
+                    <input type="hidden" th:field="*{id}" />
                     <div class="form-group">
                         <label for="userName">Name</label>
                         <input type="text" class="form-control" id="userName" placeholder="Enter name" th:field="*{name}">
