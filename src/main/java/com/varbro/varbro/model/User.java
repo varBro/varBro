@@ -21,6 +21,7 @@ public class User {
     private String email;
     private String phoneNumber;
     private int salary;
+    private String status;
     @Enumerated(EnumType.STRING)
     private Department department;
 
@@ -49,6 +50,7 @@ public class User {
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.salary = salary;
+        this.status = "1";
     }
 
     public long getId() {
@@ -113,6 +115,14 @@ public class User {
 
     public void setSalary(int salary) {
         this.salary = salary;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public Set<Role> getRoles() {
