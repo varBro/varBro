@@ -1,6 +1,9 @@
 package com.varbro.varbro.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Role {
@@ -9,8 +12,13 @@ public class Role {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "role_id")
     private Long id;
-
     private String role;
+
+    public Role() {}
+
+    public Role(String role) {
+        this.role = role;
+    }
 
     public Long getId() {
         return id;

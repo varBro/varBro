@@ -29,30 +29,28 @@ public class User {
     @JoinTable(name ="user_role",
             joinColumns = @JoinColumn(name="user_id"),
             inverseJoinColumns = @JoinColumn(name="role_id"))
-
     private Set<Role> roles;
+
     public static enum Department {
         PRODUCTION,
         LOGISTICS,
         DISTRIBUTION,
         HR,
         FINANCE,
-        IT,
-        EMPLOYEE,
-        ADMIN,
-        MANAGER
+        IT
     }
 
     public User() {
     }
 
-    public User(String name, String surname, String password, String email, String phoneNumber, int salary) {
+    public User(String name, String surname, String password, String email, String phoneNumber, int salary, Department department) {
         this.name = name;
         this.surname = surname;
         this.password = password;
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.salary = salary;
+        this.department = department;
         this.status = "1";
     }
 
