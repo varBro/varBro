@@ -15,17 +15,24 @@ public class UserController {
     UserRepository userRepository;
 
     @GetMapping("/user")
-    public String userIndex(){
+    public String index(){
         return "user/index";
     }
 
     @GetMapping("/user/{id}")
-    public String userShow(@PathVariable("id") long id, Model model)
+    public String show(@PathVariable("id") long id, Model model)
     {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + id));
 
         model.addAttribute("user", user);
         return "user/profile";
+    }
+
+    @GetMapping("/users")
+    public String showAll(Model model)
+    {
+        model.addAttribute("users", userRepository.findAll());
+        return "user/users";
     }
 }
