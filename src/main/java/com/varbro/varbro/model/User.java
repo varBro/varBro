@@ -1,9 +1,7 @@
 package com.varbro.varbro.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 public class User {
@@ -18,6 +16,8 @@ public class User {
     private String phoneNumber;
     private int salary;
     private Department department;
+    @ManyToMany
+    private Set<Role> roles;
 
     public static enum Department {
         PRODUCTION,
@@ -102,6 +102,14 @@ public class User {
 
     public void setSalary(int salary) {
         this.salary = salary;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> Roles) {
+        this.roles = roles;
     }
 
 }

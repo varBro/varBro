@@ -2,6 +2,7 @@ package com.varbro.varbro.controller;
 
 import com.varbro.varbro.model.User;
 import com.varbro.varbro.repository.UserRepository;
+import com.varbro.varbro.service.UserService;
 import org.junit.Test;
 import org.passay.CharacterData;
 import org.passay.CharacterRule;
@@ -21,7 +22,7 @@ import java.util.Collections;
 public class AdminController {
 
     @Autowired
-    UserRepository userRepository;
+    private UserService userService;
 
     @GetMapping("/admin")
     public String adminIndex(){
@@ -36,8 +37,8 @@ public class AdminController {
 
     @PostMapping("/admin/add-user")
     public ModelAndView adminAddUserSubmit(@ModelAttribute User user) {
-        user.setPassword(generatePassayPassword());
-        userRepository.save(user);
+        user.setPassword("blyat");
+        userService.save(user);
         return new ModelAndView("redirect:/user/" + user.getUserId());
     }
 
