@@ -2,6 +2,7 @@ package com.varbro.varbro.config;
 
 import com.varbro.varbro.controller.LoggingAccessDeniedHandler;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -13,6 +14,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import javax.sql.DataSource;
 
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
@@ -20,14 +22,27 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private LoggingAccessDeniedHandler accessDeniedHandler;
 
-    @Autowired
-    DataSource dataSource;
+    @Bean
+    public BCryptPasswordEncoder bCryptPasswordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
     @Autowired
-    public void configAuthentication(AuthenticationManagerBuilder auth) throws Exception {
-        auth.jdbcAuthentication().dataSource(dataSource)
-                .usersByUsernameQuery("select email, password from user where email=?")
-                .authoritiesByUsernameQuery("select email, role from user_roles where username=?");
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    @Autowired
+    private DataSource dataSource;
+
+    @Value("${spring.queries.users-query}")
+    private String usersQuery;
+
+    @Value("${spring.queries.roles-query}")
+    private String rolesQuery;
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.jdbcAuthentication().usersByUsernameQuery(usersQuery).authoritiesByUsernameQuery(rolesQuery)
+                .dataSource(dataSource).passwordEncoder(bCryptPasswordEncoder);
     }
 
     @Override
@@ -35,47 +50,29 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests()
                 .antMatchers(
-                "/",
-                "/js/**",
-                "/css/**",
-                "/img/**",
-                "/webjars/**").permitAll()
-                .antMatchers("/user/**").permitAll()
-                .antMatchers("/admin/**").hasRole("ADMIN")
-                //.antMatchers("/user/**").hasRole("ADMIN")
+                        "/",
+                        "/js/**",
+                        "/css/**",
+                        "/img/**",
+                        "/webjars/**").permitAll()
+                .antMatchers("/admin/**").hasAuthority("ADMIN")
+                .antMatchers("/login").permitAll()
+                .antMatchers("/user/**").hasAuthority("EMPLOYEE")
                 .anyRequest().authenticated()
                 .and()
-                .formLogin()
+                .csrf().disable().formLogin()
                 .loginPage("/login")
                 .defaultSuccessUrl("/default")
-                .permitAll()
+                .failureUrl("/login?error=true")
+                .usernameParameter("email")
+                .passwordParameter("password")
                 .and()
                 .logout()
-                .invalidateHttpSession(true)
-                .clearAuthentication(true)
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                .logoutSuccessUrl("/login?logout")
-                .permitAll()
-                .and()
+                .logoutSuccessUrl("/login?logout").and()
                 .exceptionHandling()
-                .accessDeniedHandler(accessDeniedHandler);
-
+                .accessDeniedHandler(accessDeniedHandler)
+                .accessDeniedPage("/access-denied");
     }
-
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-
-        // add our users for in memory authentication
-
-        auth.inMemoryAuthentication()
-                .withUser("user").password(passwordEncoder().encode("user1")).roles("USER")
-                .and()
-                .withUser("admin").password(passwordEncoder().encode("admin1")).roles("ADMIN");
-    }
-    @Bean
-    public BCryptPasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
 
 }

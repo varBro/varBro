@@ -1,5 +1,7 @@
 package com.varbro.varbro.model;
 
+import javax.persistence.*;
+import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -11,6 +13,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name="user_id")
     private long id;
     private String name;
     private String surname;
@@ -18,15 +21,25 @@ public class User {
     private String email;
     private String phoneNumber;
     private int salary;
+    @Enumerated(EnumType.STRING)
     private Department department;
 
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name ="user_role",
+            joinColumns = @JoinColumn(name="user_id"),
+            inverseJoinColumns = @JoinColumn(name="role_id"))
+
+    private Set<Role> roles;
     public static enum Department {
         PRODUCTION,
         LOGISTICS,
         DISTRIBUTION,
         HR,
         FINANCE,
-        IT
+        IT,
+        EMPLOYEE,
+        ADMIN,
+        MANAGER
     }
 
     public User() {
@@ -104,6 +117,15 @@ public class User {
     public void setSalary(int salary) {
         this.salary = salary;
     }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
+
 
     @Override
     public boolean equals(Object o) {
