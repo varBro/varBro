@@ -38,7 +38,7 @@
                             <span th:text="${user.email}"></span>
                         </div>
                         <div class="profile-info-value" sec:authorize="hasRole('ADMIN')">
-                           <a class="btn btn-primary" th:href="@{/user/{id}(id=${user.userId})}" role="button">Edit</a>
+                           <a class="btn btn-primary" th:href="@{/user/{id}/edit(id=${user.userId})}" role="button">Edit</a>
                         </div>
                     </div>
                 </div>
