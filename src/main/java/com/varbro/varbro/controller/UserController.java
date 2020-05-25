@@ -18,7 +18,7 @@ public class UserController {
     UserRepository userRepository;
 
     @GetMapping("/user")
-    public String index(){
+    public String userIndex(){
         return "user/index";
     }
 
