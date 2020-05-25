@@ -35,7 +35,7 @@ public class AdminController {
     public ModelAndView adminAddUserSubmit(@ModelAttribute User user) {
         user.setPassword("blyat");
         userRepository.save(user);
-        return new ModelAndView("redirect:/user/" + user.getUserId());
+        return new ModelAndView("redirect:/user/" + user.getId());
     }
 
     @GetMapping("/admin/users")

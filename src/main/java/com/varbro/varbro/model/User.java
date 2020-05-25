@@ -2,6 +2,11 @@ package com.varbro.varbro.model;
 
 import javax.persistence.*;
 import java.util.Set;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import java.util.Objects;
 
 @Entity
 public class User {
@@ -49,11 +54,11 @@ public class User {
         this.salary = salary;
     }
 
-    public long getUserId() {
+    public long getId() {
         return id;
     }
 
-    public void setUserId( long id ) {
+    public void setId( long id ) {
         this.id = id;
     }
 
@@ -122,5 +127,16 @@ public class User {
     }
 
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User)) return false;
+        User user = (User) o;
+        return Objects.equals(getId(), user.getId());
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId());
+    }
 }
