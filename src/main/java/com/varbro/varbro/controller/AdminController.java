@@ -2,8 +2,6 @@ package com.varbro.varbro.controller;
 
 import com.varbro.varbro.model.User;
 import com.varbro.varbro.repository.UserRepository;
-import com.varbro.varbro.service.UserService;
-import org.junit.Test;
 import org.passay.CharacterData;
 import org.passay.CharacterRule;
 import org.passay.EnglishCharacterData;
@@ -16,13 +14,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.Collections;
-
 @Controller
 public class AdminController {
 
     @Autowired
-    private UserService userService;
+    private UserRepository userRepository;
 
     @GetMapping("/admin")
     public String adminIndex(){
@@ -38,7 +34,7 @@ public class AdminController {
     @PostMapping("/admin/add-user")
     public ModelAndView adminAddUserSubmit(@ModelAttribute User user) {
         user.setPassword("blyat");
-        userService.save(user);
+        userRepository.save(user);
         return new ModelAndView("redirect:/user/" + user.getUserId());
     }
 
