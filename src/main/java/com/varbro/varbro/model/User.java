@@ -36,10 +36,7 @@ public class User {
         DISTRIBUTION,
         HR,
         FINANCE,
-        IT,
-        EMPLOYEE,
-        ADMIN,
-        MANAGER
+        IT
     }
 
     public User() {

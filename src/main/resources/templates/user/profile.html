@@ -52,10 +52,11 @@
                     </div>
                 </div>
                 <div class="profile-info-row">
-                    <div class="profile-info-value" sec:authorize="hasRole('ADMIN')">
+                    <div class="profile-info-value" th:if="${#authorization.expression('hasAuthority(''ADMIN'')')
+                     || #authentication.name == user.email}">
                         <a class="btn btn-primary" th:href="@{/user/{id}/edit(id=${user.id})}" role="button">Edit</a>
                     </div>
-                    <div class="profile-info-value" sec:authorize="hasRole('ADMIN')">
+                    <div class="profile-info-value" sec:authorize="hasAuthority('ADMIN')">
                         <a class="btn btn-secondary" th:href="@{/user/{id}/delete(id=${user.id})}" role="button">Delete</a>
                     </div>
                 </div>

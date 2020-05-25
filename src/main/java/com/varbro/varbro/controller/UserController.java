@@ -3,6 +3,8 @@ package com.varbro.varbro.controller;
 import com.varbro.varbro.model.User;
 import com.varbro.varbro.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
+
 
 @Controller
 public class UserController {
@@ -64,5 +67,14 @@ public class UserController {
 
         userRepository.delete(user);
         return new ModelAndView("redirect:/users");
+    }
+
+    @GetMapping("/user/profile")
+    public ModelAndView showProfile()
+    {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String name = authentication.getName();
+        User user = userRepository.findByEmail(name);
+        return new ModelAndView("redirect:/user/" + user.getId());
     }
 }
