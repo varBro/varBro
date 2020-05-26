@@ -89,10 +89,4 @@ public class AdminController {
         return password;
     }
 
-//    public void loopOverRoles() {
-//        for( Role role : roleSet) {
-//            System.out.println(role);
-//        }
-//    }
-
 }

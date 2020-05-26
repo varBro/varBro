@@ -2,6 +2,7 @@ package com.varbro.varbro.controller;
 
 import com.varbro.varbro.model.Role;
 import com.varbro.varbro.model.User;
+import com.varbro.varbro.service.RoleService;
 import com.varbro.varbro.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -14,12 +15,20 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.Arrays;
+import java.util.HashSet;
+
 
 @Controller
 public class UserController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    RoleService roleService;
+
+    String departmentRole;
 
     @GetMapping("/user")
     public String userIndex(){
@@ -56,6 +65,9 @@ public class UserController {
     @PostMapping("/user/{id}/edit")
     public ModelAndView editUser(@PathVariable("id") long id, @ModelAttribute User user)
     {
+        user.setStatus("1");
+        departmentRole = user.getDepartment().name();
+        user.setRoles(new HashSet(Arrays.asList(roleService.getRoleByName("EMPLOYEE"),roleService.getRoleByName("ROLE_"+departmentRole))));
         userService.saveUser(user);
         return new ModelAndView("redirect:/user/" + user.getId());
     }
