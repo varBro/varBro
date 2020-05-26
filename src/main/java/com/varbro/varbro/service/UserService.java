@@ -29,13 +29,28 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public Optional<User> getUser(Long id) {
+    public Optional<User> getUserById(Long id) {
 
         return userRepository.findById(id);
+    }
+
+    public User getUserByEmail(String email) {
+
+        return userRepository.findByEmail(email);
+    }
+
+    public void delete(User user) {
+
+        userRepository.delete(user);
     }
 
     public void deleteAll() {
 
         userRepository.deleteAll();
+    }
+
+    public User getOne(Long id) {
+
+        return userRepository.getOne(id);
     }
 }

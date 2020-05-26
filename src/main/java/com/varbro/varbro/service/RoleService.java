@@ -24,9 +24,15 @@ public class RoleService {
         roleRepository.saveAll(roles);
     }
 
-    public Optional<Role> getRole(Long id) {
+    public Optional<Role> getRoleById(Long id) {
 
         return roleRepository.findById(id);
+    }
+
+    public Role getRoleByName( String role )
+    {
+
+        return roleRepository.findByRole(role);
     }
 
     public Iterable<Role> getRoles() {
@@ -38,5 +44,6 @@ public class RoleService {
 
         roleRepository.deleteAll();
     }
+
 
 }

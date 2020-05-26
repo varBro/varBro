@@ -1,8 +1,8 @@
 package com.varbro.varbro.controller;
 
 import com.varbro.varbro.model.User;
-import com.varbro.varbro.repository.RoleRepository;
-import com.varbro.varbro.repository.UserRepository;
+import com.varbro.varbro.service.RoleService;
+import com.varbro.varbro.service.UserService;
 import org.passay.CharacterData;
 import org.passay.CharacterRule;
 import org.passay.EnglishCharacterData;
@@ -16,15 +16,18 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashSet;
 
 @Controller
 public class AdminController {
 
     @Autowired
-    private UserRepository userRepository;
-    private RoleRepository roleRepository;
+    private UserService userService;
+
+    @Autowired
+    private RoleService roleService;
+
+    String departmentRole;
 
     @GetMapping("/admin")
     public String adminIndex(){
@@ -40,16 +43,18 @@ public class AdminController {
     @PostMapping("/admin/add-user")
     public ModelAndView adminAddUserSubmit(@ModelAttribute User user) {
         user.setPassword("blyat");
-        user.setRoles(new HashSet((Collection) roleRepository.findByRole("EMPLOYEE")));
-        userRepository.save(user);
+        user.setStatus("1");
+        departmentRole = user.getDepartment().name();
+        user.setRoles(new HashSet(Arrays.asList(roleService.getRoleByName("EMPLOYEE"),roleService.getRoleByName("ROLE_"+departmentRole))));
+        userService.saveUser(user);
         return new ModelAndView("redirect:/user/" + user.getId());
     }
-//ADMIN.setRoles(new HashSet(Arrays.asList(Employee, Admin)));
+
     @GetMapping("/admin/users")
     public String adminUsers(){
+
         return "/login";
     }
-
 
     public String generatePassayPassword() {
         PasswordGenerator gen = new PasswordGenerator();
@@ -83,5 +88,11 @@ public class AdminController {
                 upperCaseRule, digitRule);
         return password;
     }
+
+//    public void loopOverRoles() {
+//        for( Role role : roleSet) {
+//            System.out.println(role);
+//        }
+//    }
 
 }

@@ -24,7 +24,7 @@ public class DbInit implements CommandLineRunner {
     public void run(String... args) {
         
         this.userService.deleteAll();
-        this.userService.deleteAll();
+        this.roleService.deleteAll();
 
         Role Employee = new Role("EMPLOYEE");
         Role Admin = new Role("ADMIN");
