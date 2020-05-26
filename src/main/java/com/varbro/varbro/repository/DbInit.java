@@ -9,19 +9,20 @@ import java.util.*;
 
 @Service
 public class DbInit implements CommandLineRunner {
-    private RoleRepository roleRepository;
+
     private UserRepository userRepository;
+    private RoleRepository roleRepository;
 
     public DbInit( RoleRepository roleRepository, UserRepository userRepository) {
-        this.roleRepository = roleRepository;
         this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
     }
 
     @Override
     public void run(String... args) {
-
-        this.roleRepository.deleteAll();
+        
         this.userRepository.deleteAll();
+        this.roleRepository.deleteAll();
 
         Role Employee = new Role("EMPLOYEE");
         Role Admin = new Role("ADMIN");
