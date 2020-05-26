@@ -33,23 +33,19 @@ public class DbInit implements CommandLineRunner {
         Role Finance = new Role("ROLE_FINANCE");
         Role IT = new Role("ROLE_IT");
 
-        List<Role> roles = Arrays.asList(Employee, Admin,Manager,Production,Logistics,Distribution,HR,Finance,IT);
-
+        Set<Role> roles = new HashSet(Arrays.asList(Employee,Admin,Manager,Production,Logistics,Distribution,HR,Finance,IT));
+        this.roleRepository.saveAll(roles);
 
         User ADMIN = new User("Admin", "Admin", "$2a$10$XHOXjTseWpp9vA9NAe7unOYOQJY58bpZDcxLGn1pkNNf1QJrETfJ6", "admin@admin.com", "213721372", 99999, User.Department.IT);
         User ADMIN1 = new User("Dummy", "Dummy", "$2a$10$XHOXjTseWpp9vA9NAe7unOYOQJY58bpZDcxLGn1pkNNf1QJrETfJ6", "dummy@test.com", "777777777", 99999, User.Department.IT);
+        User JOHN = new User("John", "Doe", "$2a$10$XHOXjTseWpp9vA9NAe7unOYOQJY58bpZDcxLGn1pkNNf1QJrETfJ6", "john.doe@gmail.com", "666666666", 99999, User.Department.PRODUCTION);
 
-        //Role role = new Role();
-        Set<Role> roleSet = new HashSet();
-        //role.setRole("ADMIN");
-        roleSet.add(Admin);
-        roleSet.add(Employee);
-        ADMIN.setRoles(roleSet);
-        ADMIN1.setRoles(roleSet);
-
-        List<User> users = Arrays.asList(ADMIN,ADMIN1);
-        //this.roleRepository.saveAll(roles);
+        ADMIN.setRoles(new HashSet(Arrays.asList(Employee, Admin)));
+        ADMIN1.setRoles(new HashSet(Arrays.asList(Employee, Admin)));
+        JOHN.setRoles(new HashSet(Arrays.asList(Employee, Production)));
+        List<User> users = Arrays.asList(ADMIN,ADMIN1,JOHN);
         this.userRepository.saveAll(users);
+
     }
 
 

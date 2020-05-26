@@ -25,7 +25,7 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Department department;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany
     @JoinTable(name ="user_role",
             joinColumns = @JoinColumn(name="user_id"),
             inverseJoinColumns = @JoinColumn(name="role_id"))
