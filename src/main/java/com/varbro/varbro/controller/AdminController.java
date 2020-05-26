@@ -1,6 +1,7 @@
 package com.varbro.varbro.controller;
 
 import com.varbro.varbro.model.User;
+import com.varbro.varbro.repository.RoleRepository;
 import com.varbro.varbro.repository.UserRepository;
 import org.passay.CharacterData;
 import org.passay.CharacterRule;
@@ -14,11 +15,16 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
+
 @Controller
 public class AdminController {
 
     @Autowired
     private UserRepository userRepository;
+    private RoleRepository roleRepository;
 
     @GetMapping("/admin")
     public String adminIndex(){
@@ -34,10 +40,11 @@ public class AdminController {
     @PostMapping("/admin/add-user")
     public ModelAndView adminAddUserSubmit(@ModelAttribute User user) {
         user.setPassword("blyat");
+        user.setRoles(new HashSet((Collection) roleRepository.findByRole("EMPLOYEE")));
         userRepository.save(user);
         return new ModelAndView("redirect:/user/" + user.getId());
     }
-
+//ADMIN.setRoles(new HashSet(Arrays.asList(Employee, Admin)));
     @GetMapping("/admin/users")
     public String adminUsers(){
         return "/login";
