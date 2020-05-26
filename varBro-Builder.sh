@@ -6,8 +6,8 @@ else
 	docker container stop varbro
 	docker rm varbro
 	docker rmi varbro
+	echo y | docker system prune --volumes
 fi
-
-mvn clean package -DskipTests
+mvn clean package #-DskipTests
 docker build -t varbro .
 docker run -p 8080:8080 --name varbro --link varbro-sql:mysql -d varbro
