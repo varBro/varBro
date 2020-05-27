@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+  
+  varbro-sql:
+    image: mysql:8.0
+    environment: 
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=varbro
+      - MYSQL_USER=varbro-user
+      - MYSQL_PASSWORD=brovar
+    ports:
+      - 3306:3306
+
+  varbro:
+    image: varbro:0.0.1-SNAPSHOT
+    restart: on-failure
+    depends_on:
+      - varbro-sql
+    ports:
+      - 8080:8080
+
+    environment:
+      - DATABASE_HOST=varbro-sql
+      - DATABASE_USER=varbro-user
+      - DATABASE_PASSWORD=brovar
+      - DATABASE_NAME=varbro
+      - DATABASE_PORT=3306
