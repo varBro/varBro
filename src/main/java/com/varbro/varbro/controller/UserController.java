@@ -1,7 +1,9 @@
 package com.varbro.varbro.controller;
 
+import com.varbro.varbro.model.Role;
 import com.varbro.varbro.model.User;
-import com.varbro.varbro.repository.UserRepository;
+import com.varbro.varbro.service.RoleService;
+import com.varbro.varbro.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -13,12 +15,20 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.Arrays;
+import java.util.HashSet;
+
 
 @Controller
 public class UserController {
 
     @Autowired
-    UserRepository userRepository;
+    UserService userService;
+
+    @Autowired
+    RoleService roleService;
+
+    String departmentRole;
 
     @GetMapping("/user")
     public String userIndex(){
@@ -28,14 +38,14 @@ public class UserController {
     @GetMapping("/users")
     public String showAll(Model model)
     {
-        model.addAttribute("users", userRepository.findAll());
+        model.addAttribute("users", userService.getUsers());
         return "user/users";
     }
 
     @GetMapping("/user/{id}")
     public String showUser(@PathVariable("id") long id, Model model)
     {
-        User user = userRepository.findById(id)
+        User user = userService.getUserById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + id));
 
         model.addAttribute("user", user);
@@ -45,7 +55,7 @@ public class UserController {
     @GetMapping("/user/{id}/edit")
     public String showEditForm(@PathVariable("id") long id, Model model)
     {
-        User user = userRepository.findById(id)
+        User user = userService.getUserById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + id));
 
         model.addAttribute("user", user);
@@ -53,19 +63,22 @@ public class UserController {
     }
 
     @PostMapping("/user/{id}/edit")
-    public ModelAndView editUser(@ModelAttribute User user)
+    public ModelAndView editUser(@PathVariable("id") long id, @ModelAttribute User user)
     {
-        userRepository.save(user);
+        user.setStatus("1");
+        departmentRole = user.getDepartment().name();
+        user.setRoles(new HashSet(Arrays.asList(roleService.getRoleByName("EMPLOYEE"),roleService.getRoleByName("ROLE_"+departmentRole))));
+        userService.saveUser(user);
         return new ModelAndView("redirect:/user/" + user.getId());
     }
 
     @GetMapping("/user/{id}/delete")
     public ModelAndView deleteUser(@PathVariable("id") long id)
     {
-        User user = userRepository.findById(id)
+        User user = userService.getUserById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + id));
 
-        userRepository.delete(user);
+        userService.delete(user);
         return new ModelAndView("redirect:/users");
     }
 
@@ -74,7 +87,7 @@ public class UserController {
     {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String name = authentication.getName();
-        User user = userRepository.findByEmail(name);
+        User user = userService.getUserByEmail(name);
         return new ModelAndView("redirect:/user/" + user.getId());
     }
 }

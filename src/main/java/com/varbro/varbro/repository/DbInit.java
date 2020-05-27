@@ -2,6 +2,8 @@ package com.varbro.varbro.repository;
 
 import com.varbro.varbro.model.Role;
 import com.varbro.varbro.model.User;
+import com.varbro.varbro.service.RoleService;
+import com.varbro.varbro.service.UserService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Service;
 
@@ -10,19 +12,19 @@ import java.util.*;
 @Service
 public class DbInit implements CommandLineRunner {
 
-    private UserRepository userRepository;
-    private RoleRepository roleRepository;
+    private UserService userService;
+    private RoleService roleService;
 
-    public DbInit( RoleRepository roleRepository, UserRepository userRepository) {
-        this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
+    public DbInit(UserService userService, RoleService roleService) {
+        this.userService = userService;
+        this.roleService = roleService;
     }
 
     @Override
     public void run(String... args) {
         
-        this.userRepository.deleteAll();
-        this.roleRepository.deleteAll();
+        this.userService.deleteAll();
+        this.roleService.deleteAll();
 
         Role Employee = new Role("EMPLOYEE");
         Role Admin = new Role("ADMIN");
@@ -35,7 +37,8 @@ public class DbInit implements CommandLineRunner {
         Role IT = new Role("ROLE_IT");
 
         Set<Role> roles = new HashSet(Arrays.asList(Employee,Admin,Manager,Production,Logistics,Distribution,HR,Finance,IT));
-        this.roleRepository.saveAll(roles);
+
+        this.roleService.saveRoles(roles);
 
         User ADMIN = new User("Admin", "Admin", "$2a$10$XHOXjTseWpp9vA9NAe7unOYOQJY58bpZDcxLGn1pkNNf1QJrETfJ6", "admin@admin.com", "213721372", 99999, User.Department.IT);
         User ADMIN1 = new User("Dummy", "Dummy", "$2a$10$XHOXjTseWpp9vA9NAe7unOYOQJY58bpZDcxLGn1pkNNf1QJrETfJ6", "dummy@test.com", "777777777", 99999, User.Department.IT);
@@ -44,8 +47,10 @@ public class DbInit implements CommandLineRunner {
         ADMIN.setRoles(new HashSet(Arrays.asList(Employee, Admin)));
         ADMIN1.setRoles(new HashSet(Arrays.asList(Employee, Admin)));
         JOHN.setRoles(new HashSet(Arrays.asList(Employee, Production)));
+
         List<User> users = Arrays.asList(ADMIN,ADMIN1,JOHN);
-        this.userRepository.saveAll(users);
+
+        this.userService.saveUsers(users);
 
     }
 
