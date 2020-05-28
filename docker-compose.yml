@@ -13,7 +13,7 @@ services:
       - 3306:3306
 
   varbro:
-    image: varbro:0.0.1-SNAPSHOT
+    image: varbro:latest
     restart: on-failure
     depends_on:
       - varbro-sql
