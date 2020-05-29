@@ -9,4 +9,5 @@ else
 	echo y | docker system prune --volumes
 fi
 mvn package
+docker build -t varbro .
 docker run -p 8080:8080 --name varbro --link varbro-sql:mysql -d varbro
