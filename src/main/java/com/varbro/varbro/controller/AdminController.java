@@ -42,7 +42,7 @@ public class AdminController {
 
     @PostMapping("/admin/add-user")
     public ModelAndView adminAddUserSubmit(@ModelAttribute User user) {
-        user.setPassword("blyat");
+        user.setPassword("$2a$10$XHOXjTseWpp9vA9NAe7unOYOQJY58bpZDcxLGn1pkNNf1QJrETfJ6"); // encoded blyat
         user.setStatus("1");
         departmentRole = user.getDepartment().name();
         user.setRoles(new HashSet(Arrays.asList(roleService.getRoleByName("EMPLOYEE"),roleService.getRoleByName("ROLE_"+departmentRole))));
