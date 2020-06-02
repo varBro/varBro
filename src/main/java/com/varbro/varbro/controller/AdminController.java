@@ -46,6 +46,8 @@ public class AdminController {
         user.setStatus("1");
         departmentRole = user.getDepartment().name();
         user.setRoles(new HashSet(Arrays.asList(roleService.getRoleByName("EMPLOYEE"),roleService.getRoleByName("ROLE_"+departmentRole))));
+        if(user.getPosition() != null)
+            user.addRole(roleService.getRoleByName(user.getPosition().name()));
         userService.saveUser(user);
         return new ModelAndView("redirect:/user/" + user.getId());
     }

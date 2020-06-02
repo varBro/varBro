@@ -25,6 +25,8 @@ public class User implements Serializable {
     private String status;
     @Enumerated(EnumType.STRING)
     private Department department;
+    @Enumerated(EnumType.STRING)
+    private Position position;
 
     @ManyToMany
     @JoinTable(name ="user_role",
@@ -32,13 +34,18 @@ public class User implements Serializable {
             inverseJoinColumns = @JoinColumn(name="role_id"))
     private Set<Role> roles;
 
-    public static enum Department {
+    public enum Department {
         PRODUCTION,
         LOGISTICS,
         DISTRIBUTION,
         HR,
         FINANCE,
         IT
+    }
+
+    public enum Position {
+        MANAGER,
+        ADMIN
     }
 
     public User() {
@@ -52,6 +59,19 @@ public class User implements Serializable {
         this.phoneNumber = phoneNumber;
         this.salary = salary;
         this.department = department;
+        this.position = null;
+        this.status = "1";
+    }
+
+    public User(String name, String surname, String password, String email, String phoneNumber, int salary, Department department, Position position) {
+        this.name = name;
+        this.surname = surname;
+        this.password = password;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.salary = salary;
+        this.department = department;
+        this.position = position;
         this.status = "1";
     }
 
@@ -133,6 +153,18 @@ public class User implements Serializable {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public void addRole(Role role) {
+        this.roles.add(role);
+    }
+
+    public Position getPosition() {
+        return position;
+    }
+
+    public void setPosition(Position position) {
+        this.position = position;
     }
 
 
