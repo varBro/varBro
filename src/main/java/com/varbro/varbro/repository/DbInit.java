@@ -43,12 +43,14 @@ public class DbInit implements CommandLineRunner {
         User ADMIN = new User("Admin", "Admin", "$2a$10$XHOXjTseWpp9vA9NAe7unOYOQJY58bpZDcxLGn1pkNNf1QJrETfJ6", "admin@admin.com", "213721372", 99999, User.Department.IT);
         User ADMIN1 = new User("Dummy", "Dummy", "$2a$10$XHOXjTseWpp9vA9NAe7unOYOQJY58bpZDcxLGn1pkNNf1QJrETfJ6", "dummy@test.com", "777777777", 99999, User.Department.IT);
         User JOHN = new User("John", "Doe", "$2a$10$XHOXjTseWpp9vA9NAe7unOYOQJY58bpZDcxLGn1pkNNf1QJrETfJ6", "john.doe@gmail.com", "666666666", 99999, User.Department.PRODUCTION);
+        User JP = new User("Jan", "Pawel", "$2a$10$XHOXjTseWpp9vA9NAe7unOYOQJY58bpZDcxLGn1pkNNf1QJrETfJ6", "janpawel2@gmail.com", "213721377", 2137, User.Department.FINANCE);
 
         ADMIN.setRoles(new HashSet(Arrays.asList(Employee, Admin)));
         ADMIN1.setRoles(new HashSet(Arrays.asList(Employee, Admin)));
         JOHN.setRoles(new HashSet(Arrays.asList(Employee, Production)));
+        JP.setRoles(new HashSet(Arrays.asList(Employee, Finance)));
 
-        List<User> users = Arrays.asList(ADMIN,ADMIN1,JOHN);
+        List<User> users = Arrays.asList(ADMIN,ADMIN1,JOHN, JP);
 
         this.userService.saveUsers(users);
 

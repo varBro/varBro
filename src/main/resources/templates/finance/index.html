@@ -1,0 +1,13 @@
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{layouts/layout}">
+<head>
+    <title>Finance panel</title>
+</head>
+<body>
+<section layout:fragment="content" th:remove="tag">
+    <h1>Finance panel</h1>
+    <button class="button" th:href="@{/finance/add-expense}">Add new expense</button>
+</section>
+</body>
+</html>
