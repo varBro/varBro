@@ -1,18 +1,27 @@
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/layout}" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Add user</title>
+    <title>Add invoice</title>
 </head>
 <body>
 <ol layout:fragment="breadcrumbs" class="breadcrumb pl-5">
     <li class="breadcrumb-item"><a href="/default">Home</a></li>
-    <li class="breadcrumb-item active">Add user</li>
+    <li class="breadcrumb-item"><a href="/finance">Finance</a></li>
+    <li class="breadcrumb-item"><a href="/finance/invoice">Invoice</a></li>
+    <li class="breadcrumb-item active">Add</li>
 </ol>
 <section layout:fragment="content">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <h2>New invoice:</h2>
+                <form action="#" th:action="@{/finance/invoice/add}" th:object="${invoice}" method="post">
+                    <div class="form-group">
+                        <label for="invoicePrice">Price</label>
+                        <input type="text" class="form-control" id="invoicePrice" placeholder="Enter price" th:field="*{price}">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add invoice</button>
+                </form>
             </div>
         </div>
     </div>
