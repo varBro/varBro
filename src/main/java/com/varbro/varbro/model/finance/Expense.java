@@ -18,6 +18,7 @@ public class Expense {
     private BigDecimal amount;
 
     public Expense() {
+        this.date = LocalDate.now();
     }
 
     public Expense(String title, String receiverName, BigDecimal amount) {
@@ -27,5 +28,35 @@ public class Expense {
         this.date = LocalDate.now();
     }
 
+    public String getTitle() {
+        return title;
+    }
 
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getReceiverName() {
+        return receiverName;
+    }
+
+    public void setReceiverName(String receiverName) {
+        this.receiverName = receiverName;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
+    public BigDecimal getAmount() {
+        return amount;
+    }
+
+    public void setAmount(BigDecimal amount) {
+        this.amount = amount;
+    }
 }

@@ -5,9 +5,25 @@
     <title>Finance panel</title>
 </head>
 <body>
-<section layout:fragment="content" th:remove="tag">
-    <h1>Finance panel</h1>
-    <button class="button" th:href="@{/finance/add-expense}">Add new expense</button>
+<ol layout:fragment="breadcrumbs" class="breadcrumb pl-5">
+    <li class="breadcrumb-item active"><a href="#">Home</a></li>
+</ol>
+<section layout:fragment="content">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="content">
+                    <div class="title m-b-md">
+                        Finance Panel
+                    </div>
+                    <div class="links">
+                        <a th:href="@{/finance/add-expense}">Add new expense</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </section>
+
 </body>
 </html>
