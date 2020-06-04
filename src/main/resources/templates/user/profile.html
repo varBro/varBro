@@ -45,10 +45,22 @@
                         <span th:text="${user.department}"></span>
                     </div>
                 </div>
-                <div class="profile-info-row">
+                <div sec:authorize="hasRole('ROLE_HR')" class="profile-info-row">
+                    <div class="profile-info-name"> Bank account number </div>
+                    <div class="profile-info-value">
+                        <span th:text="${user.bankAccount}"></span>
+                    </div>
+                </div>
+                <div sec:authorize="hasRole('ROLE_HR')" class="profile-info-row">
                     <div class="profile-info-name"> Salary </div>
                     <div class="profile-info-value">
                         <span th:text="${user.salary}"></span>
+                    </div>
+                </div>
+                <div sec:authorize="hasRole('ROLE_HR')" class="profile-info-row">
+                    <div class="profile-info-name"> PESEL </div>
+                    <div class="profile-info-value">
+                        <span th:text="${user.pesel}"></span>
                     </div>
                 </div>
                 <div class="profile-info-row">
