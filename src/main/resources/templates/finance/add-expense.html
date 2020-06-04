@@ -14,21 +14,22 @@
             <div class="col-md-8">
                 <h2>New Expense:</h2>
 
-                <form action="#" th:action="@{/finance/add-expense}" th:object="${expense}" method="post" th:errorclass="fieldError">
+                <form action="#" th:action="@{/finance/add-expense}" th:object="${expense}" method="post"
+                      >
                     <div class="form-group">
                         <label for="title">Title of expense</label>
                         <input type="text" class="form-control" id="title" placeholder="Enter title"
-                               th:field="*{title}">
+                               th:field="*{title}" th:errorclass="fieldError">
                     </div>
                     <div class="form-group">
                         <label for="receiverName">Receiver of the money</label>
                         <input type="text" class="form-control" id="receiverName" placeholder="Enter receiver name"
-                               th:field="*{receiverName}">
+                               th:field="*{receiverName}" th:errorclass="fieldError">
                     </div>
                     <div class="form-group">
                         <label for="amount">Amount of spent money</label>
                         <input type="text" class="form-control" id="amount" placeholder="Enter amount"
-                               th:field="*{amount}">
+                               th:field="*{amount}" th:errorclass="fieldError">
                     </div>
                     <button type="submit" class="btn btn-primary">Add expense</button>
                 </form>

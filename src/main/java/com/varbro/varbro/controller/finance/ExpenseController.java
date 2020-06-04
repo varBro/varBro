@@ -27,7 +27,10 @@ public class ExpenseController {
 
     @PostMapping("/finance/add-expense")
     public String financeAddExpenseSubmit(@ModelAttribute Expense expense, BindingResult bindingResult) {
-
-        return "redirect:/finance/add-expense";
+        expenseService.saveExpense(expense);
+        if (bindingResult.hasErrors()) {
+            return "finance/add-expense";
+        }
+        return "finance/add-expense";
     }
 }
