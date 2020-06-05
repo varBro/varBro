@@ -15,21 +15,27 @@
                 <h2>New Expense:</h2>
 
                 <form action="#" th:action="@{/finance/add-expense}" th:object="${expense}" method="post"
-                      >
+                >
                     <div class="form-group">
                         <label for="title">Title of expense</label>
                         <input type="text" class="form-control" id="title" placeholder="Enter title"
-                               th:field="*{title}" th:errorclass="fieldError">
+                               th:field="*{title}">
+                        <div class="alert alert-danger" th:if="${#fields.hasErrors('title')}"
+                             th:errors="*{title}"></div>
                     </div>
                     <div class="form-group">
                         <label for="receiverName">Receiver of the money</label>
                         <input type="text" class="form-control" id="receiverName" placeholder="Enter receiver name"
-                               th:field="*{receiverName}" th:errorclass="fieldError">
+                               th:field="*{receiverName}">
+                        <div class="alert alert-danger" th:if="${#fields.hasErrors('receiverName')}"
+                             th:errors="*{receiverName}"></div>
                     </div>
                     <div class="form-group">
                         <label for="amount">Amount of spent money</label>
                         <input type="text" class="form-control" id="amount" placeholder="Enter amount"
-                               th:field="*{amount}" th:errorclass="fieldError">
+                               th:field="*{amount}" th:errorclass="error">
+                        <div class="alert alert-danger" th:if="${#fields.hasErrors('amount')}"
+                             th:errors="*{amount}"></div>
                     </div>
                     <button type="submit" class="btn btn-primary">Add expense</button>
                 </form>

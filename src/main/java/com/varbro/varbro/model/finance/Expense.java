@@ -2,7 +2,9 @@ package com.varbro.varbro.model.finance;
 
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
@@ -12,12 +14,13 @@ public class Expense {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "expense_id")
     private long id;
-    @NotNull
+    @Size(min=2, max=30)
+    @NotBlank
     private String title;
-    @NotNull
+    @NotBlank
     private String receiverName;
     private LocalDate date;
-    @NotNull
+    @NotNull(message = "must not be empty")
     private BigDecimal amount;
 
     public Expense() {
