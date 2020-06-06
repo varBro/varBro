@@ -1,0 +1,43 @@
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Add contractor</title>
+</head>
+<body>
+<ol layout:fragment="breadcrumbs" class="breadcrumb pl-5">
+    <li class="breadcrumb-item"><a href="/default">Home</a></li>
+    <li class="breadcrumb-item"><a href="/finance">Finance</a></li>
+    <li class="breadcrumb-item"><a href="/finance/invoice">Invoice</a></li>
+    <li class="breadcrumb-item"><a href="/finance/invoice/add">Add</a></li>
+    <li class="breadcrumb-item active">Contractor</li>
+</ol>
+<section layout:fragment="content">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <h2>New contractor:</h2>
+
+                <form action="#" th:action="@{/finance/invoice/add/contractor}" th:object="${contractor}" method="post">
+                    <div class="form-group">
+                        <label for="contractorName">Name</label>
+                        <input type="text" class="form-control" id="contractorName" placeholder="Enter contractor name" th:field="*{name}">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="contractorAddress">Address</label>
+                        <input type="text" class="form-control" id="contractorAddress" placeholder="Enter contractor address" th:field="*{address}">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="contractorIdNumber">Identification number</label>
+                        <input type="text" class="form-control" id="contractorIdNumber" placeholder="Enter contractor identification number" th:field="*{identificationNumber}">
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Add contractor</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>

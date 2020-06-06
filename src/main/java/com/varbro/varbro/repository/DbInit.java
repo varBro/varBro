@@ -4,6 +4,7 @@ import com.varbro.varbro.model.Role;
 import com.varbro.varbro.model.User;
 import com.varbro.varbro.service.RoleService;
 import com.varbro.varbro.service.UserService;
+import com.varbro.varbro.service.finance.ContractorService;
 import com.varbro.varbro.service.finance.InvoiceService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Service;
@@ -16,18 +17,21 @@ public class DbInit implements CommandLineRunner {
     private UserService userService;
     private RoleService roleService;
     private InvoiceService invoiceService;
+    private ContractorService contractorService;
 
-    public DbInit(UserService userService, RoleService roleService, InvoiceService invoiceService) {
+    public DbInit(UserService userService, RoleService roleService, InvoiceService invoiceService, ContractorService contractorService) {
         this.userService = userService;
         this.roleService = roleService;
         this.invoiceService = invoiceService;
+        this.contractorService = contractorService;
     }
 
     @Override
     public void run(String... args) {
-        
         this.userService.deleteAll();
         this.roleService.deleteAll();
+        this.invoiceService.deleteAll();
+        this.contractorService.deleteAll();
 
         Role Employee = new Role("EMPLOYEE");
         Role Admin = new Role("ADMIN");

@@ -22,12 +22,10 @@ public class InvoiceService {
     }
 
     public void delete(Invoice invoice) {
-
         invoiceRepository.delete(invoice);
     }
 
     public void deleteAll() {
-
         invoiceRepository.deleteAll();
     }
 
