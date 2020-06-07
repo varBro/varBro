@@ -13,8 +13,10 @@ public class DefaultController {
     public String defaultAfterLogin(HttpServletRequest request) {
         if (request.isUserInRole("ADMIN")) {
             return "redirect:/admin";
+        } else if (request.isUserInRole("ROLE_FINANCE")) {
+            return "redirect:/finance";
         }
-        return "redirect:/admin";
+        return "redirect:/";
     }
 
 }
