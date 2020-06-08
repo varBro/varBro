@@ -2,7 +2,7 @@
       layout:decorate="~{layouts/layout}" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
-    <title>Users</title>
+    <title>Financial Overview</title>
 </head>
 <body>
 <ol layout:fragment="breadcrumbs" class="breadcrumb pl-5">
@@ -29,7 +29,7 @@
                     <div class="profile-info-row">
                         <div class="profile-info-name"> Revenue </div>
                         <div class="profile-info-value">
-                            <span></span>
+                            <span th:text="${monthlyRevenueSum}"></span>
                         </div>
                     </div>
                     <div class="profile-info-row">
@@ -39,9 +39,9 @@
                         </div>
                     </div>
                     <div class="profile-info-row">
-                        <div class="profile-info-name"> Bilance </div>
+                        <div class="profile-info-name"> Balance </div>
                         <div class="profile-info-value">
-                            <span></span>
+                            <span th:text="${balance}"></span>
                         </div>
                     </div>
                 </div>

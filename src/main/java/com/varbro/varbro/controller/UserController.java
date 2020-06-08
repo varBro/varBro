@@ -1,6 +1,5 @@
 package com.varbro.varbro.controller;
 
-import com.varbro.varbro.model.Role;
 import com.varbro.varbro.model.User;
 import com.varbro.varbro.service.RoleService;
 import com.varbro.varbro.service.UserService;

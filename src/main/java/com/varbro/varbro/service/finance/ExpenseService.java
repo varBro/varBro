@@ -25,7 +25,8 @@ public class ExpenseService {
 
     public BigDecimal getSumOfMonthlyExpenses(String month, String year)
     {
-        return expenseRepository.sumOfMonthlyExpenses(month, year);
+        BigDecimal expenses = expenseRepository.sumOfMonthlyExpenses(month, year);
+        return expenses == null ? BigDecimal.valueOf(0) : expenses;
     }
 
     public Iterable<Expense> getMonthlyExpenses(String month, String year)
