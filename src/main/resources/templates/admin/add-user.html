@@ -43,8 +43,16 @@
                     </select>
                 </div>
                 <div class="form-group">
+                    <label for="userPhone">Bank account number</label>
+                    <input type="text" class="form-control" id="userBankAccount" placeholder="Enter bank account number" th:field="*{bankAccount}">
+                </div>
+                <div class="form-group">
                     <label for="userSalary">Salary</label>
                     <input type="text" class="form-control" id="userSalary" placeholder="Enter salary" th:field="*{salary}">
+                </div>
+                <div class="form-group">
+                    <label for="userPhone">PESEL</label>
+                    <input type="text" class="form-control" id="userPESEL" placeholder="Enter PESEL" th:field="*{pesel}">
                 </div>
                 <button type="submit" class="btn btn-primary">Add user</button>
                 <!--<input type="reset" value="Reset">-->
