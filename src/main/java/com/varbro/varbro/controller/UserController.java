@@ -79,7 +79,10 @@ public class UserController {
     {
         user.setStatus("1");
         departmentRole = user.getDepartment().name();
-        user.setRoles(new HashSet(Arrays.asList(roleService.getRoleByName("EMPLOYEE"),roleService.getRoleByName("ROLE_"+departmentRole))));
+        user.setRoles(new HashSet(Arrays.asList(roleService.getRoleByName("EMPLOYEE"),
+                roleService.getRoleByName("ROLE_"+departmentRole))));
+        if(user.getPosition() != null)
+            user.addRole(roleService.getRoleByName(user.getPosition().name()));
         userService.saveUser(user);
         return new ModelAndView("redirect:/user/" + user.getId());
     }
@@ -114,7 +117,8 @@ public class UserController {
         user.setPassword("$2a$10$XHOXjTseWpp9vA9NAe7unOYOQJY58bpZDcxLGn1pkNNf1QJrETfJ6"); // encoded blyat
         user.setStatus("1");
         departmentRole = user.getDepartment().name();
-        user.setRoles(new HashSet(Arrays.asList(roleService.getRoleByName("EMPLOYEE"),roleService.getRoleByName("ROLE_"+departmentRole))));
+        user.setRoles(new HashSet(Arrays.asList(roleService.getRoleByName("EMPLOYEE"),
+                roleService.getRoleByName("ROLE_"+departmentRole))));
         if(user.getPosition() != null)
             user.addRole(roleService.getRoleByName(user.getPosition().name()));
         userService.saveUser(user);
