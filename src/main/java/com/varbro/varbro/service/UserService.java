@@ -29,6 +29,22 @@ public class UserService {
         return userRepository.findAll();
     }
 
+    public Iterable<User> getUsersOrderedBySurname() {
+        return userRepository.findAllByOrderBySurname();
+    }
+
+    public Iterable<User> getUsersLikeSurname(String surname) {
+        return userRepository.findBySurnameContainingIgnoreCase(surname);
+    }
+
+    public Iterable<User> getUsersLikeName(String name) {
+        return userRepository.findByNameContainingIgnoreCase(name);
+    }
+
+    public Iterable<User> getUsersLikeNameOrLikeSurname(String name, String surname) {
+        return userRepository.findByNameContainingIgnoreCaseOrSurnameContainingIgnoreCase(name, surname);
+    }
+
     public Optional<User> getUserById(Long id) {
 
         return userRepository.findById(id);

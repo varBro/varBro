@@ -25,6 +25,8 @@ public class User implements Serializable {
     private String status;
     @Enumerated(EnumType.STRING)
     private Department department;
+    @Enumerated(EnumType.STRING)
+    private Position position;
 
     @Column(table = "personal_information")
     private String bankAccount;
@@ -42,7 +44,7 @@ public class User implements Serializable {
             inverseJoinColumns = @JoinColumn(name="role_id"))
     private Set<Role> roles;
 
-    public static enum Department {
+    public enum Department {
         PRODUCTION,
         LOGISTICS,
         DISTRIBUTION,
@@ -51,16 +53,39 @@ public class User implements Serializable {
         IT
     }
 
+    public enum Position {
+        MANAGER,
+        ADMIN
+    }
+
     public User() {
     }
 
-    public User(String name, String surname, String password, String email, String phoneNumber, Department department, String bankAccount, float salary, String pesel) {
+    public User(String name, String surname, String password, String email, String phoneNumber,
+                Department department, String bankAccount, float salary, String pesel) {
         this.name = name;
         this.surname = surname;
         this.password = password;
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.department = department;
+        this.position = null;
+        this.status = "1";
+        this.bankAccount = bankAccount;
+        this.salary = salary;
+        this.pesel = pesel;
+    }
+
+    public User(String name, String surname, String password, String email, String phoneNumber,
+                Department department, String bankAccount, float salary, String pesel, Position position) {
+        this.name = name;
+        this.surname = surname;
+        this.password = password;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.salary = salary;
+        this.department = department;
+        this.position = position;
         this.status = "1";
         this.bankAccount = bankAccount;
         this.salary = salary;
@@ -100,8 +125,7 @@ public class User implements Serializable {
     }
 
     public String getEmail() {
-        return email;
-    }
+        return email; }
 
     public void setEmail(String email) {
         this.email = email;
@@ -139,6 +163,18 @@ public class User implements Serializable {
         this.roles = roles;
     }
 
+    public void addRole(Role role) {
+        this.roles.add(role);
+    }
+
+    public Position getPosition() {
+        return position;
+    }
+
+    public void setPosition(Position position) {
+        this.position = position;
+    }
+
     public String getBankAccount() {
         return bankAccount;
     }
@@ -162,7 +198,6 @@ public class User implements Serializable {
     public void setPesel(String pesel) {
         this.pesel = pesel;
     }
-
 
     @Override
     public boolean equals(Object o) {
