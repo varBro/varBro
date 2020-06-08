@@ -11,11 +11,11 @@ import java.util.List;
 
 @Repository
 public interface ExpenseRepository extends JpaRepository<Expense, Long> {
-    @Query(value = "select sum(amount) from Expense e where extract(month from e.date) = ?1 " +
+    @Query(value = "select sum(amount) from expense e where extract(month from e.date) = ?1 " +
             "and extract(year from e.date) = ?2", nativeQuery = true)
     BigDecimal sumOfMonthlyExpenses(String month, String year);
 
-    @Query(value = "select * from Expense e where extract(month from e.date) = ?1 and extract(year from e.date) = ?2",
+    @Query(value = "select * from expense e where extract(month from e.date) = ?1 and extract(year from e.date) = ?2",
             nativeQuery=true)
     List<Expense> monthlyExpenses(String month, String year);
 }

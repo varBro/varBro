@@ -107,13 +107,13 @@ public class UserController {
     }
 
     @GetMapping("/user/add-user")
-    public String adminAddUserForm(Model model) {
+    public String addUserForm(Model model) {
         model.addAttribute("user", new User());
         return "user/add-user";
     }
 
     @PostMapping("/user/add-user")
-    public ModelAndView adminAddUserSubmit(@ModelAttribute User user) {
+    public ModelAndView addUserSubmit(@ModelAttribute User user) {
         user.setPassword("$2a$10$XHOXjTseWpp9vA9NAe7unOYOQJY58bpZDcxLGn1pkNNf1QJrETfJ6"); // encoded blyat
         user.setStatus("1");
         departmentRole = user.getDepartment().name();
