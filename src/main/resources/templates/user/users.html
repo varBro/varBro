@@ -13,6 +13,14 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
+                <form th:action="@{/users}" method="post">
+                <div class="input-group">
+                    <input class="form-control" type="text" th:name="name" th:value="${name}" placeholder="User" aria-label="Search">
+                    <span class="input-group-btn">
+                        <button class="btn btn-primary" type="submit">Search</button>
+                    </span>
+                </div>
+                </form>
                 <div class="profile-user-info">
                     <div class="profile-info-row">
                         <div class="profile-info-name"> Name </div>
@@ -37,8 +45,9 @@
                         <div class="profile-info-value">
                             <span th:text="${user.email}"></span>
                         </div>
-                        <div class="profile-info-value" th:if="${#authorization.expression('hasAnyAuthority(''ADMIN'', ''ROLE_HR'')')
-                                                        || #authentication.name == user.email}">
+                        <div class="profile-info-value"
+                             th:if="${#authorization.expression('hasAnyAuthority(''ADMIN'', ''ROLE_HR'')')
+                             || #authentication.name == user.email}">
                            <a class="btn btn-primary btn-sm" th:href="@{/user/{id}/edit(id=${user.id})}" role="button">Edit</a>
                         </div>
                     </div>

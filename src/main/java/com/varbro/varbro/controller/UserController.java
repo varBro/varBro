@@ -13,14 +13,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.Arrays;
-import java.util.HashSet;
+import java.util.*;
 
 
 @Controller
@@ -43,6 +39,18 @@ public class UserController {
     public String showAll(Model model)
     {
         model.addAttribute("users", userService.getUsersOrderedBySurname());
+        return "user/users";
+    }
+
+    @PostMapping("/users")
+    public String showAll(@RequestParam(value = "name", required = false) String name, Model model)
+    {
+        if (name != "") {
+            model.addAttribute("users", userService.getUsersLikeNameOrLikeSurname(name, name));
+        }
+        else
+            model.addAttribute("users", userService.getUsersOrderedBySurname());
+        model.addAttribute("name", name);
         return "user/users";
     }
 
