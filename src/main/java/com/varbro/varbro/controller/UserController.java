@@ -77,7 +77,7 @@ public class UserController {
     @PostMapping("/user/{id}/edit")
     public ModelAndView editUser(@PathVariable("id") long id, @ModelAttribute User user)
     {
-        user.setStatus("1");
+        user.setStatus(3);
         departmentRole = user.getDepartment().name();
         user.setRoles(new HashSet(Arrays.asList(roleService.getRoleByName("EMPLOYEE"),roleService.getRoleByName("ROLE_"+departmentRole))));
         userService.saveUser(user);
@@ -112,7 +112,7 @@ public class UserController {
     @PostMapping("/user/add-user")
     public ModelAndView adminAddUserSubmit(@ModelAttribute User user) {
         user.setPassword("$2a$10$XHOXjTseWpp9vA9NAe7unOYOQJY58bpZDcxLGn1pkNNf1QJrETfJ6"); // encoded blyat
-        user.setStatus("1");
+        user.setStatus(3);
         departmentRole = user.getDepartment().name();
         user.setRoles(new HashSet(Arrays.asList(roleService.getRoleByName("EMPLOYEE"),roleService.getRoleByName("ROLE_"+departmentRole))));
         if(user.getPosition() != null)

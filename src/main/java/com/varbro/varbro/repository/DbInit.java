@@ -4,7 +4,6 @@ import com.varbro.varbro.model.Role;
 import com.varbro.varbro.model.User;
 import com.varbro.varbro.service.RoleService;
 import com.varbro.varbro.service.UserService;
-import org.graalvm.compiler.lir.BailoutAndRestartBackendException;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Service;
 

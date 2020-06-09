@@ -63,6 +63,12 @@
                         <span th:text="${user.pesel}"></span>
                     </div>
                 </div>
+                <div sec:authorize="hasRole('ADMIN')" class="profile-info-row">
+                    <div class="profile-info-name"> Status </div>
+                    <div class="profile-info-value">
+                        <span th:text="${user.status} ? 'ACTIVE' : 'BLOCKED' "></span>
+                    </div>
+                </div>
                 <div class="profile-info-row">
                     <div class="profile-info-value" th:if="${#authorization.expression('hasAuthority(''ADMIN'')')
                      || #authentication.name == user.email}">
