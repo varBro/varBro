@@ -63,10 +63,10 @@
                         <span th:text="${user.pesel}"></span>
                     </div>
                 </div>
-                <div sec:authorize="hasRole('ADMIN')" class="profile-info-row">
+                <div sec:authorize="hasAuthority('ADMIN')" class="profile-info-row">
                     <div class="profile-info-name"> Status </div>
                     <div class="profile-info-value">
-                        <span th:text="${user.status} ? 'ACTIVE' : 'BLOCKED' "></span>
+                        <span th:text="${user.status} ? 'ACTIVE' : 'BLOCKED'"></span>
                     </div>
                 </div>
                 <div class="profile-info-row">
@@ -76,6 +76,9 @@
                     </div>
                     <div class="profile-info-value" sec:authorize="hasAuthority('ADMIN')">
                         <a class="btn btn-secondary" th:href="@{/user/{id}/delete(id=${user.id})}" role="button">Delete</a>
+                    </div>
+                    <div class="profile-info-value" th:if="${user.status == 0}" sec:authorize="hasAuthority('ADMIN')">
+                        <a class="btn btn-success" th:href="@{/user/{id}/delete(id=${user.id})}" role="button">Unlock</a>
                     </div>
                 </div>
             </div>
