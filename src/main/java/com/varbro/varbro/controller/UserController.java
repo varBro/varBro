@@ -73,7 +73,6 @@ public class UserController {
     public ModelAndView editUser(@PathVariable("id") long id, @ModelAttribute User user)
     {
         user.setStatus(3);
-
         departmentRole = user.getDepartment().name();
         user.setRoles(new HashSet(Arrays.asList(roleService.getRoleByName("EMPLOYEE"), roleService.getRoleByName("ROLE_" + departmentRole))));
         userService.saveUser(user);
@@ -111,6 +110,15 @@ public class UserController {
         user.setRoles(new HashSet(Arrays.asList(roleService.getRoleByName("EMPLOYEE"), roleService.getRoleByName("ROLE_" + departmentRole))));
         if (user.getPosition() != null)
             user.addRole(roleService.getRoleByName(user.getPosition().name()));
+        userService.saveUser(user);
+        return new ModelAndView("redirect:/user/" + user.getId());
+    }
+
+    @GetMapping("/user/{id}/unlock")
+    public ModelAndView unlockUser(@PathVariable("id") long id) {
+        User user = userService.getUserById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + id));
+        user.setStatus(3);
         userService.saveUser(user);
         return new ModelAndView("redirect:/user/" + user.getId());
     }

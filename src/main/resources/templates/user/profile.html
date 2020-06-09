@@ -78,7 +78,7 @@
                         <a class="btn btn-secondary" th:href="@{/user/{id}/delete(id=${user.id})}" role="button">Delete</a>
                     </div>
                     <div class="profile-info-value" th:if="${user.status == 0}" sec:authorize="hasAuthority('ADMIN')">
-                        <a class="btn btn-success" th:href="@{/user/{id}/delete(id=${user.id})}" role="button">Unlock</a>
+                        <a class="btn btn-success" th:href="@{/user/{id}/unlock(id=${user.id})}" role="button">Unlock</a>
                     </div>
                 </div>
             </div>
