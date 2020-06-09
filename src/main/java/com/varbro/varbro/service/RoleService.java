@@ -29,8 +29,7 @@ public class RoleService {
         return roleRepository.findById(id);
     }
 
-    public Role getRoleByName( String role )
-    {
+    public Role getRoleByName(String role) {
 
         return roleRepository.findByRole(role);
     }
