@@ -14,7 +14,7 @@ public class Expense {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "expense_id")
     private long id;
-    @Size(min=2, max=30)
+    @Size(min = 2, max = 30)
     @NotBlank
     private String title;
     @NotBlank
