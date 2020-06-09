@@ -31,32 +31,28 @@ public class UserController {
     String departmentRole;
 
     @GetMapping("/user")
-    public String userIndex(){
+    public String userIndex() {
         return "user/index";
     }
 
     @GetMapping("/users")
-    public String showAll(Model model)
-    {
+    public String showAll(Model model) {
         model.addAttribute("users", userService.getUsersOrderedBySurname());
         return "user/users";
     }
 
     @PostMapping("/users")
-    public String showAll(@RequestParam(value = "name", required = false) String name, Model model)
-    {
-        if (name != "") {
+    public String showAll(@RequestParam(value = "name", required = false) String name, Model model) {
+        if (!name.equals("")) {
             model.addAttribute("users", userService.getUsersLikeNameOrLikeSurname(name, name));
-        }
-        else
+        } else
             model.addAttribute("users", userService.getUsersOrderedBySurname());
         model.addAttribute("name", name);
         return "user/users";
     }
 
     @GetMapping("/user/{id}")
-    public String showUser(@PathVariable("id") long id, Model model)
-    {
+    public String showUser(@PathVariable("id") long id, Model model) {
         User user = userService.getUserById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + id));
 
@@ -65,8 +61,7 @@ public class UserController {
     }
 
     @GetMapping("/user/{id}/edit")
-    public String showEditForm(@PathVariable("id") long id, Model model)
-    {
+    public String showEditForm(@PathVariable("id") long id, Model model) {
         User user = userService.getUserById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + id));
 
@@ -78,15 +73,15 @@ public class UserController {
     public ModelAndView editUser(@PathVariable("id") long id, @ModelAttribute User user)
     {
         user.setStatus(3);
+
         departmentRole = user.getDepartment().name();
-        user.setRoles(new HashSet(Arrays.asList(roleService.getRoleByName("EMPLOYEE"),roleService.getRoleByName("ROLE_"+departmentRole))));
+        user.setRoles(new HashSet(Arrays.asList(roleService.getRoleByName("EMPLOYEE"), roleService.getRoleByName("ROLE_" + departmentRole))));
         userService.saveUser(user);
         return new ModelAndView("redirect:/user/" + user.getId());
     }
 
     @GetMapping("/user/{id}/delete")
-    public ModelAndView deleteUser(@PathVariable("id") long id)
-    {
+    public ModelAndView deleteUser(@PathVariable("id") long id) {
         User user = userService.getUserById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + id));
 
@@ -95,8 +90,7 @@ public class UserController {
     }
 
     @GetMapping("/user/profile")
-    public ModelAndView showProfile()
-    {
+    public ModelAndView showProfile() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String name = authentication.getName();
         User user = userService.getUserByEmail(name);
@@ -114,8 +108,8 @@ public class UserController {
         user.setPassword("$2a$10$XHOXjTseWpp9vA9NAe7unOYOQJY58bpZDcxLGn1pkNNf1QJrETfJ6"); // encoded blyat
         user.setStatus(3);
         departmentRole = user.getDepartment().name();
-        user.setRoles(new HashSet(Arrays.asList(roleService.getRoleByName("EMPLOYEE"),roleService.getRoleByName("ROLE_"+departmentRole))));
-        if(user.getPosition() != null)
+        user.setRoles(new HashSet(Arrays.asList(roleService.getRoleByName("EMPLOYEE"), roleService.getRoleByName("ROLE_" + departmentRole))));
+        if (user.getPosition() != null)
             user.addRole(roleService.getRoleByName(user.getPosition().name()));
         userService.saveUser(user);
         return new ModelAndView("redirect:/user/" + user.getId());

@@ -22,7 +22,7 @@ public class DbInit implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        
+
         this.userService.deleteAll();
         this.roleService.deleteAll();
 
@@ -36,7 +36,7 @@ public class DbInit implements CommandLineRunner {
         Role Finance = new Role("ROLE_FINANCE");
         Role IT = new Role("ROLE_IT");
 
-        Set<Role> roles = new HashSet(Arrays.asList(Employee,Admin,Manager,Production,Logistics,Distribution,HR,Finance,IT));
+        Set<Role> roles = new HashSet(Arrays.asList(Employee, Admin, Manager, Production, Logistics, Distribution, HR, Finance, IT));
 
         this.roleService.saveRoles(roles);
 
@@ -52,7 +52,7 @@ public class DbInit implements CommandLineRunner {
         JP.setRoles(new HashSet(Arrays.asList(Employee, Finance)));
         BARBARA.setRoles(new HashSet(Arrays.asList(Employee, HR, Manager)));
 
-        List<User> users = Arrays.asList(ADMIN,ADMIN1,JOHN, JP, BARBARA);
+        List<User> users = Arrays.asList(ADMIN, ADMIN1, JOHN, JP, BARBARA);
 
         this.userService.saveUsers(users);
 

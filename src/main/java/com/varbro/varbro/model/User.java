@@ -10,12 +10,12 @@ import javax.persistence.Id;
 import java.util.Objects;
 
 @Entity
-@SecondaryTable(name="personal_information", pkJoinColumns = @PrimaryKeyJoinColumn(name="user_id"))
+@SecondaryTable(name = "personal_information", pkJoinColumns = @PrimaryKeyJoinColumn(name = "user_id"))
 public class User implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name="user_id")
+    @Column(name = "user_id")
     private long id;
     private String name;
     private String surname;
@@ -39,9 +39,9 @@ public class User implements Serializable {
 
 
     @ManyToMany
-    @JoinTable(name ="user_role",
-            joinColumns = @JoinColumn(name="user_id"),
-            inverseJoinColumns = @JoinColumn(name="role_id"))
+    @JoinTable(name = "user_role",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
 
     public enum Department {
@@ -88,7 +88,6 @@ public class User implements Serializable {
         this.position = position;
         this.status = 3;
         this.bankAccount = bankAccount;
-        this.salary = salary;
         this.pesel = pesel;
     }
 
@@ -96,7 +95,7 @@ public class User implements Serializable {
         return id;
     }
 
-    public void setId( long id ) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -125,7 +124,8 @@ public class User implements Serializable {
     }
 
     public String getEmail() {
-        return email; }
+        return email;
+    }
 
     public void setEmail(String email) {
         this.email = email;
