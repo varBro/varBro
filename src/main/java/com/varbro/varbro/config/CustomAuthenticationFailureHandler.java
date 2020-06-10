@@ -20,7 +20,6 @@ public class CustomAuthenticationFailureHandler extends SimpleUrlAuthenticationF
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
 
         String failure = userService.changeStatus(request.getParameter("email"));
-        System.out.println(failure);
         if (failure.equals("Account locked")) {
             response.sendRedirect("/login?error=account-locked");
         } else {
