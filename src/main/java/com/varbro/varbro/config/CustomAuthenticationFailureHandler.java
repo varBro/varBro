@@ -21,7 +21,7 @@ public class CustomAuthenticationFailureHandler extends SimpleUrlAuthenticationF
 
         String failure = userService.changeStatus(request.getParameter("email"));
         if (failure.equals("Account locked")) {
-            response.sendRedirect("/login?error=account-locked");
+            response.sendRedirect("/login?failure=account-locked");
         } else {
             request.setAttribute("param", "error");
             response.sendRedirect("/login?error=true");
