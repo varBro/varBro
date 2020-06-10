@@ -22,7 +22,7 @@ public class User implements Serializable {
     private String password;
     private String email;
     private String phoneNumber;
-    private String status;
+    private int status;
     @Enumerated(EnumType.STRING)
     private Department department;
     @Enumerated(EnumType.STRING)
@@ -70,7 +70,7 @@ public class User implements Serializable {
         this.phoneNumber = phoneNumber;
         this.department = department;
         this.position = null;
-        this.status = "1";
+        this.status = 3;
         this.bankAccount = bankAccount;
         this.salary = salary;
         this.pesel = pesel;
@@ -86,7 +86,7 @@ public class User implements Serializable {
         this.salary = salary;
         this.department = department;
         this.position = position;
-        this.status = "1";
+        this.status = 3;
         this.bankAccount = bankAccount;
         this.pesel = pesel;
     }
@@ -147,11 +147,11 @@ public class User implements Serializable {
         this.department = department;
     }
 
-    public String getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 

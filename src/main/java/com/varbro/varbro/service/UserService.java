@@ -69,4 +69,34 @@ public class UserService {
 
         return userRepository.getOne(id);
     }
+
+    public String changeStatus(String email) {
+
+        try {
+            User user = getUserByEmail(email);
+            int status = user.getStatus();
+
+            if (status > 1) {
+                user.setStatus(status-1);
+                saveUser(user);
+                return "0";
+            }
+            else if (status == 1) {
+                user.setStatus(status-1);
+                saveUser(user);
+                return "Account locked";
+            } else if (status == 0) {
+                return "Account locked";
+            }
+        } catch (Exception e) {
+            return "No user found";
+        }
+        return "0";
+    }
+
+    public void resetStatus(String email) {
+        User user = getUserByEmail(email);
+        user.setStatus(3);
+        saveUser(user);
+    }
 }
