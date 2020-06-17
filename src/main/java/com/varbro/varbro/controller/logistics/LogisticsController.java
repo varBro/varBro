@@ -20,8 +20,12 @@ public class LogisticsController {
         return "logistics/index";
     }
 
-//    @GetMapping("/logistics/stock")
-
+    @GetMapping("/logistics/stock")
+    public String currentStock(Model model)
+    {
+        model.addAttribute("commodities", commodityService.getCommodities());
+        return "logistics/stock";
+    }
 
 }
 
