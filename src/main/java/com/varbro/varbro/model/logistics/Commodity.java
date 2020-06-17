@@ -1,4 +1,4 @@
-package com.varbro.varbro.model.Logistics;
+package com.varbro.varbro.model.logistics;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -15,7 +15,7 @@ public class Commodity {
         private String type;
 
         @Column(table = "stock")
-        private float quantity;
+        private double quantity;
         @Column(table = "stock")
         private LocalDate lastUpdated;
 
@@ -26,7 +26,7 @@ public class Commodity {
                 this.type = type;
         }
 
-        public Commodity(String type, float quantity)
+        public Commodity(String type, double quantity)
         {
                 this.type = type;
                 this.quantity = quantity;
@@ -41,9 +41,9 @@ public class Commodity {
 
         String getType() { return this.type; }
 
-        void setQuantity(float quantity) { this.quantity = quantity; }
+        void setQuantity(double quantity) { this.quantity = quantity; }
 
-        float getQuantity() { return this.quantity; }
+        double getQuantity() { return this.quantity; }
 
         void setLastUpdated(LocalDate lastUpdated) { this.lastUpdated = lastUpdated; }
 

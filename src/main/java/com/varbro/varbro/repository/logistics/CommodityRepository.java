@@ -1,6 +1,6 @@
 package com.varbro.varbro.repository.logistics;
 
-import com.varbro.varbro.model.Logistics.Commodity;
+import com.varbro.varbro.model.logistics.Commodity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

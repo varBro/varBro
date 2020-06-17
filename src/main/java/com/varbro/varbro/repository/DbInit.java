@@ -1,9 +1,11 @@
 package com.varbro.varbro.repository;
 
+import com.varbro.varbro.model.logistics.Commodity;
 import com.varbro.varbro.model.Role;
 import com.varbro.varbro.model.User;
 import com.varbro.varbro.service.RoleService;
 import com.varbro.varbro.service.UserService;
+import com.varbro.varbro.service.logistics.CommodityService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Service;
 
@@ -14,10 +16,12 @@ public class DbInit implements CommandLineRunner {
 
     private UserService userService;
     private RoleService roleService;
+    private CommodityService commodityService;
 
-    public DbInit(UserService userService, RoleService roleService) {
+    public DbInit(UserService userService, RoleService roleService, CommodityService commodityService) {
         this.userService = userService;
         this.roleService = roleService;
+        this.commodityService = commodityService;
     }
 
     @Override
@@ -25,6 +29,7 @@ public class DbInit implements CommandLineRunner {
 
         this.userService.deleteAll();
         this.roleService.deleteAll();
+        this.commodityService.deleteAll();
 
         Role Employee = new Role("EMPLOYEE");
         Role Admin = new Role("ADMIN");
@@ -56,6 +61,13 @@ public class DbInit implements CommandLineRunner {
 
         this.userService.saveUsers(users);
 
+        Commodity BARLEY = new Commodity("Barley", 150.7);
+        Commodity HOPS = new Commodity("Hops", 40.2);
+        Commodity YEAST= new Commodity("Yeast", 68.0);
+        Commodity BOTTLE = new Commodity("Bottle", 1294);
+
+        List<Commodity> commodities = Arrays.asList(BARLEY, HOPS, YEAST, BOTTLE);
+        this.commodityService.saveCommodities(commodities);
     }
 
 
