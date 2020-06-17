@@ -33,19 +33,19 @@ public class Commodity {
                 this.lastUpdated = LocalDate.now();
         }
 
-        void setId(long id) { this.id = id; }
+        public void setId(long id) { this.id = id; }
 
-        long getId() { return this.id; }
+        public long getId() { return this.id; }
 
-        void setType(String type) { this.type = type; }
+        public void setType(String type) { this.type = type; }
 
-        String getType() { return this.type; }
+        public String getType() { return this.type; }
 
-        void setQuantity(double quantity) { this.quantity = quantity; }
+        public void setQuantity(double quantity) { this.quantity = quantity; }
 
-        double getQuantity() { return this.quantity; }
+        public double getQuantity() { return this.quantity; }
 
-        void setLastUpdated(LocalDate lastUpdated) { this.lastUpdated = lastUpdated; }
+        public void setLastUpdated(LocalDate lastUpdated) { this.lastUpdated = lastUpdated; }
 
-        LocalDate getLastUpdated() { return this.lastUpdated; }
+        public LocalDate getLastUpdated() { return this.lastUpdated; }
 }
