@@ -15,4 +15,5 @@ public class FinanceController {
     public String financeIndex() {
         return "finance/index";
     }
+
 }
