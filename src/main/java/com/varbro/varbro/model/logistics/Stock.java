@@ -6,14 +6,14 @@ import java.util.Objects;
 
 @Entity
 public class Stock {
-
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "stock_id")
     private long id;
     private double quantity;
     private LocalDate lastUpdated;
 
-    @OneToOne()
+    @OneToOne
     @JoinColumn(name = "product_id")
     private Product product;
 
