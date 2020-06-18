@@ -19,15 +19,15 @@
                         <div class="profile-info-name text-center"> Quantity </div>
                         <div class="profile-info-name text-center"> Last Update </div>
                     </div>
-                    <div class="profile-info-row" th:each="commodity : ${commodities}">
+                    <div class="profile-info-row" th:each="stock : ${stocks}">
                         <div class="profile-info-value text-center">
-                            <span th:text="${commodity.type}"></span>
+                            <span th:text="${stock.product.name}"></span>
                         </div>
                         <div class="profile-info-value text-center">
-                            <span th:text="${commodity.quantity}"></span>
+                            <span th:text="${stock.quantity}"></span>
                         </div>
                         <div class="profile-info-value text-center">
-                            <span th:text="${commodity.lastUpdated}"></span>
+                            <span th:text="${stock.lastUpdated}"></span>
                         </div>
 
                     </div>

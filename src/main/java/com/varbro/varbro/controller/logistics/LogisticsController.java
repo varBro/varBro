@@ -1,8 +1,7 @@
 package com.varbro.varbro.controller.logistics;
 
-import com.varbro.varbro.model.logistics.Commodity;
 import com.varbro.varbro.service.RoleService;
-import com.varbro.varbro.service.logistics.CommodityService;
+import com.varbro.varbro.service.logistics.StockService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,7 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class LogisticsController {
 
     @Autowired
-    CommodityService commodityService;
+    StockService stockService;
 
     @Autowired
     RoleService roleService;
@@ -25,7 +24,7 @@ public class LogisticsController {
     @GetMapping("/logistics/stock")
     public String currentStock(Model model)
     {
-        model.addAttribute("commodities", commodityService.getCommodities());
+        model.addAttribute("stocks", stockService.getStocks());
         return "logistics/stock";
     }
 

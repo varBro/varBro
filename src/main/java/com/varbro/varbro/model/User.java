@@ -37,7 +37,6 @@ public class User implements Serializable {
     @Column(table = "personal_information")
     private String pesel;
 
-
     @ManyToMany
     @JoinTable(name = "user_role",
             joinColumns = @JoinColumn(name = "user_id"),
