@@ -1,6 +1,6 @@
 package com.varbro.varbro.service.logistics;
 
-import com.varbro.varbro.model.logistics.Product;
+
 import com.varbro.varbro.model.logistics.Stock;
 import com.varbro.varbro.repository.logistics.StockRepository;
 import org.springframework.beans.factory.annotation.Autowired;

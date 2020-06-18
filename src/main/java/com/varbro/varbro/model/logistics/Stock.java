@@ -2,7 +2,6 @@ package com.varbro.varbro.model.logistics;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.Objects;
 
 @Entity
 public class Stock {
