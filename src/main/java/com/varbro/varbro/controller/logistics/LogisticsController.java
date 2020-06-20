@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Controller
@@ -55,7 +56,6 @@ public class LogisticsController {
     @GetMapping("/logistics/new-order")
     public String newOrder(@ModelAttribute Order order, Model model)
     {
-        System.out.println("The size of the order is: " + order.getOrderItems().size());
         List<Product> products =  productService.getProducts();
         model.addAttribute("products", products);
         return "logistics/new-order";
@@ -65,7 +65,16 @@ public class LogisticsController {
     public String addRow(@ModelAttribute Order order, Model model)
     {
         order.getOrderItems().add(new OrderItem());
-        System.out.println("The size of the set is: " + order.getOrderItems().size());
+        List<Product> products =  productService.getProducts();
+        model.addAttribute("products", products);
+        return "logistics/new-order";
+    }
+
+    @RequestMapping(value = "/logistics/new-order", params = "removeRow")
+    public String removeRow(@ModelAttribute Order order, Model model, HttpServletRequest req)
+    {
+        Integer rowId = Integer.valueOf(req.getParameter("removeRow"));
+        order.getOrderItems().remove(rowId.intValue());
         List<Product> products =  productService.getProducts();
         model.addAttribute("products", products);
         return "logistics/new-order";
