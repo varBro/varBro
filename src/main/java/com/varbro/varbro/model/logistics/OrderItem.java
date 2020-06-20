@@ -10,15 +10,15 @@ public class OrderItem {
     @Column(name = "order_item_id")
     private long id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "product_id")
     private Product product;
 
     private double quantity;
 
-    OrderItem() {}
+    public OrderItem() {}
 
-    OrderItem(Product product, double quantity)
+    public OrderItem(Product product, double quantity)
     {
         this.product = product;
         this.quantity = quantity;

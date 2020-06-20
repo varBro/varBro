@@ -13,6 +13,7 @@ public class Product {
         @GeneratedValue(strategy = GenerationType.AUTO)
         @Column(name = "product_id")
         private long id;
+        @Column(unique = true)
         @NotBlank
         private String name;
 

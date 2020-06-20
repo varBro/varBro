@@ -3,31 +3,38 @@ package com.varbro.varbro.model.logistics;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
+@Table(name = "orders")
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "order_id")
+    @Column(name = "orders_id")
     private long id;
     private LocalDate orderTime;
-    @OneToMany
-    @JoinColumn(name = "order_item_id")
-    private Set<OrderItem> orderItems;
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "orders_item_id")
+    private List<OrderItem> orderItems;
 
-    Order() {}
+    public Order() {
+        this.orderItems = new ArrayList<OrderItem>();
+        this.orderItems.add(new OrderItem());
+    }
 
-    Order(Set<OrderItem> orderItems) {
+    public Order(List<OrderItem> orderItems) {
         this.orderItems = orderItems;
         this.orderTime = LocalDate.now();
     }
 
     public long getId() {return this.id;}
 
-    public Set<OrderItem> getOrderItems() {return this.orderItems;}
+    public List<OrderItem> getOrderItems() {return this.orderItems;}
 
-    public void setOrderItems(Set<OrderItem> orderItems) {this.orderItems = orderItems;}
+    public void setOrderItems(List<OrderItem> orderItems) {this.orderItems = orderItems;}
 
     public void setOrderTime(LocalDate orderTime) { this.orderTime = orderTime; }
 

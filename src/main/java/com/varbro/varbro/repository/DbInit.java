@@ -6,6 +6,7 @@ import com.varbro.varbro.model.User;
 import com.varbro.varbro.model.logistics.Stock;
 import com.varbro.varbro.service.RoleService;
 import com.varbro.varbro.service.UserService;
+import com.varbro.varbro.service.logistics.OrderService;
 import com.varbro.varbro.service.logistics.ProductService;
 import com.varbro.varbro.service.logistics.StockService;
 import org.springframework.boot.CommandLineRunner;
@@ -21,13 +22,15 @@ public class DbInit implements CommandLineRunner {
     private RoleService roleService;
     private ProductService productService;
     private StockService stockService;
+    private OrderService orderService;
 
     public DbInit(UserService userService, RoleService roleService, ProductService productService,
-            StockService stockService) {
+            StockService stockService, OrderService orderService) {
         this.userService = userService;
         this.roleService = roleService;
         this.productService = productService;
         this.stockService = stockService;
+        this.orderService = orderService;
     }
 
     @Override
@@ -35,8 +38,10 @@ public class DbInit implements CommandLineRunner {
 
         this.userService.deleteAll();
         this.roleService.deleteAll();
-        this.productService.deleteAll();
         this.stockService.deleteAll();
+        this.orderService.deleteAll();
+        this.productService.deleteAll();
+
 
         Role Employee = new Role("EMPLOYEE");
         Role Admin = new Role("ADMIN");
