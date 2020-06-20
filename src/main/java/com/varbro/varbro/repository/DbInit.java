@@ -1,13 +1,17 @@
 package com.varbro.varbro.repository;
 
-import com.varbro.varbro.model.logistics.Commodity;
+import com.varbro.varbro.model.logistics.Product;
 import com.varbro.varbro.model.Role;
 import com.varbro.varbro.model.User;
+import com.varbro.varbro.model.logistics.Stock;
 import com.varbro.varbro.service.RoleService;
 import com.varbro.varbro.service.UserService;
-import com.varbro.varbro.service.logistics.CommodityService;
+import com.varbro.varbro.service.logistics.OrderService;
+import com.varbro.varbro.service.logistics.ProductService;
+import com.varbro.varbro.service.logistics.StockService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -16,12 +20,17 @@ public class DbInit implements CommandLineRunner {
 
     private UserService userService;
     private RoleService roleService;
-    private CommodityService commodityService;
+    private ProductService productService;
+    private StockService stockService;
+    private OrderService orderService;
 
-    public DbInit(UserService userService, RoleService roleService, CommodityService commodityService) {
+    public DbInit(UserService userService, RoleService roleService, ProductService productService,
+            StockService stockService, OrderService orderService) {
         this.userService = userService;
         this.roleService = roleService;
-        this.commodityService = commodityService;
+        this.productService = productService;
+        this.stockService = stockService;
+        this.orderService = orderService;
     }
 
     @Override
@@ -29,7 +38,10 @@ public class DbInit implements CommandLineRunner {
 
         this.userService.deleteAll();
         this.roleService.deleteAll();
-        this.commodityService.deleteAll();
+        this.stockService.deleteAll();
+        this.orderService.deleteAll();
+        this.productService.deleteAll();
+
 
         Role Employee = new Role("EMPLOYEE");
         Role Admin = new Role("ADMIN");
@@ -63,13 +75,21 @@ public class DbInit implements CommandLineRunner {
 
         this.userService.saveUsers(users);
 
-        Commodity BARLEY = new Commodity("Barley", 150.7);
-        Commodity HOPS = new Commodity("Hops", 40.2);
-        Commodity YEAST= new Commodity("Yeast", 68.0);
-        Commodity BOTTLE = new Commodity("Bottle", 1294);
+        Product BARLEY = new Product("Barley");
+        Product HOPS = new Product("Hops");
+        Product YEAST= new Product("Yeast");
+        Product BOTTLE = new Product("Bottle");
 
-        List<Commodity> commodities = Arrays.asList(BARLEY, HOPS, YEAST, BOTTLE);
-        this.commodityService.saveCommodities(commodities);
+        List<Product> products = Arrays.asList(BARLEY, HOPS, YEAST, BOTTLE);
+        this.productService.saveProducts(products);
+
+        Stock BARLEY_STOCK = new Stock(BARLEY, 158.5);
+        Stock HOPS_STOCK = new Stock(HOPS, 123.5);
+        Stock YEAST_STOCK = new Stock(YEAST, 56.2);
+        Stock BOTTLE_STOCK = new Stock(BOTTLE, 5602);
+
+        List<Stock> stocks = Arrays.asList(BARLEY_STOCK, HOPS_STOCK, YEAST_STOCK, BOTTLE_STOCK);
+        this.stockService.saveStocks(stocks);
     }
 
 
