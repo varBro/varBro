@@ -47,7 +47,7 @@ public class DbInit implements CommandLineRunner {
 
 
         Role Employee = new Role("EMPLOYEE");
-        Role Admin = new Role("ADMIN");
+        Role Admin = new Role("ROLE_ADMIN");
         Role Manager = new Role("MANAGER");
         Role Production = new Role("ROLE_PRODUCTION");
         Role Logistics = new Role("ROLE_LOGISTICS");

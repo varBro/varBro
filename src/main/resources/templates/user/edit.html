@@ -60,10 +60,17 @@
                                 </div>
                         </div>
                     </div>
-                    <div class="form-group"
-                         th:style="${#authorization.expression('hasAuthority(''ROLE_HR'')') ? '' : 'display:none'}">
+                    <div class="form-group">
+                        <label for="userBankAccount">Bank account number</label>
+                        <input type="text" class="form-control" id="userBankAccount" placeholder="Enter bank account number" th:field="*{bankAccount}">
+                    </div>
+                    <div class="form-group">
                         <label for="userSalary">Salary</label>
-                        <input type="number" step="0.01"  class="form-control" id="userSalary" placeholder="Enter salary" th:field="*{salary}">
+                        <input type="number" step="0.01" class="form-control" id="userSalary" placeholder="Enter salary" th:field="*{salary}">
+                    </div>
+                    <div class="form-group">
+                        <label for="userPESEL">PESEL</label>
+                        <input type="text" class="form-control" id="userPESEL" placeholder="Enter PESEL" th:field="*{pesel}">
                     </div>
                     <button type="submit" class="btn btn-primary">Save</button>
                 </form>
