@@ -1,6 +1,5 @@
 package com.varbro.varbro.controller;
 
-import com.varbro.varbro.model.Role;
 import com.varbro.varbro.model.User;
 import com.varbro.varbro.service.RoleService;
 import com.varbro.varbro.service.UserService;
@@ -74,7 +73,9 @@ public class UserController {
     {
         user.setStatus(3);
         departmentRole = user.getDepartment().name();
+
         user.setRoles(new HashSet(Arrays.asList(roleService.getRoleByName("EMPLOYEE"), roleService.getRoleByName("ROLE_" + departmentRole))));
+
         userService.saveUser(user);
         return new ModelAndView("redirect:/user/" + user.getId());
     }
@@ -97,19 +98,21 @@ public class UserController {
     }
 
     @GetMapping("/user/add-user")
-    public String adminAddUserForm(Model model) {
+    public String addUserForm(Model model) {
         model.addAttribute("user", new User());
         return "user/add-user";
     }
 
     @PostMapping("/user/add-user")
-    public ModelAndView adminAddUserSubmit(@ModelAttribute User user) {
+    public ModelAndView addUserSubmit(@ModelAttribute User user) {
         user.setPassword("$2a$10$XHOXjTseWpp9vA9NAe7unOYOQJY58bpZDcxLGn1pkNNf1QJrETfJ6"); // encoded blyat
         user.setStatus(3);
         departmentRole = user.getDepartment().name();
+
         user.setRoles(new HashSet(Arrays.asList(roleService.getRoleByName("EMPLOYEE"), roleService.getRoleByName("ROLE_" + departmentRole))));
-        if (user.getPosition() != null)
+        if (user.getPosition() != null) {
             user.addRole(roleService.getRoleByName(user.getPosition().name()));
+        }
         userService.saveUser(user);
         return new ModelAndView("redirect:/user/" + user.getId());
     }
