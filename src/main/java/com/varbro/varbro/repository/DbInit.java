@@ -15,6 +15,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
+import static com.varbro.varbro.model.logistics.Product.Unit.KG;
+import static com.varbro.varbro.model.logistics.Product.Unit.PCS;
+
 @Service
 public class DbInit implements CommandLineRunner {
 
@@ -75,10 +78,10 @@ public class DbInit implements CommandLineRunner {
 
         this.userService.saveUsers(users);
 
-        Product BARLEY = new Product("Barley");
-        Product HOPS = new Product("Hops");
-        Product YEAST= new Product("Yeast");
-        Product BOTTLE = new Product("Bottle");
+        Product BARLEY = new Product("Barley", KG, true);
+        Product HOPS = new Product("Hops", KG, true);
+        Product YEAST= new Product("Yeast", KG, true);
+        Product BOTTLE = new Product("Bottle", PCS);
 
         List<Product> products = Arrays.asList(BARLEY, HOPS, YEAST, BOTTLE);
         this.productService.saveProducts(products);

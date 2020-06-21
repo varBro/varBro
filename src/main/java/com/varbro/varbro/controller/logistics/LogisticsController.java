@@ -16,6 +16,7 @@ import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -83,14 +84,14 @@ public class LogisticsController {
     @RequestMapping(value = "/logistics/new-order", params = "submit")
     public String saveOrder(@ModelAttribute Order order, SessionStatus status)
     {
-        Order actualOrder = new Order();
+        List<OrderItem> actualOrder = new ArrayList<>();
         for (OrderItem orderItem : order.getOrderItems()) {
             Product p = productService.getProductByName(orderItem.getProduct().getName());
             if (p != null) {
-                actualOrder.getOrderItems().add(new OrderItem(p, orderItem.getQuantity()));
+                actualOrder.add(new OrderItem(p, orderItem.getQuantity()));
             }
         }
-        orderService.saveOrder(actualOrder);
+        orderService.saveOrder(new Order(actualOrder));
         status.setComplete();
         return "redirect:/default";
     }
