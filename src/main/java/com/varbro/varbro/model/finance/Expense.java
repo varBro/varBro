@@ -1,6 +1,8 @@
 package com.varbro.varbro.model.finance;
 
 
+import com.varbro.varbro.model.logistics.Contractor;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -22,6 +24,7 @@ public class Expense {
     private LocalDate date;
     @NotNull(message = "must not be empty")
     private BigDecimal amount;
+
 
     public Expense() {
         this.date = LocalDate.now();
