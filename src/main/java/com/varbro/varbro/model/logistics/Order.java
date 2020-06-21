@@ -4,9 +4,7 @@ package com.varbro.varbro.model.logistics;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "orders")
@@ -19,6 +17,15 @@ public class Order {
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "orders_item_id")
     private List<OrderItem> orderItems;
+    @Enumerated(EnumType.STRING)
+    private Status orderStatus;
+
+    public enum Status {
+        PLACED,
+        IN_PROGRESS,
+        RECEIVED,
+        APPROVED
+    }
 
     public Order() {
         this.orderItems = new ArrayList<OrderItem>();
@@ -28,6 +35,7 @@ public class Order {
     public Order(List<OrderItem> orderItems) {
         this.orderItems = orderItems;
         this.orderTime = LocalDate.now();
+        orderStatus = Status.PLACED;
     }
 
     public long getId() {return this.id;}
@@ -39,4 +47,8 @@ public class Order {
     public void setOrderTime(LocalDate orderTime) { this.orderTime = orderTime; }
 
     public LocalDate getOrderTimed() { return this.orderTime; }
+
+    public void setOrderStatus(Status status) { this.orderStatus = status; }
+
+    public Status getOrderStatus() { return this.orderStatus; }
 }

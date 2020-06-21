@@ -16,12 +16,40 @@ public class Product {
         @Column(unique = true)
         @NotBlank
         private String name;
+        @Enumerated(EnumType.STRING)
+        private Unit unit;
+
+        private boolean ingredient;
+
+        public enum Unit {
+                PCS {
+                        @Override
+                        public String toString() {
+                                return "pcs.";
+                        }
+                },
+                KG {
+                        @Override
+                        public String toString() {
+                                return "kilograms";
+                        }
+                }
+        }
 
         public Product() {}
 
-        public Product(String name)
+        public Product(String name, Unit unit)
         {
+                this.unit = unit;
                 this.name = name;
+                this.ingredient = false;
+        }
+
+        public Product(String name, Unit unit, boolean ingredient)
+        {
+                this.unit = unit;
+                this.name = name;
+                this.ingredient = ingredient;
         }
 
         public long getId() { return this.id; }
@@ -29,6 +57,10 @@ public class Product {
         public void setName(String type) { this.name = type; }
 
         public String getName() { return this.name; }
+
+        public Unit getUnit() { return this.unit; }
+
+        public void setUnit(Unit unit) { this.unit = unit; }
 
         @Override
         public boolean equals(Object o) {
