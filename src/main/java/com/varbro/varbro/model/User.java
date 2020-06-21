@@ -10,19 +10,19 @@ import javax.persistence.Id;
 import java.util.Objects;
 
 @Entity
-@SecondaryTable(name="personal_information", pkJoinColumns = @PrimaryKeyJoinColumn(name="user_id"))
+@SecondaryTable(name = "personal_information", pkJoinColumns = @PrimaryKeyJoinColumn(name = "user_id"))
 public class User implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name="user_id")
+    @Column(name = "user_id")
     private long id;
     private String name;
     private String surname;
     private String password;
     private String email;
     private String phoneNumber;
-    private String status;
+    private int status;
     @Enumerated(EnumType.STRING)
     private Department department;
     @Enumerated(EnumType.STRING)
@@ -37,11 +37,10 @@ public class User implements Serializable {
     @Column(table = "personal_information")
     private String pesel;
 
-
     @ManyToMany
-    @JoinTable(name ="user_role",
-            joinColumns = @JoinColumn(name="user_id"),
-            inverseJoinColumns = @JoinColumn(name="role_id"))
+    @JoinTable(name = "user_role",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
 
     public enum Department {
@@ -70,7 +69,7 @@ public class User implements Serializable {
         this.phoneNumber = phoneNumber;
         this.department = department;
         this.position = null;
-        this.status = "1";
+        this.status = 3;
         this.bankAccount = bankAccount;
         this.salary = salary;
         this.pesel = pesel;
@@ -86,9 +85,8 @@ public class User implements Serializable {
         this.salary = salary;
         this.department = department;
         this.position = position;
-        this.status = "1";
+        this.status = 3;
         this.bankAccount = bankAccount;
-        this.salary = salary;
         this.pesel = pesel;
     }
 
@@ -96,7 +94,7 @@ public class User implements Serializable {
         return id;
     }
 
-    public void setId( long id ) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -125,7 +123,8 @@ public class User implements Serializable {
     }
 
     public String getEmail() {
-        return email; }
+        return email;
+    }
 
     public void setEmail(String email) {
         this.email = email;
@@ -147,11 +146,11 @@ public class User implements Serializable {
         this.department = department;
     }
 
-    public String getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 

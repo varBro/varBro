@@ -7,7 +7,7 @@
 <body>
 <ol layout:fragment="breadcrumbs" class="breadcrumb pl-5">
     <li class="breadcrumb-item"><a href="/default">Home</a></li>
-    <li class="breadcrumb-item"><a href="/users">Home</a></li>
+    <li class="breadcrumb-item"><a href="/users">Users</a></li>
     <li class="breadcrumb-item active">Edit user</li>
 </ol>
 <section layout:fragment="content" th:if="${#authorization.expression('hasAnyAuthority(''ADMIN'', ''ROLE_HR'')')

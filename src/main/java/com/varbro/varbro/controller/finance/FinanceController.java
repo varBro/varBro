@@ -55,4 +55,5 @@ public class FinanceController {
         model.addAttribute("expenses", expenseService.getMonthlyExpenses(month, year));
 
     }
+
 }

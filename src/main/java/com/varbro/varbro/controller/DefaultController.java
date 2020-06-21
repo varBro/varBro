@@ -16,6 +16,9 @@ public class DefaultController {
         } else if (request.isUserInRole("ROLE_FINANCE")) {
             return "redirect:/finance";
         }
+        else if (request.isUserInRole("ROLE_LOGISTICS")) {
+            return "redirect:/logistics";
+        }
         return "redirect:/";
     }
 

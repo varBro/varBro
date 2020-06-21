@@ -1,5 +1,7 @@
 package com.varbro.varbro.config;
 
+import com.varbro.varbro.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.DefaultRedirectStrategy;
@@ -16,6 +18,9 @@ import java.util.List;
 
 @Component
 public class CustomLoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
+
+    @Autowired
+    private UserService userService;
 
     @Override
     protected void handle(HttpServletRequest request, HttpServletResponse response, Authentication authentication)
@@ -35,6 +40,8 @@ public class CustomLoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
 
         // Fetch the roles from Authentication object
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+        String currentUser = authentication.getName();
+        userService.resetStatus(currentUser);
         List<String> roles = new ArrayList<String>();
         for (GrantedAuthority a : authorities) {
             roles.add(a.getAuthority());
@@ -45,9 +52,10 @@ public class CustomLoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
             url = "/admin";
         } else if (roles.contains("ROLE_FINANCE")) {
             url = "/finance";
-        }
-        else if (roles.contains("ROLE_HR")) {
-                url = "/hr";
+        } else if (roles.contains("ROLE_HR")) {
+            url = "/hr";
+        } else if (roles.contains("ROLE_LOGISTICS")) {
+            url = "/logistics";
         } else if (roles.contains("EMPLOYEE")) {
             url = "/user";
         }

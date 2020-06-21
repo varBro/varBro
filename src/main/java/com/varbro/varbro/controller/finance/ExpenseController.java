@@ -30,6 +30,6 @@ public class ExpenseController {
         if (!bindingResult.hasErrors()) {
             expenseService.saveExpense(expense);
         }
-        return "finance/add-expense";
+        return "finance/index";
     }
 }
