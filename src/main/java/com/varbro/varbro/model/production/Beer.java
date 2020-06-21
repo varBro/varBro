@@ -20,8 +20,7 @@ public class Beer {
 
     public Beer() {}
 
-    public Beer(long id, String name) {
-        this.id = id;
+    public Beer(String name) {
         this.name = name;
     }
 
