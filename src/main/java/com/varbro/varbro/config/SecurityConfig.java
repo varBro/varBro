@@ -55,6 +55,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
                 .antMatchers("/finance/**").hasAuthority("ROLE_FINANCE")
                 .antMatchers("/logistics/**").hasAuthority("ROLE_LOGISTICS")
+                .antMatchers("/hr/**").hasAuthority("ROLE_HR")
+                .antMatchers("/production/**").hasAuthority("ROLE_PRODUCTION")
                 .and()
                 .formLogin()
                 .loginPage("/login")
