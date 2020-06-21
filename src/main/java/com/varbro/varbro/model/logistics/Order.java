@@ -19,6 +19,9 @@ public class Order {
     private List<OrderItem> orderItems;
     @Enumerated(EnumType.STRING)
     private Status orderStatus;
+    @ManyToOne
+    @JoinColumn(name = "contractor_id")
+    private Contractor contractor;
 
     public enum Status {
         PLACED,
@@ -46,9 +49,17 @@ public class Order {
 
     public void setOrderTime(LocalDate orderTime) { this.orderTime = orderTime; }
 
-    public LocalDate getOrderTimed() { return this.orderTime; }
+    public LocalDate getOrderTime() { return this.orderTime; }
 
     public void setOrderStatus(Status status) { this.orderStatus = status; }
 
     public Status getOrderStatus() { return this.orderStatus; }
+
+    public Contractor getContractor() {
+        return contractor;
+    }
+
+    public void setContractor(Contractor contractor) {
+        this.contractor = contractor;
+    }
 }

@@ -11,6 +11,7 @@ public class Contractor {
     @Column(name = "contractor_id")
     private long id;
     @NotBlank
+    @Column(unique = true)
     private String name;
     @Pattern(regexp = "[\\d]{10}")
     private String nip;

@@ -24,6 +24,9 @@ public class Expense {
     private LocalDate date;
     @NotNull(message = "must not be empty")
     private BigDecimal amount;
+    @ManyToOne
+    @JoinColumn(name = "contractor_id")
+    private Contractor contractor;
 
 
     public Expense() {
@@ -67,5 +70,13 @@ public class Expense {
 
     public void setAmount(BigDecimal amount) {
         this.amount = amount;
+    }
+
+    public Contractor getContractor() {
+        return contractor;
+    }
+
+    public void setContractor(Contractor contractor) {
+        this.contractor = contractor;
     }
 }
