@@ -5,10 +5,6 @@ import com.varbro.varbro.model.Role;
 import com.varbro.varbro.model.User;
 import com.varbro.varbro.model.logistics.Stock;
 import com.varbro.varbro.model.production.Beer;
-<<<<<<< HEAD
-import com.varbro.varbro.model.production.BeerIngredient;
-=======
->>>>>>> 0130d401ea68d7865ea91843f0028ce66bc3f6ba
 import com.varbro.varbro.service.RoleService;
 import com.varbro.varbro.service.UserService;
 import com.varbro.varbro.service.logistics.OrderService;
@@ -53,10 +49,6 @@ public class DbInit implements CommandLineRunner {
         this.orderService.deleteAll();
         this.productService.deleteAll();
         this.beerService.deleteAll();
-<<<<<<< HEAD
-
-=======
->>>>>>> 0130d401ea68d7865ea91843f0028ce66bc3f6ba
 
         Role Employee = new Role("EMPLOYEE");
         Role Admin = new Role("ROLE_ADMIN");
