@@ -1,5 +1,6 @@
 package com.varbro.varbro.controller.logistics;
 
+import com.varbro.varbro.model.User;
 import com.varbro.varbro.model.logistics.Order;
 import com.varbro.varbro.model.logistics.OrderItem;
 import com.varbro.varbro.model.logistics.Product;
@@ -16,7 +17,10 @@ import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 
 @Controller
@@ -96,5 +100,43 @@ public class LogisticsController {
         return "redirect:/default";
     }
 
+    @GetMapping("/logistics/order-history")
+    public String financeOverview(Model model)
+    {
+        int month = LocalDate.now().getMonthValue();
+        String monthStr = month < 10 ? "0" + month : String.valueOf(month);
+        String yearStr = String.valueOf(LocalDate.now().getYear());
+        model.addAttribute("orders", orderService.getMonthlyOrders(monthStr, yearStr));
+        model.addAttribute("localDate",  yearStr + "-" + monthStr);
+        return "logistics/order-history";
+    }
+
+    @PostMapping("/logistics/order-history")
+    public String financeOverview(@RequestParam(value = "localDate", required = false) String date, Model model)
+    {
+        String monthStr = date.split("-")[1];
+        String yearStr = date.split("-")[0];
+        model.addAttribute("orders", orderService.getMonthlyOrders(monthStr, yearStr));
+        model.addAttribute("localDate",  yearStr + "-" + monthStr);
+        return "logistics/order-history";
+    }
+
+    @GetMapping("/logistics/current-orders")
+    public String currentOrders(Model model)
+    {
+        model.addAttribute("orders", orderService.getInProgressOrders());
+        return "logistics/current-orders";
+    }
+
+
+    @PostMapping("/logistics/order/{id}/arrived")
+    public String orderArrived(@PathVariable("id") long id)
+    {
+        Order order = orderService.getOrderById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid order Id:" + id));
+        order.setOrderStatus(Order.Status.RECEIVED);
+        orderService.saveOrder(order);
+        return "redirect:/logistics/current-orders";
+    }
 }
 
