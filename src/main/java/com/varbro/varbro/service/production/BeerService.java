@@ -1,6 +1,5 @@
 package com.varbro.varbro.service.production;
 
-import com.varbro.varbro.model.User;
 import com.varbro.varbro.model.production.Beer;
 import com.varbro.varbro.repository.production.BeerRepository;
 import org.springframework.beans.factory.annotation.Autowired;

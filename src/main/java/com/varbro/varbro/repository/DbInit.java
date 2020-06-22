@@ -5,6 +5,7 @@ import com.varbro.varbro.model.Role;
 import com.varbro.varbro.model.User;
 import com.varbro.varbro.model.logistics.Stock;
 import com.varbro.varbro.model.production.Beer;
+import com.varbro.varbro.model.production.BeerIngredient;
 import com.varbro.varbro.service.RoleService;
 import com.varbro.varbro.service.UserService;
 import com.varbro.varbro.service.logistics.OrderService;
@@ -99,15 +100,12 @@ public class DbInit implements CommandLineRunner {
         List<Stock> stocks = Arrays.asList(BARLEY_STOCK, HOPS_STOCK, YEAST_STOCK, BOTTLE_STOCK);
         this.stockService.saveStocks(stocks);
 
-        Beer Pils = new Beer("Pilsner");
-
-
-        //wypierdala sie na tym
-        //Pils.addIngredient(HOPS, 4);
-        //Pils.setIngredientQuantity(HOPS,4);
-
-        this.beerService.saveBeer(Pils);
-
+        beerService.saveBeer(new Beer("Pilsner", new BeerIngredient(HOPS, 5, BeerIngredient.IngredientType.HOP), new BeerIngredient(YEAST, 2, BeerIngredient.IngredientType.YEAST)));
+        Beer Ipa = new Beer("IPA");
+        BeerIngredient ipaIngredient1 = new BeerIngredient(YEAST, 3, BeerIngredient.IngredientType.YEAST);
+        ipaIngredient1.setBeer(Ipa);
+        Ipa.getBeerIngredients().add(ipaIngredient1);
+        beerService.saveBeer(Ipa);
     }
 
 

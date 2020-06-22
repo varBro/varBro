@@ -1,11 +1,8 @@
 package com.varbro.varbro.controller.production;
 
-import com.varbro.varbro.model.User;
 import com.varbro.varbro.model.production.Beer;
 import com.varbro.varbro.service.production.BeerService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
