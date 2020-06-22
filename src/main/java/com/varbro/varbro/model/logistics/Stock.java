@@ -3,6 +3,8 @@ package com.varbro.varbro.model.logistics;
 import javax.persistence.*;
 import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 @Entity
@@ -11,9 +13,9 @@ public class Stock {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "stock_id")
     private long id;
-    @NotBlank
+    @NotNull
     private double quantity;
-    @NotBlank
+    @NotNull
     private LocalDate lastUpdated;
 
     @OneToOne

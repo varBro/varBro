@@ -4,6 +4,8 @@ import com.varbro.varbro.model.production.BeerIngredient;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -19,8 +21,7 @@ public class Product {
         private String name;
         @Enumerated(EnumType.STRING)
         private Unit unit;
-
-        @NotBlank
+        @NotNull
         private boolean ingredient;
 
         @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
