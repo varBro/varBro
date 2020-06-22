@@ -1,7 +1,6 @@
 package com.varbro.varbro.model.production;
 
 import com.varbro.varbro.model.logistics.Product;
-
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -16,17 +15,25 @@ public class BeerIngredient implements Serializable {
 
     @Id
     @ManyToOne
-    @JoinColumn(name = "ingredient_id")
+    @JoinColumn(name = "product_id")
     private Product product;
 
     private float quantity;
+    @Enumerated(EnumType.STRING)
+    private IngredientType ingredientType;
+
+    public enum IngredientType {
+        HOP,
+        YEAST,
+        MALT
+    }
 
     public BeerIngredient() {}
 
-    public BeerIngredient(Beer beer, Product product, float quantity) {
-        this.beer = beer;
+    public BeerIngredient(Product product, float quantity, IngredientType ingredientType) {
         this.product = product;
         this.quantity = quantity;
+        this.ingredientType = ingredientType;
     }
 
     public Beer getBeer() {
@@ -37,11 +44,11 @@ public class BeerIngredient implements Serializable {
         this.beer = beer;
     }
 
-    public Product getProduct() {
+    public Product getIngredient() {
         return product;
     }
 
-    public void setProduct(Product product) {
+    public void setIngredient(Product product) {
         this.product = product;
     }
 

@@ -4,6 +4,7 @@ import com.varbro.varbro.model.production.BeerIngredient;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -20,6 +21,9 @@ public class Product {
         private Unit unit;
 
         private boolean ingredient;
+
+        @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+        private Set<BeerIngredient> beerIngredients = new HashSet<>();
 
         public enum Unit {
                 PCS {
@@ -62,6 +66,13 @@ public class Product {
 
         public void setUnit(Unit unit) { this.unit = unit; }
 
+        public Set<BeerIngredient> getBeerIngredients() {
+                return beerIngredients;
+        }
+
+        public void setBeerIngredients(Set<BeerIngredient> beerIngredients) {
+                this.beerIngredients = beerIngredients;
+        }
 
         @Override
         public boolean equals(Object o) {
