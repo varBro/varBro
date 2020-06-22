@@ -13,29 +13,30 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
+                <h2 class="text-center" th:text="${'ORDER ' + orderView.id}"></h2>
                 <div class="profile-user-info">
                     <div class="profile-info-row">
                         <div class="profile-info-name"> Id </div>
                         <div class="profile-info-value">
-                            <span th:text="${order.id}"></span>
+                            <span th:text="${orderView.id}"></span>
                         </div>
                     </div>
                     <div class="profile-info-row">
                         <div class="profile-info-name"> Contractor </div>
                         <div class="profile-info-value">
-                            <span th:text="${order.contractor}"></span>
+                            <span th:text="${orderView.contractor}"></span>
                         </div>
                     </div>
                     <div class="profile-info-row">
                         <div class="profile-info-name"> Status </div>
                         <div class="profile-info-value">
-                            <span th:text="${order.orderStatus}"></span>
+                            <span th:text="${orderView.orderStatus}"></span>
                         </div>
                     </div>
                     <div class="profile-info-row">
                         <div class="profile-info-name"> Placed </div>
                         <div class="profile-info-value">
-                            <span th:text="${order.orderTime}"></span>
+                            <span th:text="${orderView.orderTime}"></span>
                         </div>
                     </div>
                 </div>
@@ -44,7 +45,7 @@
                         <div class="profile-info-name text-center"> Product </div>
                         <div class="profile-info-name text-center"> Quantity </div>
                     </div>
-                    <div class="profile-info-row" th:each="item : ${order.orderItems}">
+                    <div class="profile-info-row" th:each="item : ${orderView.orderItems}">
                         <div class="profile-info-value text-center">
                             <span th:text="${item.product.name}"></span>
                         </div>
@@ -52,6 +53,9 @@
                             <span th:text="${item.quantity}"></span>
                         </div>
                     </div>
+                </div>
+                <div class="profile-info-value" th:if="${orderView.orderStatus == 'PLACED'}" sec:authorize="hasRole('MANAGER')">
+                    <a class="btn btn-success" th:href="@{/logistics/order/{id}/approve(id=${orderView.id})}" role="button">Approve</a>
                 </div>
             </div>
         </div>
