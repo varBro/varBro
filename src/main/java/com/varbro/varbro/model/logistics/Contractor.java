@@ -1,6 +1,7 @@
 package com.varbro.varbro.model.logistics;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
@@ -19,6 +20,12 @@ public class Contractor {
     private String regon;
     @NotBlank
     private String address;
+    @Email
+    @Pattern(regexp=".+@.+\\..+")
+    private String email;
+    @Pattern(regexp = "[\\d]{7,}")
+    private String phone;
+
 
     public Contractor() {
     }
@@ -64,5 +71,21 @@ public class Contractor {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 }
