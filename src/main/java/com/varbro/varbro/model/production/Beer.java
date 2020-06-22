@@ -1,6 +1,5 @@
 package com.varbro.varbro.model.production;
 
-import com.varbro.varbro.model.Role;
 import com.varbro.varbro.model.logistics.Product;
 
 import javax.persistence.*;
@@ -15,8 +14,11 @@ public class Beer {
     private long id;
     private String name;
 
-    @OneToMany(mappedBy = "beer")
-    Set<BeerIngredient> ingredients;
+    @ManyToMany
+    @JoinTable(name = "beer_ingredient",
+                joinColumns = @JoinColumn(name = "beer_id"),
+                inverseJoinColumns = @JoinColumn(name = "ingredient_id", referencedColumnName = "product_id"))
+    Set<Product> ingredients;
 
     public Beer() {}
 
@@ -40,15 +42,15 @@ public class Beer {
         this.name = name;
     }
 
-    public Set<BeerIngredient> getIngredients() {
+    public Set<Product> getIngredients() {
         return ingredients;
     }
 
-    public void setIngredients(Set<BeerIngredient> ingredients) {
+    public void setIngredients(Set<Product> ingredients) {
         this.ingredients = ingredients;
     }
 
-    public void addIngredient(BeerIngredient ingredient) {
+    public void addIngredient(Product ingredient) {
         this.ingredients.add(ingredient);
     }
 
