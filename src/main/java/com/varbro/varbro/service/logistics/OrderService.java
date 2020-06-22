@@ -40,6 +40,11 @@ public class OrderService {
         return orderRepository.monthlyOrdersApproved(month, year);
     }
 
+    public Iterable<Order> getOrdersForApproval()
+    {
+        return orderRepository.ordersForApproval();
+    }
+
     public Iterable<Order> getInProgressOrders()
     {
         return orderRepository.inProgressOrders();

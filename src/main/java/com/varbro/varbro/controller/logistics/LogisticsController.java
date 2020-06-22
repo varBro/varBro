@@ -1,10 +1,12 @@
 package com.varbro.varbro.controller.logistics;
 
 import com.varbro.varbro.model.User;
+import com.varbro.varbro.model.logistics.Contractor;
 import com.varbro.varbro.model.logistics.Order;
 import com.varbro.varbro.model.logistics.OrderItem;
 import com.varbro.varbro.model.logistics.Product;
 import com.varbro.varbro.service.RoleService;
+import com.varbro.varbro.service.logistics.ContractorService;
 import com.varbro.varbro.service.logistics.OrderService;
 import com.varbro.varbro.service.logistics.ProductService;
 import com.varbro.varbro.service.logistics.StockService;
@@ -19,10 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 @Controller
 @SessionAttributes("order")
@@ -39,6 +38,9 @@ public class LogisticsController {
 
     @Autowired
     RoleService roleService;
+
+    @Autowired
+    ContractorService contractorService;
 
     @ModelAttribute
     public Order order() {
@@ -87,7 +89,7 @@ public class LogisticsController {
     }
 
     @RequestMapping(value = "/logistics/new-order", params = "submit")
-    public String saveOrder(@Valid @ModelAttribute Order order, SessionStatus status, BindingResult bindingResult)
+    public ModelAndView saveOrder(@Valid @ModelAttribute Order order, SessionStatus status, BindingResult bindingResult)
     {
         if(!bindingResult.hasErrors()) {
             List<OrderItem> actualOrder = new ArrayList<>();
@@ -97,10 +99,12 @@ public class LogisticsController {
                     actualOrder.add(new OrderItem(p, orderItem.getQuantity()));
                 }
             }
-            orderService.saveOrder(new Order(actualOrder));
+            Order newOrder = new Order(actualOrder);
+            orderService.saveOrder(newOrder);
             status.setComplete();
+            return new ModelAndView("redirect:/logistics/order/" + newOrder.getId());
         }
-        return "redirect:/default";
+        return new ModelAndView("redirect:/logistics/new-order");
     }
 
     @GetMapping("/logistics/order-history")
@@ -147,8 +151,43 @@ public class LogisticsController {
         Order order = orderService.getOrderById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid order Id:" + id));
 
-        model.addAttribute("order", order);
+        model.addAttribute("orderView", order);
         return "logistics/order";
     }
+
+    @GetMapping("/logistics/order/{id}/approve")
+    public String showOrderApprove(@PathVariable("id") long id, Model model) {
+        Order order = orderService.getOrderById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid order Id:" + id));
+        model.addAttribute("contractors", contractorService.getContractors());
+        model.addAttribute("approved", order);
+        return "logistics/order-approve";
+    }
+
+    @PostMapping("/logistics/order/{id}/approve")
+    public String approveOrder(@PathVariable("id") long id, @ModelAttribute Order approved)
+    {
+        if(!approved.getContractor().getName().equals(""))
+        {
+            System.out.println("CONTRACTOR'S NAME " + approved.getContractor().getName());
+            Order orderToUpdate = orderService.getOrderById(id)
+                    .orElseThrow(() -> new IllegalArgumentException("Invalid order Id:" + id));;
+            Contractor contractor = contractorService.getContractorByName(approved.getContractor().getName());
+            orderToUpdate.setContractor(contractor);
+            orderToUpdate.setOrderStatus(Order.Status.APPROVED);
+            orderToUpdate.setOrderStatus(Order.Status.IN_PROGRESS);
+            orderService.saveOrder(orderToUpdate);
+            return "redirect:/logistics/order/" + id;
+        }
+        return "redirect:/logistics/order/" + id + "/approve";
+    }
+
+    @GetMapping("/logistics/for-approval")
+    public String ordersForApproval(Model model)
+    {
+        model.addAttribute("orders", orderService.getOrdersForApproval());
+        return "logistics/for-approval";
+    }
+
 }
 

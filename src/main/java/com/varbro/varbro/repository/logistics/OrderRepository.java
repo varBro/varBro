@@ -27,4 +27,8 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     @Query(value = "select * from orders o where o.order_status = 'IN_PROGRESS'",
             nativeQuery=true)
     List<Order> inProgressOrders();
+
+    @Query(value = "select * from orders o where o.order_status = 'PLACED'",
+            nativeQuery=true)
+    List<Order> ordersForApproval();
 }

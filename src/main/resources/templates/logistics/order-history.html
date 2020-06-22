@@ -13,7 +13,7 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
-                <form th:action="@{/logistics/order-history}" method="post">
+                <form th:action="@{/logistics/order/{id}/approve(id=${order.id})}" method="post">
                     <div class="form-group row">
                         <div class="input-group">
                             <label for="month-input" class="col-2 col-form-label">Month</label>
@@ -40,15 +40,15 @@
                                 <a th:text="${order.id}" th:href="@{/logistics/order/{id}(id=${order.id})}"></a>
                             </div>
                             <div class="profile-info-value text-center">
-                                <span th:text="${order.contractor}"></span>
-                            </div>
-                            <div class="profile-info-value text-center">
                                 <span th:text="${order.orderTime}"></span>
                             </div>
                             <div class="profile-info-value text-center">
                                 <span th:text="${order.orderStatus}"></span>
                             </div>
-                            <div class="profile-info-value">
+                        <div class="profile-info-value text-center">
+                            <span th:text="${order.contractor}"></span>
+                        </div>
+                            <div class="profile-info-value text-center">
                                 <a class="btn btn-primary" data-toggle="collapse" th:href="@{'#details' + ${orderStat.index}}"
                                    role="button" aria-expanded="false" aria-controls="collapseExample">
                                     Details
