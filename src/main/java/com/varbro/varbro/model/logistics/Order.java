@@ -44,19 +44,33 @@ public class Order {
         orderStatus = Status.IN_PROGRESS;
     }
 
-    public long getId() {return this.id;}
+    public long getId() {
+        return this.id;
+    }
 
-    public List<OrderItem> getOrderItems() {return this.orderItems;}
+    public List<OrderItem> getOrderItems() {
+        return this.orderItems;
+    }
 
-    public void setOrderItems(List<OrderItem> orderItems) {this.orderItems = orderItems;}
+    public void setOrderItems(List<OrderItem> orderItems) {
+        this.orderItems = orderItems;
+    }
 
-    public void setOrderTime(LocalDate orderTime) { this.orderTime = orderTime; }
+    public void setOrderTime(LocalDate orderTime) {
+        this.orderTime = orderTime;
+    }
 
-    public LocalDate getOrderTime() { return this.orderTime; }
+    public LocalDate getOrderTime() {
+        return this.orderTime;
+    }
 
-    public void setOrderStatus(Status status) { this.orderStatus = status; }
+    public void setOrderStatus(Status status) {
+        this.orderStatus = status;
+    }
 
-    public Status getOrderStatus() { return this.orderStatus; }
+    public Status getOrderStatus() {
+        return this.orderStatus;
+    }
 
     public Contractor getContractor() {
         return contractor;
@@ -65,8 +79,8 @@ public class Order {
     public void setContractor(Contractor contractor) {
         this.contractor = contractor;
     }
-  
-      @Override
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Order)) return false;
@@ -77,5 +91,6 @@ public class Order {
     @Override
     public int hashCode() {
         return Objects.hash(getId());
-  
+
+    }
 }
