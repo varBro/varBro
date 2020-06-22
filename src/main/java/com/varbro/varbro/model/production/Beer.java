@@ -50,8 +50,8 @@ public class Beer {
         this.beerIngredients = beerIngredients;
     }*/
 
-    public void addIngredient(Product ingredient) {
-        BeerIngredient beerIngredient = new BeerIngredient(this, ingredient);
+    public void addIngredient(Product ingredient, float quantity) {
+        BeerIngredient beerIngredient = new BeerIngredient(this, ingredient, quantity);
         beerIngredients.add(beerIngredient);
     }
 
@@ -65,14 +65,14 @@ public class Beer {
         }
     }
 
-    public void setIngredientQuantity(Product ingredient, float quantity) {
+    /*public void setIngredientQuantity(Product ingredient, float quantity) {
         for (BeerIngredient bIn : beerIngredients) {
             if (bIn.getProduct().getId() == ingredient.getId()) {
                 bIn.setQuantity(quantity);
                 return;
             }
         }
-    }
+    }*/
 
     public Set<Product> getIngredients() {
         final HashSet<Product> ingredients = new HashSet<>();

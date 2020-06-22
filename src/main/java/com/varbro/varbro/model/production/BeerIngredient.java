@@ -23,9 +23,10 @@ public class BeerIngredient implements Serializable {
 
     public BeerIngredient() {}
 
-    public BeerIngredient(Beer beer, Product product) {
+    public BeerIngredient(Beer beer, Product product, float quantity) {
         this.beer = beer;
         this.product = product;
+        this.quantity = quantity;
     }
 
     public Beer getBeer() {

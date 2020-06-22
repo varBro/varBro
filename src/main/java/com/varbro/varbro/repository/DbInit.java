@@ -103,7 +103,7 @@ public class DbInit implements CommandLineRunner {
 
 
         //wypierdala sie na tym
-        //Pils.addIngredient(HOPS);
+        //Pils.addIngredient(HOPS, 4);
         //Pils.setIngredientQuantity(HOPS,4);
 
         this.beerService.saveBeer(Pils);

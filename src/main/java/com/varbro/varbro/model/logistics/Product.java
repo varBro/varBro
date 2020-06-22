@@ -36,9 +36,6 @@ public class Product {
                 }
         }
 
-        @OneToMany(cascade = CascadeType.ALL, mappedBy = "product", fetch = FetchType.EAGER, orphanRemoval = true)
-        Set<BeerIngredient> beerIngredients;
-
         public Product() {}
 
         public Product(String name, Unit unit)
