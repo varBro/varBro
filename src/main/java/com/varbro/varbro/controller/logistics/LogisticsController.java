@@ -4,7 +4,6 @@ import com.varbro.varbro.model.logistics.Order;
 import com.varbro.varbro.model.logistics.OrderItem;
 import com.varbro.varbro.model.logistics.Product;
 import com.varbro.varbro.service.RoleService;
-import com.varbro.varbro.service.logistics.ContractorService;
 import com.varbro.varbro.service.logistics.OrderService;
 import com.varbro.varbro.service.logistics.ProductService;
 import com.varbro.varbro.service.logistics.StockService;
@@ -92,22 +91,68 @@ public class LogisticsController {
     }
 
     @RequestMapping(value = "/logistics/new-order", params = "submit")
-    public String saveOrder(@ModelAttribute Order order, SessionStatus status)
+    public String saveOrder(@Valid @ModelAttribute Order order, SessionStatus status, BindingResult bindingResult)
     {
-        List<OrderItem> actualOrder = new ArrayList<>();
-        for (OrderItem orderItem : order.getOrderItems()) {
-            Product p = productService.getProductByName(orderItem.getProduct().getName());
-            if (p != null) {
-                actualOrder.add(new OrderItem(p, orderItem.getQuantity()));
+        if(!bindingResult.hasErrors()) {
+            List<OrderItem> actualOrder = new ArrayList<>();
+            for (OrderItem orderItem : order.getOrderItems()) {
+                Product p = productService.getProductByName(orderItem.getProduct().getName());
+                if (p != null) {
+                    actualOrder.add(new OrderItem(p, orderItem.getQuantity()));
+                }
             }
+            orderService.saveOrder(new Order(actualOrder));
+            status.setComplete();
         }
-        orderService.saveOrder(new Order(actualOrder));
-        status.setComplete();
         return "redirect:/default";
     }
 
+    @GetMapping("/logistics/order-history")
+    public String orderHistory(Model model)
+    {
+        int month = LocalDate.now().getMonthValue();
+        String monthStr = month < 10 ? "0" + month : String.valueOf(month);
+        String yearStr = String.valueOf(LocalDate.now().getYear());
+        model.addAttribute("orders", orderService.getMonthlyOrdersApproved(monthStr, yearStr));
+        model.addAttribute("localDate",  yearStr + "-" + monthStr);
+        return "logistics/order-history";
+    }
+
+    @PostMapping("/logistics/order-history")
+    public String orderHistory(@RequestParam(value = "localDate", required = false) String date, Model model)
+    {
+        String monthStr = date.split("-")[1];
+        String yearStr = date.split("-")[0];
+        model.addAttribute("orders", orderService.getMonthlyOrdersApproved(monthStr, yearStr));
+        model.addAttribute("localDate",  yearStr + "-" + monthStr);
+        return "logistics/order-history";
+    }
+
+    @GetMapping("/logistics/current-orders")
+    public String currentOrders(Model model)
+    {
+        model.addAttribute("orders", orderService.getInProgressOrders());
+        return "logistics/current-orders";
+    }
 
 
+    @PostMapping("/logistics/order/{id}/arrived")
+    public String orderArrived(@PathVariable("id") long id)
+    {
+        Order order = orderService.getOrderById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid order Id:" + id));
+        order.setOrderStatus(Order.Status.RECEIVED);
+        orderService.saveOrder(order);
+        return "redirect:/logistics/current-orders";
+    }
 
+    @GetMapping("/logistics/order/{id}")
+    public String showOrder(@PathVariable("id") long id, Model model) {
+        Order order = orderService.getOrderById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid order Id:" + id));
+
+        model.addAttribute("order", order);
+        return "logistics/order";
+    }
 }
 

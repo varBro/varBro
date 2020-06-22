@@ -1,10 +1,80 @@
-<!DOCTYPE html>
-<html lang="en">
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Order history</title>
 </head>
 <body>
-
+<ol layout:fragment="breadcrumbs" class="breadcrumb pl-5">
+    <li class="breadcrumb-item"><a href="/default">Home</a></li>
+    <li class="breadcrumb-item active">Order history</li>
+</ol>
+<section layout:fragment="content">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <form th:action="@{/logistics/order-history}" method="post">
+                    <div class="form-group row">
+                        <div class="input-group">
+                            <label for="month-input" class="col-2 col-form-label">Month</label>
+                            <input class="form-control" type="month" th:name="localDate"
+                                   th:value="${localDate}" id="month-input">
+                            <span class="input-group-btn">
+                                <button class="btn btn-primary" type="submit">Search</button>
+                            </span>
+                        </div>
+                    </div>
+                </form>
+                <h2 class="text-center">ORDERS</h2>
+                <div class="profile-user-info">
+                    <div class="profile-info-row">
+                        <div class="profile-info-name text-center"> Id </div>
+                        <div class="profile-info-name text-center"> Date </div>
+                        <div class="profile-info-name text-center"> Status </div>
+                        <div class="profile-info-name text-center"> Contractor </div>
+                        <div class="profile-info-name text-center"> Details </div>
+                    </div>
+                    <th:block th:each="order, orderStat : *{orders}">
+                    <div class="profile-info-row">
+                            <div class="profile-info-value text-center">
+                                <a th:text="${order.id}" th:href="@{/logistics/order/{id}(id=${order.id})}"></a>
+                            </div>
+                            <div class="profile-info-value text-center">
+                                <span th:text="${order.contractor}"></span>
+                            </div>
+                            <div class="profile-info-value text-center">
+                                <span th:text="${order.orderTime}"></span>
+                            </div>
+                            <div class="profile-info-value text-center">
+                                <span th:text="${order.orderStatus}"></span>
+                            </div>
+                            <div class="profile-info-value">
+                                <a class="btn btn-primary" data-toggle="collapse" th:href="@{'#details' + ${orderStat.index}}"
+                                   role="button" aria-expanded="false" aria-controls="collapseExample">
+                                    Details
+                                </a>
+                            </div>
+                    </div>
+                        <div class="profile-info-row collapse" th:id="${'details' + orderStat.index}">
+                            <div class="profile-info-row">
+                                <div class="profile-info-name text-center"> Product </div>
+                                <div class="profile-info-name text-center"> Quantity </div>
+                            </div>
+                            <div class="profile-info-row" th:each="item : ${order.orderItems}">
+                                <div class="profile-info-value text-center">
+                                    <span th:text="${item.product.name}"></span>
+                                </div>
+                                <div class="profile-info-value text-center">
+                                    <span th:text="${item.quantity}"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </th:block>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 </body>
 </html>

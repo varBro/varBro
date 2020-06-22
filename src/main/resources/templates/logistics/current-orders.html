@@ -1,0 +1,51 @@
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <title>Order history</title>
+</head>
+<body>
+<ol layout:fragment="breadcrumbs" class="breadcrumb pl-5">
+    <li class="breadcrumb-item"><a href="/default">Home</a></li>
+    <li class="breadcrumb-item active">Current orders</li>
+</ol>
+<section layout:fragment="content">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <h2 class="text-center">IN PROGRESS ORDERS</h2>
+                <form action="#" method="post" th:action="@{/logistics/order/}">
+                <div class="profile-user-info">
+                    <div class="profile-info-row">
+                        <div class="profile-info-name text-center"> Id </div>
+                        <div class="profile-info-name text-center"> Contractor </div>
+                        <div class="profile-info-name text-center"> Date </div>
+                        <div class="profile-info-name text-center"> Arrived </div>
+                    </div>
+                        <div class="profile-info-row" th:each="order : ${orders}">
+
+                            <div class="profile-info-value text-center">
+                                <a th:text="${order.id}" th:href="@{/logistics/order/{id}(id=${order.id})}"></a>
+                            </div>
+                            <div class="profile-info-value text-center">
+                                <span th:text="${order.contractor}"></span>
+                            </div>
+                            <div class="profile-info-value text-center">
+                                <span th:text="${order.orderTime}"></span>
+                            </div>
+                            <div class="profile-info-value">
+                                <button class="btn btn-primary text-center"
+                                        th:formaction="@{/logistics/order/{id}/arrived(id=${order.id})}" type="submit"
+                                        name="arrived">Arrived</button>
+                            </div>
+
+                        </div>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    </div>
+</section>
+</body>
+</html>

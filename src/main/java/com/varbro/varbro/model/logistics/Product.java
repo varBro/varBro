@@ -1,11 +1,14 @@
 package com.varbro.varbro.model.logistics;
 
-import com.varbro.varbro.model.User;
+import com.varbro.varbro.model.production.BeerIngredient;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import java.time.LocalDate;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 public class Product {
@@ -18,8 +21,11 @@ public class Product {
         private String name;
         @Enumerated(EnumType.STRING)
         private Unit unit;
-
+        @NotNull
         private boolean ingredient;
+
+        @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+        private Set<BeerIngredient> beerIngredients = new HashSet<>();
 
         public enum Unit {
                 PCS {
@@ -35,7 +41,7 @@ public class Product {
                         }
                 }
         }
-
+        
         public Product() {}
 
         public Product(String name, Unit unit)
@@ -61,6 +67,14 @@ public class Product {
         public Unit getUnit() { return this.unit; }
 
         public void setUnit(Unit unit) { this.unit = unit; }
+
+        public Set<BeerIngredient> getBeerIngredients() {
+                return beerIngredients;
+        }
+
+        public void setBeerIngredients(Set<BeerIngredient> beerIngredients) {
+                this.beerIngredients = beerIngredients;
+        }
 
         @Override
         public boolean equals(Object o) {
