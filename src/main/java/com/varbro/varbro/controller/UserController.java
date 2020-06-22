@@ -97,7 +97,7 @@ public class UserController {
                 .orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + id));
 
         userService.delete(user);
-        return new ModelAndView("redirect:/users");
+        return new ModelAndView("redirect:/user/users");
     }
 
     @GetMapping("/user/profile")

@@ -41,7 +41,8 @@ public class Order {
     public Order(List<OrderItem> orderItems) {
         this.orderItems = orderItems;
         this.orderTime = LocalDate.now();
-        orderStatus = Status.IN_PROGRESS;
+        this.orderStatus = Status.PLACED;
+        this.contractor = null;
     }
 
     public long getId() {return this.id;}
@@ -66,7 +67,7 @@ public class Order {
         this.contractor = contractor;
     }
   
-      @Override
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Order)) return false;
