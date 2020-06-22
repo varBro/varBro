@@ -10,29 +10,40 @@ import javax.persistence.Id;
 import java.util.Objects;
 
 @Entity
+@SecondaryTable(name = "personal_information", pkJoinColumns = @PrimaryKeyJoinColumn(name = "user_id"))
 public class User implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name="user_id")
+    @Column(name = "user_id")
     private long id;
     private String name;
     private String surname;
     private String password;
     private String email;
     private String phoneNumber;
-    private int salary;
-    private String status;
+    private int status;
     @Enumerated(EnumType.STRING)
     private Department department;
+    @Enumerated(EnumType.STRING)
+    private Position position;
+
+    @Column(table = "personal_information")
+    private String bankAccount;
+
+    @Column(table = "personal_information")
+    private float salary;
+
+    @Column(table = "personal_information")
+    private String pesel;
 
     @ManyToMany
-    @JoinTable(name ="user_role",
-            joinColumns = @JoinColumn(name="user_id"),
-            inverseJoinColumns = @JoinColumn(name="role_id"))
+    @JoinTable(name = "user_role",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
 
-    public static enum Department {
+    public enum Department {
         PRODUCTION,
         LOGISTICS,
         DISTRIBUTION,
@@ -41,10 +52,31 @@ public class User implements Serializable {
         IT
     }
 
+    public enum Position {
+        MANAGER,
+        ADMIN
+    }
+
     public User() {
     }
 
-    public User(String name, String surname, String password, String email, String phoneNumber, int salary, Department department) {
+    public User(String name, String surname, String password, String email, String phoneNumber,
+                Department department, String bankAccount, float salary, String pesel) {
+        this.name = name;
+        this.surname = surname;
+        this.password = password;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.department = department;
+        this.position = null;
+        this.status = 3;
+        this.bankAccount = bankAccount;
+        this.salary = salary;
+        this.pesel = pesel;
+    }
+
+    public User(String name, String surname, String password, String email, String phoneNumber,
+                Department department, String bankAccount, float salary, String pesel, Position position) {
         this.name = name;
         this.surname = surname;
         this.password = password;
@@ -52,14 +84,17 @@ public class User implements Serializable {
         this.phoneNumber = phoneNumber;
         this.salary = salary;
         this.department = department;
-        this.status = "1";
+        this.position = position;
+        this.status = 3;
+        this.bankAccount = bankAccount;
+        this.pesel = pesel;
     }
 
     public long getId() {
         return id;
     }
 
-    public void setId( long id ) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -111,19 +146,11 @@ public class User implements Serializable {
         this.department = department;
     }
 
-    public int getSalary() {
-        return salary;
-    }
-
-    public void setSalary(int salary) {
-        this.salary = salary;
-    }
-
-    public String getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 
@@ -135,6 +162,41 @@ public class User implements Serializable {
         this.roles = roles;
     }
 
+    public void addRole(Role role) {
+        this.roles.add(role);
+    }
+
+    public Position getPosition() {
+        return position;
+    }
+
+    public void setPosition(Position position) {
+        this.position = position;
+    }
+
+    public String getBankAccount() {
+        return bankAccount;
+    }
+
+    public void setBankAccount(String bankAccount) {
+        this.bankAccount = bankAccount;
+    }
+
+    public float getSalary() {
+        return salary;
+    }
+
+    public void setSalary(float salary) {
+        this.salary = salary;
+    }
+
+    public String getPesel() {
+        return pesel;
+    }
+
+    public void setPesel(String pesel) {
+        this.pesel = pesel;
+    }
 
     @Override
     public boolean equals(Object o) {

@@ -26,6 +26,11 @@
                                     Invalid username or password.
                                 </div>
                             </div>
+                            <div th:if="${param.failure}">
+                                <div class="alert alert-danger">
+                                    Too many failed login attempts. Account has been locked, please contact administrator.
+                                </div>
+                            </div>
                             <div th:if="${param.logout}">
                                 <div class="alert alert-info">
                                     You have been logged out.

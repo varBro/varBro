@@ -31,7 +31,13 @@ public class MailService {
     public void sendPasswordResetRequest(String to, String token, boolean isHtmlContent) throws MessagingException {
         final String subject = "Password reset";
         final String passwordResetBody = "<a href='http://192.168.99.100:8080?token=" + token + "'</a><br/>";
-        sendMail(to, subject, passwordResetBody, isHtmlContent);
+        try {
+            sendMail(to, subject, passwordResetBody, isHtmlContent);
+        }
+        catch (MessagingException mex){
+            mex.printStackTrace();
+        }
     }
+
 
 }

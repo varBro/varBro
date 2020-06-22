@@ -1,7 +1,8 @@
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layouts/layout}" xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{layouts/layout}">
 <head>
-    <title>Admin's panel</title>
+    <title>Finance panel</title>
 </head>
 <body>
 <ol layout:fragment="breadcrumbs" class="breadcrumb pl-5">
@@ -13,15 +14,18 @@
             <div class="col-md-8">
                 <div class="content">
                     <div class="title m-b-md">
-                        Admin Panel
+                        Finance Panel
                     </div>
                     <div class="links">
-                        <a th:href="@{/users}">Search Users</a>
+                        <a th:href="@{/finance/add-expense}">Add new expense</a>
+                        <a th:href="@{/finance/overview}"
+                           th:if="${#authorization.expression('hasAuthority(''MANAGER'')')}">Finances overview</a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </section>
+
 </body>
 </html>
