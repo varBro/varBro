@@ -4,11 +4,14 @@ import com.varbro.varbro.model.logistics.Product;
 import com.varbro.varbro.model.Role;
 import com.varbro.varbro.model.User;
 import com.varbro.varbro.model.logistics.Stock;
+import com.varbro.varbro.model.production.Beer;
+import com.varbro.varbro.model.production.BeerIngredient;
 import com.varbro.varbro.service.RoleService;
 import com.varbro.varbro.service.UserService;
 import com.varbro.varbro.service.logistics.OrderService;
 import com.varbro.varbro.service.logistics.ProductService;
 import com.varbro.varbro.service.logistics.StockService;
+import com.varbro.varbro.service.production.BeerService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,14 +29,16 @@ public class DbInit implements CommandLineRunner {
     private ProductService productService;
     private StockService stockService;
     private OrderService orderService;
+    private BeerService beerService;
 
     public DbInit(UserService userService, RoleService roleService, ProductService productService,
-            StockService stockService, OrderService orderService) {
+            StockService stockService, OrderService orderService, BeerService beerService) {
         this.userService = userService;
         this.roleService = roleService;
         this.productService = productService;
         this.stockService = stockService;
         this.orderService = orderService;
+        this.beerService = beerService;
     }
 
     @Override
@@ -44,6 +49,7 @@ public class DbInit implements CommandLineRunner {
         this.stockService.deleteAll();
         this.orderService.deleteAll();
         this.productService.deleteAll();
+        this.beerService.deleteAll();
 
 
         Role Employee = new Role("EMPLOYEE");
@@ -94,6 +100,15 @@ public class DbInit implements CommandLineRunner {
 
         List<Stock> stocks = Arrays.asList(BARLEY_STOCK, HOPS_STOCK, YEAST_STOCK, BOTTLE_STOCK);
         this.stockService.saveStocks(stocks);
+
+        Beer Pils = new Beer("Pilsner");
+
+
+        //wypierdala sie na tym
+        //Pils.addIngredient(HOPS);
+        //Pils.setIngredientQuantity(HOPS,4);
+
+        this.beerService.saveBeer(Pils);
     }
 
 

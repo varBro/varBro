@@ -3,23 +3,52 @@ package com.varbro.varbro.model.production;
 import com.varbro.varbro.model.logistics.Product;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "beer_ingredient")
-public class BeerIngredient {
+public class BeerIngredient implements Serializable {
 
-    @EmbeddedId
-    BeerIngredientKey id;
-
+    @Id
     @ManyToOne
-    @MapsId("beer_id")
     @JoinColumn(name = "beer_id")
-    Beer beer;
+    private Beer beer;
 
+    @Id
     @ManyToOne
-    @MapsId("product_id")
     @JoinColumn(name = "ingredient_id")
-    Product product;
+    private Product product;
 
-    float quantity;
+    private float quantity;
+
+    public BeerIngredient() {}
+
+    public BeerIngredient(Beer beer, Product product) {
+        this.beer = beer;
+        this.product = product;
+    }
+
+    public Beer getBeer() {
+        return beer;
+    }
+
+    public void setBeer(Beer beer) {
+        this.beer = beer;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
+    }
+
+    public float getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(float quantity) {
+        this.quantity = quantity;
+    }
 }

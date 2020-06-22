@@ -38,8 +38,8 @@ public class Product {
                 }
         }
 
-        @OneToMany(mappedBy = "product")
-        Set<BeerIngredient> ingredients;
+        @OneToMany(cascade = CascadeType.ALL, mappedBy = "product", fetch = FetchType.EAGER, orphanRemoval = true)
+        Set<BeerIngredient> beerIngredients;
 
         public Product() {}
 
@@ -67,12 +67,12 @@ public class Product {
 
         public void setUnit(Unit unit) { this.unit = unit; }
 
-        public Set<BeerIngredient> getIngredients() {
-                return ingredients;
+        public Set<BeerIngredient> getBeerIngredients() {
+                return beerIngredients;
         }
 
-        public void setIngredients(Set<BeerIngredient> ingredients) {
-                this.ingredients = ingredients;
+        public void setBeerIngredients(Set<BeerIngredient> ingredients) {
+                this.beerIngredients = beerIngredients;
         }
 
         @Override

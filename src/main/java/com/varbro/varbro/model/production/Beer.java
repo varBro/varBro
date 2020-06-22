@@ -1,9 +1,11 @@
 package com.varbro.varbro.model.production;
 
-import com.varbro.varbro.model.Role;
+import com.varbro.varbro.model.production.BeerIngredient;
 import com.varbro.varbro.model.logistics.Product;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 @Entity
@@ -15,8 +17,8 @@ public class Beer {
     private long id;
     private String name;
 
-    @OneToMany(mappedBy = "beer")
-    Set<BeerIngredient> ingredients;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "beer", fetch = FetchType.EAGER, orphanRemoval = true)
+    Set<BeerIngredient> beerIngredients;
 
     public Beer() {}
 
@@ -40,17 +42,44 @@ public class Beer {
         this.name = name;
     }
 
-    public Set<BeerIngredient> getIngredients() {
+    /*public Set<BeerIngredient> getBeerIngredients() {
+        return beerIngredients;
+    }
+
+    public void setBeerIngredients(Set<BeerIngredient> beerIngredients) {
+        this.beerIngredients = beerIngredients;
+    }*/
+
+    public void addIngredient(Product ingredient) {
+        BeerIngredient beerIngredient = new BeerIngredient(this, ingredient);
+        beerIngredients.add(beerIngredient);
+    }
+
+    public void removeIngredient(Product ingredient) {
+        final Iterator<BeerIngredient> iterator = beerIngredients.iterator();
+        while (iterator.hasNext()) {
+            final BeerIngredient beerIngredient = iterator.next();
+            if (beerIngredient.getProduct().getId() == ingredient.getId()) {
+                iterator.remove();
+            }
+        }
+    }
+
+    public void setIngredientQuantity(Product ingredient, float quantity) {
+        for (BeerIngredient bIn : beerIngredients) {
+            if (bIn.getProduct().getId() == ingredient.getId()) {
+                bIn.setQuantity(quantity);
+                return;
+            }
+        }
+    }
+
+    public Set<Product> getIngredients() {
+        final HashSet<Product> ingredients = new HashSet<>();
+        for ( BeerIngredient bIn : beerIngredients) {
+            ingredients.add(bIn.getProduct());
+        }
         return ingredients;
     }
-
-    public void setIngredients(Set<BeerIngredient> ingredients) {
-        this.ingredients = ingredients;
-    }
-
-    public void addIngredient(BeerIngredient ingredient) {
-        this.ingredients.add(ingredient);
-    }
-
 
 }
