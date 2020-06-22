@@ -24,7 +24,7 @@
                     <div class="profile-info-row">
                         <div class="profile-info-name"> Contractor </div>
                         <div class="profile-info-value">
-                            <span th:text="${orderView.contractor.name}"></span>
+                            <span th:if="${orderView.contractor != null}" th:text="${orderView.contractor.name}"></span>
                         </div>
                     </div>
                     <div class="profile-info-row">

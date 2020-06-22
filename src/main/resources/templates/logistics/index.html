@@ -24,6 +24,8 @@
                            th:if="${#authorization.expression('hasAuthority(''MANAGER'')')}">Orders for approval</a>
                         <a th:href="@{/logistics/manager/order-history}"
                            th:if="${#authorization.expression('hasAuthority(''MANAGER'')')}">Order history</a>
+                        <a th:href="@{/logistics/manager/contractors}"
+                           th:if="${#authorization.expression('hasAuthority(''MANAGER'')')}">Contractors</a>
                     </div>
                 </div>
             </div>
