@@ -31,12 +31,16 @@
                         <div class="profile-info-name text-center"> Id </div>
                         <div class="profile-info-name text-center"> Date </div>
                         <div class="profile-info-name text-center"> Status </div>
+                        <div class="profile-info-name text-center"> Contractor </div>
                         <div class="profile-info-name text-center"> Details </div>
                     </div>
                     <th:block th:each="order, orderStat : *{orders}">
                     <div class="profile-info-row">
                             <div class="profile-info-value text-center">
-                                <span th:text="${order.id}"></span>
+                                <a th:text="${order.id}" th:href="@{/logistics/order/{id}(id=${order.id})}"></a>
+                            </div>
+                            <div class="profile-info-value text-center">
+                                <span th:text="${order.contractor}"></span>
                             </div>
                             <div class="profile-info-value text-center">
                                 <span th:text="${order.orderTime}"></span>

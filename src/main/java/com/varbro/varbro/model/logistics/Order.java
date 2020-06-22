@@ -77,5 +77,5 @@ public class Order {
     @Override
     public int hashCode() {
         return Objects.hash(getId());
-  
+    }
 }
