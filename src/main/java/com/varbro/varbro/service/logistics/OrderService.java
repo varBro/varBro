@@ -1,6 +1,7 @@
 package com.varbro.varbro.service.logistics;
 
 
+import com.varbro.varbro.model.finance.Expense;
 import com.varbro.varbro.model.logistics.Order;
 import com.varbro.varbro.repository.logistics.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,4 +22,9 @@ public class OrderService {
     public Iterable<Order> getOrders() {return orderRepository.findAll();}
 
     public void deleteAll() {orderRepository.deleteAll();}
+
+    public Iterable<Order> getMonthlyOrders(String month, String year)
+    {
+        return orderRepository.monthlyOrders(month, year);
+    }
 }
