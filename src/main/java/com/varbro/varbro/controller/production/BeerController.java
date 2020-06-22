@@ -46,28 +46,6 @@ public class BeerController {
         Beer beer = beerService.getBeerById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid beer Id:" + id));
 
-        //Set<BeerIngredient> ingredients = beer.getBeerIngredients();
-        /*Set<String> malts = new HashSet<>();
-        Set<String> yeasts = new HashSet<>();
-        Set<String> hops = new HashSet<>();
-        for ( BeerIngredient ingredient : ingredients) {
-            switch(ingredient.getIngredientType().toString()) {
-                case "MALT":
-                    malts.add(ingredient.getIngredient().getName());
-                    break;
-                case "YEAST":
-                    yeasts.add(ingredient.getIngredient().getName());
-                    break;
-                case "HOP":
-                    hops.add(ingredient.getIngredient().getName());
-                    break;
-            }
-        }
-        map.addAttribute("malts", malts);
-        map.addAttribute("yeasts", yeasts);
-        map.addAttribute("hops", hops);
-        map.addAttribute("beer", beer);*/
-
         SetMultimap<String, HashMap<String, Float>> beerIngredients = HashMultimap.create();
         for( BeerIngredient ingredient : beer.getBeerIngredients()) {
             HashMap<String, Float> ingredients = new HashMap<>();
