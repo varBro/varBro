@@ -35,8 +35,7 @@ public class DbInit implements CommandLineRunner {
     private BeerService beerService;
 
     public DbInit(UserService userService, RoleService roleService, ProductService productService,
-                  StockService stockService, OrderService orderService, ContractorService contractorService) {
-            StockService stockService, OrderService orderService, BeerService beerService) {
+                  StockService stockService, OrderService orderService, ContractorService contractorService, BeerService beerService) {
         this.userService = userService;
         this.roleService = roleService;
         this.productService = productService;

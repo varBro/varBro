@@ -4,6 +4,7 @@ import com.varbro.varbro.model.logistics.Order;
 import com.varbro.varbro.model.logistics.OrderItem;
 import com.varbro.varbro.model.logistics.Product;
 import com.varbro.varbro.service.RoleService;
+import com.varbro.varbro.service.logistics.ContractorService;
 import com.varbro.varbro.service.logistics.OrderService;
 import com.varbro.varbro.service.logistics.ProductService;
 import com.varbro.varbro.service.logistics.StockService;
@@ -13,9 +14,10 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,10 +67,10 @@ public class LogisticsController {
         return "logistics/new-order";
     }
 
-    @GetMapping("/logistics/contractors")
+    @GetMapping("/logistics/manager/contractors")
     public String contractors(Model model) {
         model.addAttribute("contractors", contractorService.getContractors());
-        return "logistics/contractors";
+        return "logistics/manager/contractors";
     }
 
     @RequestMapping(value = "/logistics/new-order", params = "addRow")
