@@ -35,7 +35,7 @@ public class Product {
                         }
                 }
         }
-
+        
         public Product() {}
 
         public Product(String name, Unit unit)
