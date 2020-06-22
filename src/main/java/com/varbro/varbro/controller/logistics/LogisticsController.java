@@ -1,7 +1,9 @@
 package com.varbro.varbro.controller.logistics;
 
+
 import com.varbro.varbro.model.User;
 import com.varbro.varbro.model.logistics.Contractor;
+
 import com.varbro.varbro.model.logistics.Order;
 import com.varbro.varbro.model.logistics.OrderItem;
 import com.varbro.varbro.model.logistics.Product;
@@ -16,12 +18,12 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.time.LocalDate;
 import java.util.*;
+
 
 @Controller
 @SessionAttributes("order")
@@ -67,6 +69,12 @@ public class LogisticsController {
         List<Product> products =  productService.getProducts();
         model.addAttribute("products", products);
         return "logistics/new-order";
+    }
+
+    @GetMapping("/logistics/manager/contractors")
+    public String contractors(Model model) {
+        model.addAttribute("contractors", contractorService.getContractors());
+        return "logistics/manager/contractors";
     }
 
     @RequestMapping(value = "/logistics/new-order", params = "addRow")

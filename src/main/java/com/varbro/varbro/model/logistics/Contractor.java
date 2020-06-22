@@ -30,11 +30,13 @@ public class Contractor {
     public Contractor() {
     }
 
-    public Contractor(String name, String nip, String regon, String address) {
+    public Contractor(String name, String nip, String regon, String address, String email, String phone) {
         this.name = name;
         this.nip = nip;
         this.regon = regon;
         this.address = address;
+        this.email = email;
+        this.phone = phone;
     }
 
     public long getId() {
