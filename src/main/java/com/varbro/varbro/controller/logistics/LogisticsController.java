@@ -1,10 +1,13 @@
 package com.varbro.varbro.controller.logistics;
 
-import com.varbro.varbro.model.User;
+
+import com.varbro.varbro.model.logistics.Contractor;
+
 import com.varbro.varbro.model.logistics.Order;
 import com.varbro.varbro.model.logistics.OrderItem;
 import com.varbro.varbro.model.logistics.Product;
 import com.varbro.varbro.service.RoleService;
+import com.varbro.varbro.service.logistics.ContractorService;
 import com.varbro.varbro.service.logistics.OrderService;
 import com.varbro.varbro.service.logistics.ProductService;
 import com.varbro.varbro.service.logistics.StockService;
@@ -17,11 +20,10 @@ import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
+
 
 @Controller
 @SessionAttributes("order")
@@ -38,6 +40,9 @@ public class LogisticsController {
 
     @Autowired
     RoleService roleService;
+
+    @Autowired
+    ContractorService contractorService;
 
     @ModelAttribute
     public Order order() {
@@ -66,6 +71,12 @@ public class LogisticsController {
         return "logistics/new-order";
     }
 
+    @GetMapping("/logistics/manager/contractors")
+    public String contractors(Model model) {
+        model.addAttribute("contractors", contractorService.getContractors());
+        return "logistics/manager/contractors";
+    }
+
     @RequestMapping(value = "/logistics/new-order", params = "addRow")
     public String addRow(@ModelAttribute Order order, Model model)
     {
@@ -86,39 +97,43 @@ public class LogisticsController {
     }
 
     @RequestMapping(value = "/logistics/new-order", params = "submit")
-    public String saveOrder(@ModelAttribute Order order, SessionStatus status)
+    public ModelAndView saveOrder(@Valid @ModelAttribute Order order, SessionStatus status, BindingResult bindingResult)
     {
-        List<OrderItem> actualOrder = new ArrayList<>();
-        for (OrderItem orderItem : order.getOrderItems()) {
-            Product p = productService.getProductByName(orderItem.getProduct().getName());
-            if (p != null) {
-                actualOrder.add(new OrderItem(p, orderItem.getQuantity()));
+        if(!bindingResult.hasErrors()) {
+            List<OrderItem> actualOrder = new ArrayList<>();
+            for (OrderItem orderItem : order.getOrderItems()) {
+                Product p = productService.getProductByName(orderItem.getProduct().getName());
+                if (p != null) {
+                    actualOrder.add(new OrderItem(p, orderItem.getQuantity()));
+                }
             }
+            Order newOrder = new Order(actualOrder);
+            orderService.saveOrder(newOrder);
+            status.setComplete();
+            return new ModelAndView("redirect:/logistics/order/" + newOrder.getId());
         }
-        orderService.saveOrder(new Order(actualOrder));
-        status.setComplete();
-        return "redirect:/default";
+        return new ModelAndView("redirect:/logistics/new-order");
     }
 
-    @GetMapping("/logistics/order-history")
-    public String financeOverview(Model model)
+    @GetMapping("/logistics/manager/order-history")
+    public String orderHistory(Model model)
     {
         int month = LocalDate.now().getMonthValue();
         String monthStr = month < 10 ? "0" + month : String.valueOf(month);
         String yearStr = String.valueOf(LocalDate.now().getYear());
-        model.addAttribute("orders", orderService.getMonthlyOrders(monthStr, yearStr));
+        model.addAttribute("orders", orderService.getMonthlyOrdersApproved(monthStr, yearStr));
         model.addAttribute("localDate",  yearStr + "-" + monthStr);
-        return "logistics/order-history";
+        return "logistics/manager/order-history";
     }
 
-    @PostMapping("/logistics/order-history")
-    public String financeOverview(@RequestParam(value = "localDate", required = false) String date, Model model)
+    @PostMapping("/logistics/manager/order-history")
+    public String orderHistory(@RequestParam(value = "localDate", required = false) String date, Model model)
     {
         String monthStr = date.split("-")[1];
         String yearStr = date.split("-")[0];
-        model.addAttribute("orders", orderService.getMonthlyOrders(monthStr, yearStr));
+        model.addAttribute("orders", orderService.getMonthlyOrdersApproved(monthStr, yearStr));
         model.addAttribute("localDate",  yearStr + "-" + monthStr);
-        return "logistics/order-history";
+        return "logistics/manager/order-history";
     }
 
     @GetMapping("/logistics/current-orders")
@@ -138,5 +153,49 @@ public class LogisticsController {
         orderService.saveOrder(order);
         return "redirect:/logistics/current-orders";
     }
+
+    @GetMapping("/logistics/order/{id}")
+    public String showOrder(@PathVariable("id") long id, Model model) {
+        Order order = orderService.getOrderById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid order Id:" + id));
+
+        model.addAttribute("orderView", order);
+        return "logistics/order";
+    }
+
+    @GetMapping("/logistics/order/{id}/approve")
+    public String showOrderApprove(@PathVariable("id") long id, Model model) {
+        Order order = orderService.getOrderById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid order Id:" + id));
+        model.addAttribute("contractors", contractorService.getContractors());
+        model.addAttribute("approved", order);
+        return "logistics/order-approve";
+    }
+
+    @PostMapping("/logistics/order/{id}/approve")
+    public String approveOrder(@PathVariable("id") long id, @ModelAttribute Order approved)
+    {
+        if(!approved.getContractor().getName().equals(""))
+        {
+            System.out.println("CONTRACTOR'S NAME " + approved.getContractor().getName());
+            Order orderToUpdate = orderService.getOrderById(id)
+                    .orElseThrow(() -> new IllegalArgumentException("Invalid order Id:" + id));;
+            Contractor contractor = contractorService.getContractorByName(approved.getContractor().getName());
+            orderToUpdate.setContractor(contractor);
+            orderToUpdate.setOrderStatus(Order.Status.APPROVED);
+            orderToUpdate.setOrderStatus(Order.Status.IN_PROGRESS);
+            orderService.saveOrder(orderToUpdate);
+            return "redirect:/logistics/order/" + id;
+        }
+        return "redirect:/logistics/order/" + id + "/approve";
+    }
+
+    @GetMapping("/logistics/manager/for-approval")
+    public String ordersForApproval(Model model)
+    {
+        model.addAttribute("orders", orderService.getOrdersForApproval());
+        return "logistics/manager/for-approval";
+    }
+
 }
 

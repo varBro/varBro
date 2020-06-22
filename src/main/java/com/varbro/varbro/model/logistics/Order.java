@@ -41,7 +41,8 @@ public class Order {
     public Order(List<OrderItem> orderItems) {
         this.orderItems = orderItems;
         this.orderTime = LocalDate.now();
-        orderStatus = Status.IN_PROGRESS;
+        this.orderStatus = Status.PLACED;
+        this.contractor = null;
     }
 
     public long getId() {
@@ -79,7 +80,6 @@ public class Order {
     public void setContractor(Contractor contractor) {
         this.contractor = contractor;
     }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -91,6 +91,5 @@ public class Order {
     @Override
     public int hashCode() {
         return Objects.hash(getId());
-
     }
 }

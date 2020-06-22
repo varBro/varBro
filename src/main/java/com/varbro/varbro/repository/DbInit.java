@@ -1,5 +1,6 @@
 package com.varbro.varbro.repository;
 
+import com.varbro.varbro.model.logistics.Contractor;
 import com.varbro.varbro.model.logistics.Product;
 import com.varbro.varbro.model.Role;
 import com.varbro.varbro.model.User;
@@ -8,6 +9,7 @@ import com.varbro.varbro.model.production.Beer;
 import com.varbro.varbro.model.production.BeerIngredient;
 import com.varbro.varbro.service.RoleService;
 import com.varbro.varbro.service.UserService;
+import com.varbro.varbro.service.logistics.ContractorService;
 import com.varbro.varbro.service.logistics.OrderService;
 import com.varbro.varbro.service.logistics.ProductService;
 import com.varbro.varbro.service.logistics.StockService;
@@ -29,15 +31,17 @@ public class DbInit implements CommandLineRunner {
     private ProductService productService;
     private StockService stockService;
     private OrderService orderService;
+    private ContractorService contractorService;
     private BeerService beerService;
 
     public DbInit(UserService userService, RoleService roleService, ProductService productService,
-            StockService stockService, OrderService orderService, BeerService beerService) {
+                  StockService stockService, OrderService orderService, ContractorService contractorService, BeerService beerService) {
         this.userService = userService;
         this.roleService = roleService;
         this.productService = productService;
         this.stockService = stockService;
         this.orderService = orderService;
+        this.contractorService = contractorService;
         this.beerService = beerService;
     }
 
@@ -49,6 +53,8 @@ public class DbInit implements CommandLineRunner {
         this.stockService.deleteAll();
         this.orderService.deleteAll();
         this.productService.deleteAll();
+        this.contractorService.deleteAll();
+
         this.beerService.deleteAll();
 
         Role Employee = new Role("EMPLOYEE");
@@ -108,6 +114,7 @@ public class DbInit implements CommandLineRunner {
 
         beerService.saveBeer(new Beer("Pilsner", new BeerIngredient(HOPS, 3.5f, BeerIngredient.IngredientType.HOP), new BeerIngredient(YEAST, 5, BeerIngredient.IngredientType.YEAST),
                 new BeerIngredient(MALTS, 1800, BeerIngredient.IngredientType.MALT), new BeerIngredient(HOPS1, 4F, BeerIngredient.IngredientType.HOP ), new BeerIngredient(YEAST1, 0.5F, BeerIngredient.IngredientType.YEAST)));
+
         Beer Ipa = new Beer("IPA");
         BeerIngredient ipaIngredient1 = new BeerIngredient(YEAST, 4.5f, BeerIngredient.IngredientType.YEAST);
         BeerIngredient ipaIngredient2 = new BeerIngredient(HOPS, 7.5f, BeerIngredient.IngredientType.HOP);
@@ -115,9 +122,29 @@ public class DbInit implements CommandLineRunner {
         ipaIngredient1.setBeer(Ipa);
         ipaIngredient2.setBeer(Ipa);
         ipaIngredient3.setBeer(Ipa);
-        //Ipa.getBeerIngredients().add(ipaIngredient1);
         Ipa.setBeerIngredients(new HashSet(Arrays.asList(ipaIngredient1,ipaIngredient2, ipaIngredient3)));
         beerService.saveBeer(Ipa);
+
+        Contractor JANUSZEX = new Contractor(
+                "JANUSZEX S.A.",
+                "4593534543", "666777888",
+                "ul. Brzozowa 69, 21-435 Chrząszczyrzewoszyce",
+                "januszex@gmail.com",
+                "777333454"
+        );
+
+        Contractor DAMIANPOL = new Contractor(
+                "DamianPOL S.A.",
+                "4557865443", "666555888",
+                "ul. Brzozowa 21, 21-370 Chrząszczyrzewoszyce",
+                "damianpol@gmail.com",
+                "777333454"
+        );
+
+        List<Contractor> contractors = Arrays.asList(JANUSZEX, DAMIANPOL);
+        this.contractorService.saveContractors(contractors);
+
+
     }
 
 

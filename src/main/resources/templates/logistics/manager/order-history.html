@@ -13,7 +13,7 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
-                <form th:action="@{/logistics/order-history}" method="post">
+                <form th:action="@{/logistics/order/{id}/approve(id=${order.id})}" method="post">
                     <div class="form-group row">
                         <div class="input-group">
                             <label for="month-input" class="col-2 col-form-label">Month</label>
@@ -31,12 +31,13 @@
                         <div class="profile-info-name text-center"> Id </div>
                         <div class="profile-info-name text-center"> Date </div>
                         <div class="profile-info-name text-center"> Status </div>
+                        <div class="profile-info-name text-center"> Contractor </div>
                         <div class="profile-info-name text-center"> Details </div>
                     </div>
                     <th:block th:each="order, orderStat : *{orders}">
                     <div class="profile-info-row">
                             <div class="profile-info-value text-center">
-                                <span th:text="${order.id}"></span>
+                                <a th:text="${order.id}" th:href="@{/logistics/order/{id}(id=${order.id})}"></a>
                             </div>
                             <div class="profile-info-value text-center">
                                 <span th:text="${order.orderTime}"></span>
@@ -44,7 +45,10 @@
                             <div class="profile-info-value text-center">
                                 <span th:text="${order.orderStatus}"></span>
                             </div>
-                            <div class="profile-info-value">
+                        <div class="profile-info-value text-center">
+                            <span th:text="${order.contractor.name}"></span>
+                        </div>
+                            <div class="profile-info-value text-center">
                                 <a class="btn btn-primary" data-toggle="collapse" th:href="@{'#details' + ${orderStat.index}}"
                                    role="button" aria-expanded="false" aria-controls="collapseExample">
                                     Details
