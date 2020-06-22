@@ -1,6 +1,8 @@
 package com.varbro.varbro.model.logistics;
 
 import javax.persistence.*;
+import javax.validation.constraints.AssertTrue;
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
 
 @Entity
@@ -9,7 +11,9 @@ public class Stock {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "stock_id")
     private long id;
+    @NotBlank
     private double quantity;
+    @NotBlank
     private LocalDate lastUpdated;
 
     @OneToOne
@@ -42,5 +46,10 @@ public class Stock {
     public void setLastUpdated(LocalDate lastUpdated) { this.lastUpdated = lastUpdated; }
 
     public LocalDate getLastUpdated() { return this.lastUpdated; }
+
+    @AssertTrue(message = "Product defined in pcs. must be an integer!")
+    public boolean isUnitOK() {
+        return (product.getUnit() != Product.Unit.PCS || quantity == Math.floor(quantity));
+    }
 
 }

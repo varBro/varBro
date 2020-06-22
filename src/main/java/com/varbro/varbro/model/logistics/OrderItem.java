@@ -2,6 +2,7 @@ package com.varbro.varbro.model.logistics;
 
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 public class OrderItem {
@@ -14,6 +15,7 @@ public class OrderItem {
     @JoinColumn(name = "product_id")
     private Product product;
 
+    @NotBlank
     private double quantity;
 
     public OrderItem() {}

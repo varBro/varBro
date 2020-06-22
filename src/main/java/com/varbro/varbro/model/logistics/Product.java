@@ -19,6 +19,7 @@ public class Product {
         @Enumerated(EnumType.STRING)
         private Unit unit;
 
+        @NotBlank
         private boolean ingredient;
 
         public enum Unit {

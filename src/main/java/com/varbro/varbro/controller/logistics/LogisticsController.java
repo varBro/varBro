@@ -17,6 +17,7 @@ import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -86,22 +87,24 @@ public class LogisticsController {
     }
 
     @RequestMapping(value = "/logistics/new-order", params = "submit")
-    public String saveOrder(@ModelAttribute Order order, SessionStatus status)
+    public String saveOrder(@Valid @ModelAttribute Order order, SessionStatus status, BindingResult bindingResult)
     {
-        List<OrderItem> actualOrder = new ArrayList<>();
-        for (OrderItem orderItem : order.getOrderItems()) {
-            Product p = productService.getProductByName(orderItem.getProduct().getName());
-            if (p != null) {
-                actualOrder.add(new OrderItem(p, orderItem.getQuantity()));
+        if(!bindingResult.hasErrors()) {
+            List<OrderItem> actualOrder = new ArrayList<>();
+            for (OrderItem orderItem : order.getOrderItems()) {
+                Product p = productService.getProductByName(orderItem.getProduct().getName());
+                if (p != null) {
+                    actualOrder.add(new OrderItem(p, orderItem.getQuantity()));
+                }
             }
+            orderService.saveOrder(new Order(actualOrder));
+            status.setComplete();
         }
-        orderService.saveOrder(new Order(actualOrder));
-        status.setComplete();
         return "redirect:/default";
     }
 
     @GetMapping("/logistics/order-history")
-    public String financeOverview(Model model)
+    public String orderHistory(Model model)
     {
         int month = LocalDate.now().getMonthValue();
         String monthStr = month < 10 ? "0" + month : String.valueOf(month);
@@ -112,7 +115,7 @@ public class LogisticsController {
     }
 
     @PostMapping("/logistics/order-history")
-    public String financeOverview(@RequestParam(value = "localDate", required = false) String date, Model model)
+    public String orderHistory(@RequestParam(value = "localDate", required = false) String date, Model model)
     {
         String monthStr = date.split("-")[1];
         String yearStr = date.split("-")[0];
