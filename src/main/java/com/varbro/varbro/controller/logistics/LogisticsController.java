@@ -4,6 +4,7 @@ import com.varbro.varbro.model.logistics.Order;
 import com.varbro.varbro.model.logistics.OrderItem;
 import com.varbro.varbro.model.logistics.Product;
 import com.varbro.varbro.service.RoleService;
+import com.varbro.varbro.service.logistics.ContractorService;
 import com.varbro.varbro.service.logistics.OrderService;
 import com.varbro.varbro.service.logistics.ProductService;
 import com.varbro.varbro.service.logistics.StockService;
@@ -35,6 +36,9 @@ public class LogisticsController {
     @Autowired
     RoleService roleService;
 
+    @Autowired
+    ContractorService contractorService;
+
     @ModelAttribute
     public Order order() {
         Order order = new Order();
@@ -60,6 +64,12 @@ public class LogisticsController {
         List<Product> products =  productService.getProducts();
         model.addAttribute("products", products);
         return "logistics/new-order";
+    }
+
+    @GetMapping("/logistics/contractors")
+    public String contractors(Model model) {
+        model.addAttribute("contractors", contractorService.getContractors());
+        return "logistics/contractors";
     }
 
     @RequestMapping(value = "/logistics/new-order", params = "addRow")
@@ -95,6 +105,9 @@ public class LogisticsController {
         status.setComplete();
         return "redirect:/default";
     }
+
+
+
 
 }
 

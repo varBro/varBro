@@ -1,11 +1,13 @@
 package com.varbro.varbro.repository;
 
+import com.varbro.varbro.model.logistics.Contractor;
 import com.varbro.varbro.model.logistics.Product;
 import com.varbro.varbro.model.Role;
 import com.varbro.varbro.model.User;
 import com.varbro.varbro.model.logistics.Stock;
 import com.varbro.varbro.service.RoleService;
 import com.varbro.varbro.service.UserService;
+import com.varbro.varbro.service.logistics.ContractorService;
 import com.varbro.varbro.service.logistics.OrderService;
 import com.varbro.varbro.service.logistics.ProductService;
 import com.varbro.varbro.service.logistics.StockService;
@@ -26,14 +28,16 @@ public class DbInit implements CommandLineRunner {
     private ProductService productService;
     private StockService stockService;
     private OrderService orderService;
+    private ContractorService contractorService;
 
     public DbInit(UserService userService, RoleService roleService, ProductService productService,
-            StockService stockService, OrderService orderService) {
+                  StockService stockService, OrderService orderService, ContractorService contractorService) {
         this.userService = userService;
         this.roleService = roleService;
         this.productService = productService;
         this.stockService = stockService;
         this.orderService = orderService;
+        this.contractorService = contractorService;
     }
 
     @Override
@@ -44,6 +48,7 @@ public class DbInit implements CommandLineRunner {
         this.stockService.deleteAll();
         this.orderService.deleteAll();
         this.productService.deleteAll();
+        this.contractorService.deleteAll();
 
 
         Role Employee = new Role("EMPLOYEE");
@@ -80,7 +85,7 @@ public class DbInit implements CommandLineRunner {
 
         Product BARLEY = new Product("Barley", KG, true);
         Product HOPS = new Product("Hops", KG, true);
-        Product YEAST= new Product("Yeast", KG, true);
+        Product YEAST = new Product("Yeast", KG, true);
         Product BOTTLE = new Product("Bottle", PCS);
 
         List<Product> products = Arrays.asList(BARLEY, HOPS, YEAST, BOTTLE);
@@ -93,6 +98,25 @@ public class DbInit implements CommandLineRunner {
 
         List<Stock> stocks = Arrays.asList(BARLEY_STOCK, HOPS_STOCK, YEAST_STOCK, BOTTLE_STOCK);
         this.stockService.saveStocks(stocks);
+
+        Contractor JANUSZEX = new Contractor(
+                "JANUSZEX S.A.",
+                "4593534543", "666777888",
+                "ul. Brzozowa 69, 21-435 Chrząszczyrzewoszyce",
+                "januszex@gmail.com",
+                "777333454"
+        );
+
+        Contractor DAMIANPOL = new Contractor(
+                "DamianPOL S.A.",
+                "4557865443", "666555888",
+                "ul. Brzozowa 21, 21-370 Chrząszczyrzewoszyce",
+                "damianpol@gmail.com",
+                "777333454"
+        );
+
+        List<Contractor> contractors = Arrays.asList(JANUSZEX, DAMIANPOL);
+        this.contractorService.saveContractors(contractors);
     }
 
 

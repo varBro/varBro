@@ -1,0 +1,52 @@
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <title>Stock</title>
+</head>
+<body>
+<ol layout:fragment="breadcrumbs" class="breadcrumb pl-5">
+    <li class="breadcrumb-item"><a href="/default">Home</a></li>
+    <li class="breadcrumb-item active">Stock</li>
+</ol>
+<section layout:fragment="content">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="profile-user-info">
+                    <div class="profile-info-row">
+                        <div class="profile-info-name text-center"> Name </div>
+                        <div class="profile-info-name text-center"> NIP </div>
+                        <div class="profile-info-name text-center"> REGON </div>
+                        <div class="profile-info-name text-center"> Address</div>
+                        <div class="profile-info-name text-center"> Email </div>
+                        <div class="profile-info-name text-center"> Phone </div>
+                    </div>
+                    <div class="profile-info-row" th:each="contractor : ${contractors}">
+                        <div class="profile-info-value text-center">
+                            <span th:text="${contractor.name}"></span>
+                        </div>
+                        <div class="profile-info-value text-center">
+                            <span th:text="${contractor.nip}"></span>
+                        </div>
+                        <div class="profile-info-value text-center">
+                            <span th:text="${contractor.regon}"></span>
+                        </div>
+                        <div class="profile-info-value text-center">
+                            <span th:text="${contractor.address}"></span>
+                        </div>
+                        <div class="profile-info-value text-center">
+                            <span th:text="${contractor.email}"></span>
+                        </div>
+                        <div class="profile-info-value text-center">
+                            <span th:text="${contractor.phone}"></span>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>
