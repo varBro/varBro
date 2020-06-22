@@ -22,6 +22,9 @@ public class Order {
     private List<OrderItem> orderItems;
     @Enumerated(EnumType.STRING)
     private Status orderStatus;
+    @ManyToOne
+    @JoinColumn(name = "contractor_id")
+    private Contractor contractor;
 
     public enum Status {
         PLACED,
@@ -55,7 +58,15 @@ public class Order {
 
     public Status getOrderStatus() { return this.orderStatus; }
 
-    @Override
+    public Contractor getContractor() {
+        return contractor;
+    }
+
+    public void setContractor(Contractor contractor) {
+        this.contractor = contractor;
+    }
+  
+      @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Order)) return false;
@@ -66,5 +77,5 @@ public class Order {
     @Override
     public int hashCode() {
         return Objects.hash(getId());
-    }
+  
 }
