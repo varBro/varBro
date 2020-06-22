@@ -45,9 +45,4 @@ public class BeerController {
         return "production/recipe";
     }
 
-    /*@GetMapping("/beer/recipe")
-    public ModelAndView showProfile() {
-        Beer beer = beerService.getBeerById(id);
-        return new ModelAndView("redirect:/production/beer/" + beer.getId());
-    }*/
 }
