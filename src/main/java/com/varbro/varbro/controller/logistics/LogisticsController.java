@@ -1,7 +1,6 @@
 package com.varbro.varbro.controller.logistics;
 
 
-import com.varbro.varbro.model.User;
 import com.varbro.varbro.model.logistics.Contractor;
 
 import com.varbro.varbro.model.logistics.Order;
@@ -116,7 +115,7 @@ public class LogisticsController {
         return new ModelAndView("redirect:/logistics/new-order");
     }
 
-    @GetMapping("/logistics/order-history")
+    @GetMapping("/logistics/manager/order-history")
     public String orderHistory(Model model)
     {
         int month = LocalDate.now().getMonthValue();
@@ -124,17 +123,17 @@ public class LogisticsController {
         String yearStr = String.valueOf(LocalDate.now().getYear());
         model.addAttribute("orders", orderService.getMonthlyOrdersApproved(monthStr, yearStr));
         model.addAttribute("localDate",  yearStr + "-" + monthStr);
-        return "logistics/order-history";
+        return "logistics/manager/order-history";
     }
 
-    @PostMapping("/logistics/order-history")
+    @PostMapping("/logistics/manager/order-history")
     public String orderHistory(@RequestParam(value = "localDate", required = false) String date, Model model)
     {
         String monthStr = date.split("-")[1];
         String yearStr = date.split("-")[0];
         model.addAttribute("orders", orderService.getMonthlyOrdersApproved(monthStr, yearStr));
         model.addAttribute("localDate",  yearStr + "-" + monthStr);
-        return "logistics/order-history";
+        return "logistics/manager/order-history";
     }
 
     @GetMapping("/logistics/current-orders")
@@ -191,11 +190,11 @@ public class LogisticsController {
         return "redirect:/logistics/order/" + id + "/approve";
     }
 
-    @GetMapping("/logistics/for-approval")
+    @GetMapping("/logistics/manager/for-approval")
     public String ordersForApproval(Model model)
     {
         model.addAttribute("orders", orderService.getOrdersForApproval());
-        return "logistics/for-approval";
+        return "logistics/manager/for-approval";
     }
 
 }

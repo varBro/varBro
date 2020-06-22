@@ -20,9 +20,9 @@
                         <a th:href="@{/logistics/stock}">View stocks</a>
                         <a th:href="@{/logistics/new-order}">Make order</a>
                         <a th:href="@{/logistics/current-orders}">Current orders</a>
-                        <a th:href="@{/logistics/for-approval}"
+                        <a th:href="@{/logistics/manager/for-approval}"
                            th:if="${#authorization.expression('hasAuthority(''MANAGER'')')}">Orders for approval</a>
-                        <a th:href="@{/logistics/order-history}"
+                        <a th:href="@{/logistics/manager/order-history}"
                            th:if="${#authorization.expression('hasAuthority(''MANAGER'')')}">Order history</a>
                     </div>
                 </div>
