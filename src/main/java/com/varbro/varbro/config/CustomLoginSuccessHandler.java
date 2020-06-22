@@ -48,7 +48,7 @@ public class CustomLoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
         }
 
         // check user role and decide the redirect URL
-        if (roles.contains("ADMIN")) {
+        if (roles.contains("ROLE_ADMIN")) {
             url = "/admin";
         } else if (roles.contains("ROLE_FINANCE")) {
             url = "/finance";
@@ -56,6 +56,8 @@ public class CustomLoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
             url = "/hr";
         } else if (roles.contains("ROLE_LOGISTICS")) {
             url = "/logistics";
+        } else if (roles.contains("ROLE_PRODUCTION")) {
+            url = "/production";
         } else if (roles.contains("EMPLOYEE")) {
             url = "/user";
         }

@@ -71,10 +71,21 @@ public class UserController {
     @PostMapping("/user/{id}/edit")
     public ModelAndView editUser(@PathVariable("id") long id, @ModelAttribute User user)
     {
+        return getModelAndView(user);
+    }
+
+    private ModelAndView getModelAndView(@ModelAttribute User user) {
         user.setStatus(3);
         departmentRole = user.getDepartment().name();
 
         user.setRoles(new HashSet(Arrays.asList(roleService.getRoleByName("EMPLOYEE"), roleService.getRoleByName("ROLE_" + departmentRole))));
+        if (user.getPosition() != null)
+        {
+            if (user.getPosition().name() == "ADMIN")
+                user.addRole(roleService.getRoleByName("ROLE_" + user.getPosition().name()));
+            else
+                user.addRole(roleService.getRoleByName(user.getPosition().name()));
+        }
 
         userService.saveUser(user);
         return new ModelAndView("redirect:/user/" + user.getId());
@@ -106,15 +117,7 @@ public class UserController {
     @PostMapping("/user/add-user")
     public ModelAndView addUserSubmit(@ModelAttribute User user) {
         user.setPassword("$2a$10$XHOXjTseWpp9vA9NAe7unOYOQJY58bpZDcxLGn1pkNNf1QJrETfJ6"); // encoded blyat
-        user.setStatus(3);
-        departmentRole = user.getDepartment().name();
-
-        user.setRoles(new HashSet(Arrays.asList(roleService.getRoleByName("EMPLOYEE"), roleService.getRoleByName("ROLE_" + departmentRole))));
-        if (user.getPosition() != null) {
-            user.addRole(roleService.getRoleByName(user.getPosition().name()));
-        }
-        userService.saveUser(user);
-        return new ModelAndView("redirect:/user/" + user.getId());
+        return getModelAndView(user);
     }
 
     @GetMapping("/user/{id}/unlock")

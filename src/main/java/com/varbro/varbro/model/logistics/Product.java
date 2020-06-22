@@ -1,11 +1,11 @@
 package com.varbro.varbro.model.logistics;
 
-import com.varbro.varbro.model.User;
+import com.varbro.varbro.model.production.BeerIngredient;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import java.time.LocalDate;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 public class Product {
@@ -35,7 +35,7 @@ public class Product {
                         }
                 }
         }
-
+        
         public Product() {}
 
         public Product(String name, Unit unit)
@@ -61,6 +61,7 @@ public class Product {
         public Unit getUnit() { return this.unit; }
 
         public void setUnit(Unit unit) { this.unit = unit; }
+
 
         @Override
         public boolean equals(Object o) {
