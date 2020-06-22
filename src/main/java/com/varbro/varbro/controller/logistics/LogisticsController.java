@@ -16,6 +16,7 @@ import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -94,6 +95,27 @@ public class LogisticsController {
         orderService.saveOrder(new Order(actualOrder));
         status.setComplete();
         return "redirect:/default";
+    }
+
+    @GetMapping("/logistics/order-history")
+    public String financeOverview(Model model)
+    {
+        int month = LocalDate.now().getMonthValue();
+        String monthStr = month < 10 ? "0" + month : String.valueOf(month);
+        String yearStr = String.valueOf(LocalDate.now().getYear());
+        model.addAttribute("orders", orderService.getMonthlyOrders(monthStr, yearStr));
+        model.addAttribute("localDate",  yearStr + "-" + monthStr);
+        return "logistics/order-history";
+    }
+
+    @PostMapping("/logistics/order-history")
+    public String financeOverview(@RequestParam(value = "localDate", required = false) String date, Model model)
+    {
+        String monthStr = date.split("-")[1];
+        String yearStr = date.split("-")[0];
+        model.addAttribute("orders", orderService.getMonthlyOrders(monthStr, yearStr));
+        model.addAttribute("localDate",  yearStr + "-" + monthStr);
+        return "logistics/order-history";
     }
 
 }

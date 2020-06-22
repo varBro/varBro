@@ -46,7 +46,7 @@ public class Order {
 
     public void setOrderTime(LocalDate orderTime) { this.orderTime = orderTime; }
 
-    public LocalDate getOrderTimed() { return this.orderTime; }
+    public LocalDate getOrderTime() { return this.orderTime; }
 
     public void setOrderStatus(Status status) { this.orderStatus = status; }
 
