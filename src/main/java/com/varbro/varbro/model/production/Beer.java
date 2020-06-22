@@ -1,12 +1,9 @@
 package com.varbro.varbro.model.production;
 
-import com.varbro.varbro.model.production.BeerIngredient;
-import com.varbro.varbro.model.logistics.Product;
-
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Entity
 public class Beer {
@@ -17,13 +14,15 @@ public class Beer {
     private long id;
     private String name;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "beer", fetch = FetchType.EAGER, orphanRemoval = true)
-    Set<BeerIngredient> beerIngredients;
+    @OneToMany(mappedBy = "beer", cascade = CascadeType.ALL)
+    private Set<BeerIngredient> beerIngredients;
 
     public Beer() {}
 
-    public Beer(String name) {
+    public Beer(String name, BeerIngredient... beerIngredients) {
         this.name = name;
+        for(BeerIngredient beerIngredient : beerIngredients) beerIngredient.setBeer(this);
+        this.beerIngredients = Stream.of(beerIngredients).collect(Collectors.toSet());
     }
 
     public long getId() {
@@ -42,44 +41,12 @@ public class Beer {
         this.name = name;
     }
 
-    /*public Set<BeerIngredient> getBeerIngredients() {
+    public Set<BeerIngredient> getBeerIngredients() {
         return beerIngredients;
     }
 
     public void setBeerIngredients(Set<BeerIngredient> beerIngredients) {
         this.beerIngredients = beerIngredients;
-    }*/
-
-    public void addIngredient(Product ingredient, float quantity) {
-        BeerIngredient beerIngredient = new BeerIngredient(this, ingredient, quantity);
-        beerIngredients.add(beerIngredient);
-    }
-
-    public void removeIngredient(Product ingredient) {
-        final Iterator<BeerIngredient> iterator = beerIngredients.iterator();
-        while (iterator.hasNext()) {
-            final BeerIngredient beerIngredient = iterator.next();
-            if (beerIngredient.getProduct().getId() == ingredient.getId()) {
-                iterator.remove();
-            }
-        }
-    }
-
-    /*public void setIngredientQuantity(Product ingredient, float quantity) {
-        for (BeerIngredient bIn : beerIngredients) {
-            if (bIn.getProduct().getId() == ingredient.getId()) {
-                bIn.setQuantity(quantity);
-                return;
-            }
-        }
-    }*/
-
-    public Set<Product> getIngredients() {
-        final HashSet<Product> ingredients = new HashSet<>();
-        for ( BeerIngredient bIn : beerIngredients) {
-            ingredients.add(bIn.getProduct());
-        }
-        return ingredients;
     }
 
 }
