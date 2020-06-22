@@ -109,7 +109,7 @@ public class LogisticsController {
         int month = LocalDate.now().getMonthValue();
         String monthStr = month < 10 ? "0" + month : String.valueOf(month);
         String yearStr = String.valueOf(LocalDate.now().getYear());
-        model.addAttribute("orders", orderService.getMonthlyOrders(monthStr, yearStr));
+        model.addAttribute("orders", orderService.getMonthlyOrdersApproved(monthStr, yearStr));
         model.addAttribute("localDate",  yearStr + "-" + monthStr);
         return "logistics/order-history";
     }
@@ -119,7 +119,7 @@ public class LogisticsController {
     {
         String monthStr = date.split("-")[1];
         String yearStr = date.split("-")[0];
-        model.addAttribute("orders", orderService.getMonthlyOrders(monthStr, yearStr));
+        model.addAttribute("orders", orderService.getMonthlyOrdersApproved(monthStr, yearStr));
         model.addAttribute("localDate",  yearStr + "-" + monthStr);
         return "logistics/order-history";
     }
@@ -140,6 +140,15 @@ public class LogisticsController {
         order.setOrderStatus(Order.Status.RECEIVED);
         orderService.saveOrder(order);
         return "redirect:/logistics/current-orders";
+    }
+
+    @GetMapping("/logistics/order/{id}")
+    public String showOrder(@PathVariable("id") long id, Model model) {
+        Order order = orderService.getOrderById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid order Id:" + id));
+
+        model.addAttribute("order", order);
+        return "logistics/order";
     }
 }
 

@@ -35,6 +35,11 @@ public class OrderService {
         return orderRepository.monthlyOrders(month, year);
     }
 
+    public Iterable<Order> getMonthlyOrdersApproved(String month, String year)
+    {
+        return orderRepository.monthlyOrdersApproved(month, year);
+    }
+
     public Iterable<Order> getInProgressOrders()
     {
         return orderRepository.inProgressOrders();

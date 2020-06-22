@@ -19,6 +19,11 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
             nativeQuery=true)
     List<Order> monthlyOrders(String month, String year);
 
+    @Query(value = "select * from orders o where extract(month from o.order_time) = ?1 " +
+            "and extract(year from o.order_time) = ?2 and o.order_status != 'PLACED'",
+            nativeQuery=true)
+    List<Order> monthlyOrdersApproved(String month, String year);
+
     @Query(value = "select * from orders o where o.order_status = 'IN_PROGRESS'",
             nativeQuery=true)
     List<Order> inProgressOrders();

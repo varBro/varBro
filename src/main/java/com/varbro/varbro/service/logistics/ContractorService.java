@@ -11,9 +11,7 @@ public class ContractorService {
     @Autowired
     ContractorRepository contractorRepository;
 
-    public void saveContractor(Contractor contractor) {
-
-    }
+    public void saveContractor(Contractor contractor) { contractorRepository.save(contractor); }
 
     public Iterable<Contractor> getContractors() {
         return contractorRepository.findAll();
