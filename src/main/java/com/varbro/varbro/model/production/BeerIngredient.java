@@ -19,12 +19,21 @@ public class BeerIngredient implements Serializable {
     private Product product;
 
     private float quantity;
+    @Enumerated(EnumType.STRING)
+    private IngredientType ingredientType;
+
+    public enum IngredientType {
+        HOP,
+        YEAST,
+        MALT
+    }
 
     public BeerIngredient() {}
 
-    public BeerIngredient(Product product, float quantity) {
+    public BeerIngredient(Product product, float quantity, IngredientType ingredientType) {
         this.product = product;
         this.quantity = quantity;
+        this.ingredientType = ingredientType;
     }
 
     public Beer getBeer() {
