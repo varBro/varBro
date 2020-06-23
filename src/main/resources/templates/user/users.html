@@ -46,7 +46,7 @@
                             <span th:text="${user.email}"></span>
                         </div>
                         <div class="profile-info-value"
-                             th:if="${#authorization.expression('hasAnyAuthority(''ADMIN'', ''ROLE_HR'')')
+                             th:if="${#authorization.expression('hasAnyAuthority(''ROLE_ADMIN'', ''ROLE_HR'')')
                              || #authentication.name == user.email}">
                            <a class="btn btn-primary btn-sm" th:href="@{/user/{id}/edit(id=${user.id})}" role="button">Edit</a>
                         </div>

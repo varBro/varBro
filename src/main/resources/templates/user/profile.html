@@ -63,21 +63,21 @@
                         <span th:text="${user.pesel}"></span>
                     </div>
                 </div>
-                <div sec:authorize="hasAuthority('ADMIN')" class="profile-info-row">
+                <div sec:authorize="hasAuthority('ROLE_ADMIN')" class="profile-info-row">
                     <div class="profile-info-name"> Status </div>
                     <div class="profile-info-value">
                         <span th:text="${user.status} ? 'ACTIVE' : 'BLOCKED'"></span>
                     </div>
                 </div>
                 <div class="profile-info-row">
-                    <div class="profile-info-value" th:if="${#authorization.expression('hasAuthority(''ADMIN'')')
+                    <div class="profile-info-value" th:if="${#authorization.expression('hasAuthority(''ROLE_ADMIN'')')
                      || #authentication.name == user.email}">
                         <a class="btn btn-primary" th:href="@{/user/{id}/edit(id=${user.id})}" role="button">Edit</a>
                     </div>
-                    <div class="profile-info-value" sec:authorize="hasAuthority('ADMIN')">
+                    <div class="profile-info-value" sec:authorize="hasAuthority('ROLE_ADMIN')">
                         <a class="btn btn-secondary" th:href="@{/user/{id}/delete(id=${user.id})}" role="button">Delete</a>
                     </div>
-                    <div class="profile-info-value" th:if="${user.status == 0}" sec:authorize="hasAuthority('ADMIN')">
+                    <div class="profile-info-value" th:if="${user.status == 0}" sec:authorize="hasAuthority('ROLE_ADMIN')">
                         <a class="btn btn-success" th:href="@{/user/{id}/unlock(id=${user.id})}" role="button">Unlock</a>
                     </div>
                 </div>
