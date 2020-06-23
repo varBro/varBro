@@ -20,7 +20,7 @@
                         <div class="card-body">
                             <h1 class="card-text" th:text="${beer.name}"></h1>
                             <br>
-                            <h6>Composition (1kg per 1000l)</h6>
+                            <h6>Composition (kgs per 1000l)</h6>
                         </div>
                         <div class="card-body" th:each="ingredient: ${ingredients.keySet()}">
                             <h4 class="card-text" th:text="${ingredient}"></h4>
