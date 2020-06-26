@@ -88,27 +88,47 @@ public class DbInit implements CommandLineRunner {
 
         this.userService.saveUsers(users);
 
-        Product BARLEY = new Product("Barley", KG, true);
+        Product MALTS = new Product("Malt", KG, true);
         Product HOPS = new Product("Hops", KG, true);
-        Product YEAST = new Product("Yeast", KG, true);
+        Product YEAST= new Product("Yeast", KG, true);
+        Product MALTS1 = new Product("Malt1", KG, true);
+        Product HOPS1 = new Product("Hops1", KG, true);
+        Product YEAST1= new Product("Yeast1", KG, true);
         Product BOTTLE = new Product("Bottle", PCS);
 
-        List<Product> products = Arrays.asList(BARLEY, HOPS, YEAST, BOTTLE);
+        List<Product> products = Arrays.asList(MALTS, HOPS, YEAST, MALTS1, HOPS1, YEAST1, BOTTLE);
         this.productService.saveProducts(products);
 
-        Stock BARLEY_STOCK = new Stock(BARLEY, 158.5);
+        Stock MALT_STOCK = new Stock(MALTS, 158.5);
         Stock HOPS_STOCK = new Stock(HOPS, 123.5);
         Stock YEAST_STOCK = new Stock(YEAST, 56.2);
+        Stock MALT1_STOCK = new Stock(MALTS1, 1584.5);
+        Stock HOPS1_STOCK = new Stock(HOPS1, 1523.5);
+        Stock YEAST1_STOCK = new Stock(YEAST1, 546.2);
         Stock BOTTLE_STOCK = new Stock(BOTTLE, 5602);
 
-        List<Stock> stocks = Arrays.asList(BARLEY_STOCK, HOPS_STOCK, YEAST_STOCK, BOTTLE_STOCK);
+        List<Stock> stocks = Arrays.asList(MALT_STOCK, HOPS_STOCK, YEAST_STOCK,MALT1_STOCK, HOPS1_STOCK, YEAST1_STOCK, BOTTLE_STOCK);
         this.stockService.saveStocks(stocks);
+
 
         OrderItem ORDER_ITEM = new OrderItem(HOPS, 15);
         List<OrderItem> orderList = Arrays.asList(ORDER_ITEM);
         Order ORDER = new Order(orderList);
 
         orderService.saveOrder(ORDER);
+
+        beerService.saveBeer(new Beer("Pilsner", new BeerIngredient(HOPS, 3.5f, BeerIngredient.IngredientType.HOP), new BeerIngredient(YEAST, 5, BeerIngredient.IngredientType.YEAST),
+                new BeerIngredient(MALTS, 1800, BeerIngredient.IngredientType.MALT), new BeerIngredient(HOPS1, 4F, BeerIngredient.IngredientType.HOP ), new BeerIngredient(YEAST1, 0.5F, BeerIngredient.IngredientType.YEAST)));
+
+        Beer Ipa = new Beer("IPA");
+        BeerIngredient ipaIngredient1 = new BeerIngredient(YEAST, 4.5f, BeerIngredient.IngredientType.YEAST);
+        BeerIngredient ipaIngredient2 = new BeerIngredient(HOPS, 7.5f, BeerIngredient.IngredientType.HOP);
+        BeerIngredient ipaIngredient3 = new BeerIngredient(MALTS, 1850, BeerIngredient.IngredientType.MALT);
+        ipaIngredient1.setBeer(Ipa);
+        ipaIngredient2.setBeer(Ipa);
+        ipaIngredient3.setBeer(Ipa);
+        Ipa.setBeerIngredients(new HashSet(Arrays.asList(ipaIngredient1,ipaIngredient2, ipaIngredient3)));
+        beerService.saveBeer(Ipa);
 
         Contractor JANUSZEX = new Contractor(
                 "JANUSZEX S.A.",
@@ -129,12 +149,7 @@ public class DbInit implements CommandLineRunner {
         List<Contractor> contractors = Arrays.asList(JANUSZEX, DAMIANPOL);
         this.contractorService.saveContractors(contractors);
 
-        beerService.saveBeer(new Beer("Pilsner", new BeerIngredient(HOPS, 5, BeerIngredient.IngredientType.HOP), new BeerIngredient(YEAST, 2, BeerIngredient.IngredientType.YEAST)));
-        Beer Ipa = new Beer("IPA");
-        BeerIngredient ipaIngredient1 = new BeerIngredient(YEAST, 3, BeerIngredient.IngredientType.YEAST);
-        ipaIngredient1.setBeer(Ipa);
-        Ipa.getBeerIngredients().add(ipaIngredient1);
-        beerService.saveBeer(Ipa);
+
     }
 
 

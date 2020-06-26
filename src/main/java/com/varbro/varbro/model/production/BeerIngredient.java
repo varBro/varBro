@@ -59,4 +59,12 @@ public class BeerIngredient implements Serializable {
     public void setQuantity(float quantity) {
         this.quantity = quantity;
     }
+
+    public IngredientType getIngredientType() {
+        return ingredientType;
+    }
+
+    public void setIngredientType(IngredientType ingredientType) {
+        this.ingredientType = ingredientType;
+    }
 }
