@@ -7,12 +7,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class StockService {
 
     @Autowired
     StockRepository stockRepository;
+
+    public Optional<Stock> getStockByProductId(long id) { return stockRepository.findByProductId(id); }
 
     public void saveStock(Stock product) {
         stockRepository.save(product);

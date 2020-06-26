@@ -14,11 +14,11 @@ import java.util.Objects;
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "orders_id")
+    @Column(name = "order_id")
     private long id;
     private LocalDate orderTime;
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "orders_item_id")
+    @JoinColumn(name = "order_id")
     private List<OrderItem> orderItems;
     @Enumerated(EnumType.STRING)
     private Status orderStatus;
