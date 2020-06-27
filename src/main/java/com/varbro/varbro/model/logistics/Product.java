@@ -17,7 +17,7 @@ public class Product {
         @Column(name = "product_id")
         private long id;
         @Column(unique = true)
-        @NotBlank
+        @NotEmpty
         private String name;
         @Enumerated(EnumType.STRING)
         private Unit unit;

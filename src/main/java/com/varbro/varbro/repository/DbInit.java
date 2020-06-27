@@ -1,10 +1,8 @@
 package com.varbro.varbro.repository;
 
-import com.varbro.varbro.model.logistics.Contractor;
-import com.varbro.varbro.model.logistics.Product;
+import com.varbro.varbro.model.logistics.*;
 import com.varbro.varbro.model.Role;
 import com.varbro.varbro.model.User;
-import com.varbro.varbro.model.logistics.Stock;
 import com.varbro.varbro.model.production.Beer;
 import com.varbro.varbro.model.production.BeerIngredient;
 import com.varbro.varbro.service.RoleService;
@@ -111,6 +109,13 @@ public class DbInit implements CommandLineRunner {
 
         List<Stock> stocks = Arrays.asList(MALT_STOCK, HOPS_STOCK, YEAST_STOCK,MALT1_STOCK, HOPS1_STOCK, YEAST1_STOCK, BOTTLE_STOCK);
         this.stockService.saveStocks(stocks);
+
+
+        OrderItem ORDER_ITEM = new OrderItem(HOPS, 15);
+        List<OrderItem> orderList = Arrays.asList(ORDER_ITEM);
+        Order ORDER = new Order(orderList);
+
+        orderService.saveOrder(ORDER);
 
         beerService.saveBeer(new Beer("Pilsner", new BeerIngredient(HOPS, 3.5f, BeerIngredient.IngredientType.HOP), new BeerIngredient(YEAST, 5, BeerIngredient.IngredientType.YEAST),
                 new BeerIngredient(MALTS, 1800, BeerIngredient.IngredientType.MALT), new BeerIngredient(HOPS1, 4F, BeerIngredient.IngredientType.HOP ), new BeerIngredient(YEAST1, 0.5F, BeerIngredient.IngredientType.YEAST)));

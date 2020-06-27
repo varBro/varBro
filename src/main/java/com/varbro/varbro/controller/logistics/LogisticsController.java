@@ -1,11 +1,8 @@
 package com.varbro.varbro.controller.logistics;
 
 
-import com.varbro.varbro.model.logistics.Contractor;
+import com.varbro.varbro.model.logistics.*;
 
-import com.varbro.varbro.model.logistics.Order;
-import com.varbro.varbro.model.logistics.OrderItem;
-import com.varbro.varbro.model.logistics.Product;
 import com.varbro.varbro.service.RoleService;
 import com.varbro.varbro.service.logistics.ContractorService;
 import com.varbro.varbro.service.logistics.OrderService;
@@ -47,7 +44,6 @@ public class LogisticsController {
     @ModelAttribute
     public Order order() {
         Order order = new Order();
-        System.out.println("The size of the order at start is: " + order.getOrderItems().size());
         return order;
     }
 
@@ -103,7 +99,7 @@ public class LogisticsController {
             List<OrderItem> actualOrder = new ArrayList<>();
             for (OrderItem orderItem : order.getOrderItems()) {
                 Product p = productService.getProductByName(orderItem.getProduct().getName());
-                if (p != null) {
+                if (p != null & orderItem.getQuantity() > 0) {
                     actualOrder.add(new OrderItem(p, orderItem.getQuantity()));
                 }
             }
@@ -150,6 +146,14 @@ public class LogisticsController {
         Order order = orderService.getOrderById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid order Id:" + id));
         order.setOrderStatus(Order.Status.RECEIVED);
+        for (OrderItem orderItem : order.getOrderItems() ) {
+            System.out.println(orderItem.getProduct().getId());
+            Stock stockToUpdate = stockService.getStockByProductId(orderItem.getProduct().getId())
+                    .orElseThrow(() -> new IllegalArgumentException("Invalid stock Id:" + id));
+            stockToUpdate.setQuantity(stockToUpdate.getQuantity() + orderItem.getQuantity());
+            stockToUpdate.setLastUpdated(LocalDate.now());
+            stockService.saveStock(stockToUpdate);
+        }
         orderService.saveOrder(order);
         return "redirect:/logistics/current-orders";
     }
@@ -177,9 +181,8 @@ public class LogisticsController {
     {
         if(!approved.getContractor().getName().equals(""))
         {
-            System.out.println("CONTRACTOR'S NAME " + approved.getContractor().getName());
             Order orderToUpdate = orderService.getOrderById(id)
-                    .orElseThrow(() -> new IllegalArgumentException("Invalid order Id:" + id));;
+                    .orElseThrow(() -> new IllegalArgumentException("Invalid order Id:" + id));
             Contractor contractor = contractorService.getContractorByName(approved.getContractor().getName());
             orderToUpdate.setContractor(contractor);
             orderToUpdate.setOrderStatus(Order.Status.APPROVED);
