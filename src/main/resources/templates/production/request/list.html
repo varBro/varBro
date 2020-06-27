@@ -1,0 +1,42 @@
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <title>Request List</title>
+</head>
+<body>
+<ol layout:fragment="breadcrumbs" class="breadcrumb pl-5">
+    <li class="breadcrumb-item"><a href="/default">Home</a></li>
+    <li class="breadcrumb-item active">Request List</li>
+</ol>
+<section layout:fragment="content">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <table class="table table-striped">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Possible</th>
+                        <th scope="col">Details</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="request: ${requests}">
+                        <th scope="row">
+                        <td th:text="${request.id}"></td>
+                        <td th:if="${request.enoughIngredients}"><span class="badge badge-success">✓</span></td>
+                        <td th:unless="${request.enoughIngredients}"><span class="badge badge-danger">✗</span></td>
+                        <td><a class="btn btn-success" th:href="@{/production/request/{id}(id=${request.id})}" role="button">Details</a></td>
+                        <td th:if="${request.enoughIngredients}"><a class="btn btn-success" role="button">Ready</a></td>
+                        <td th:unless="${request.enoughIngredients}"><a class="btn btn-danger" role="button">Make Order</a></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>

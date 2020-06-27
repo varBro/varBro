@@ -65,6 +65,14 @@ public class Request {
 
     public int getAmount() {return this.amount;}
 
+    public boolean isEnoughIngredients() {return enoughIngredients;}
+
+    public boolean isReady() {return ready;}
+
+    public void setEnoughIngredients(boolean enoughIngredients) { this.enoughIngredients = enoughIngredients;}
+
+    public void setReady(boolean ready) {this.ready = ready;}
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
