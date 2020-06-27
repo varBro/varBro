@@ -14,7 +14,7 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <h2>New request:</h2>
-                <form action="#" method="post" th:action="@{/production/products-request}" th:object="${request}">
+                <form action="#" method="post" th:action="@{/production/request/add}" th:object="${request}">
                         <div class="form-group col-md-5" >
                             <label for="productSelect">Choose beer</label>
                             <select id="productSelect" class="form-control selectpicker" editable="true"

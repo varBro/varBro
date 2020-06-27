@@ -1,7 +1,10 @@
 package com.varbro.varbro.controller.production;
 
+import com.varbro.varbro.model.logistics.Stock;
 import com.varbro.varbro.model.production.Beer;
+import com.varbro.varbro.model.production.BeerIngredient;
 import com.varbro.varbro.model.production.Request;
+import com.varbro.varbro.service.logistics.StockService;
 import com.varbro.varbro.service.production.BeerService;
 import com.varbro.varbro.service.production.RequestService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +22,9 @@ public class ProductionController {
 
     @Autowired
     RequestService requestService;
+
+    @Autowired
+    StockService stockService;
 
     @GetMapping("/production")
     public String productionIndex() {
@@ -39,8 +45,18 @@ public class ProductionController {
     {
         Beer beer = beerService.getBeerById(request.getBeer().getId())
                 .orElseThrow(() -> new IllegalArgumentException("Invalid beer Id:" + request.getBeer().getId()));
-
-        requestService.save(new Request(beer, request.getAmount()));
+        double multiplier = request.getAmount() / 1000.0;
+        boolean enoughIngredients = true;
+        for (BeerIngredient beerIngredient: beer.getBeerIngredients() ) {
+            double quantity = beerIngredient.getQuantity() * multiplier;
+            Stock s = stockService.getStockByProductId(beerIngredient.getIngredient().getId())
+                    .orElseThrow(() -> new IllegalArgumentException("Invalid product Id:" + beerIngredient.getIngredient().getId()));
+            if(s.getQuantity() < quantity) {
+                enoughIngredients = false;
+                break;
+            }
+        }
+        requestService.save(new Request(beer, request.getAmount(), enoughIngredients));
 
         return "redirect:/default";
     }
