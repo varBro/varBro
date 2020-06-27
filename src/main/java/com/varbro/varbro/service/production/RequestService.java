@@ -1,5 +1,6 @@
 package com.varbro.varbro.service.production;
 
+import com.varbro.varbro.model.User;
 import com.varbro.varbro.model.production.Beer;
 import com.varbro.varbro.model.production.Request;
 import com.varbro.varbro.repository.production.BeerRepository;
@@ -26,5 +27,12 @@ public class RequestService {
 
     public void deleteAll() {
         requestRepository.deleteAll();
+    }
+
+    public Iterable<Request> getRequests() {return requestRepository.findAll();}
+
+    public Optional<Request> getRequestById(Long id) {
+
+        return requestRepository.findById(id);
     }
 }

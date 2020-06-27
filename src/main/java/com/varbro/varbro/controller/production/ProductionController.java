@@ -12,7 +12,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
 
 @Controller
 public class ProductionController {
@@ -59,5 +65,34 @@ public class ProductionController {
         requestService.save(new Request(beer, request.getAmount(), enoughIngredients));
 
         return "redirect:/default";
+    }
+
+    @GetMapping("/production/request/list")
+    public String showRequestsList(Model model) {
+        model.addAttribute("requests", requestService.getRequests());
+        return "production/request/list";
+    }
+
+    @GetMapping("/production/request/{id}")
+    public String showRequest(@PathVariable("id") long id, Model model) {
+
+        Request request = requestService.getRequestById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid product Id:" + id));
+        Set<BeerIngredient> ingredients = new LinkedHashSet(request.getBeer().getBeerIngredients());
+        List<Integer> percentages = new ArrayList<>();
+        for (BeerIngredient beerIngredient: ingredients ) {
+            Stock s = stockService.getStockByProductId(beerIngredient.getIngredient().getId())
+                    .orElseThrow(() -> new IllegalArgumentException("Invalid product Id:" + beerIngredient.getIngredient().getId()));
+            double ingredientNeededQuantity = request.getAmount() / 1000.0 * beerIngredient.getQuantity();
+            double percentage = s.getQuantity() / ingredientNeededQuantity * 100;
+            if (Math.floor(percentage) < 100 )
+                percentages.add((int) Math.floor(percentage));
+            else
+                percentages.add(100);
+        }
+        model.addAttribute("ingredients", ingredients);
+        model.addAttribute("percentages", percentages);
+        model.addAttribute("request", request);
+        return "production/request/show";
     }
 }

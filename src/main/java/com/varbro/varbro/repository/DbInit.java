@@ -12,6 +12,7 @@ import com.varbro.varbro.service.logistics.OrderService;
 import com.varbro.varbro.service.logistics.ProductService;
 import com.varbro.varbro.service.logistics.StockService;
 import com.varbro.varbro.service.production.BeerService;
+import com.varbro.varbro.service.production.RequestService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,9 +32,11 @@ public class DbInit implements CommandLineRunner {
     private OrderService orderService;
     private ContractorService contractorService;
     private BeerService beerService;
+    private RequestService requestService;
 
     public DbInit(UserService userService, RoleService roleService, ProductService productService,
-                  StockService stockService, OrderService orderService, ContractorService contractorService, BeerService beerService) {
+                  StockService stockService, OrderService orderService, ContractorService contractorService,
+                  BeerService beerService, RequestService requestService) {
         this.userService = userService;
         this.roleService = roleService;
         this.productService = productService;
@@ -41,6 +44,7 @@ public class DbInit implements CommandLineRunner {
         this.orderService = orderService;
         this.contractorService = contractorService;
         this.beerService = beerService;
+        this.requestService = requestService;
     }
 
     @Override
@@ -52,7 +56,7 @@ public class DbInit implements CommandLineRunner {
         this.orderService.deleteAll();
         this.productService.deleteAll();
         this.contractorService.deleteAll();
-
+        this.requestService.deleteAll();
         this.beerService.deleteAll();
 
         Role Employee = new Role("EMPLOYEE");

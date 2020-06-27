@@ -24,7 +24,6 @@
                     </thead>
                     <tbody>
                     <tr th:each="request: ${requests}">
-                        <th scope="row">
                         <td th:text="${request.id}"></td>
                         <td th:if="${request.enoughIngredients}"><span class="badge badge-success">✓</span></td>
                         <td th:unless="${request.enoughIngredients}"><span class="badge badge-danger">✗</span></td>
