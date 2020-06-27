@@ -3,6 +3,9 @@ package com.varbro.varbro.model.finance;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 public class Invoice {
@@ -16,6 +19,26 @@ public class Invoice {
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="contractor_id")
     Contractor contractor;
+
+    @OneToMany(mappedBy = "invoice")
+    private List<InvoiceProduct> products;
+
+    public Invoice() {
+        products = new ArrayList<InvoiceProduct>();
+        products.add(new InvoiceProduct());
+    }
+
+    public List<InvoiceProduct> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<InvoiceProduct> products) {
+        this.products = products;
+    }
+
+    public void addProduct(InvoiceProduct product) {
+        this.products.add(product);
+    }
 
     public LocalDate getDate() {
         return date;
