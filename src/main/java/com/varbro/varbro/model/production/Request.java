@@ -3,7 +3,9 @@ package com.varbro.varbro.model.production;
 import com.varbro.varbro.model.logistics.Order;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 @Entity
@@ -17,7 +19,8 @@ public class Request {
     @ManyToOne
     @JoinColumn(name = "beer_id")
     private Beer beer;
-    @NotEmpty
+    @NotNull
+    @Min(value = 1)
     private int amount;
 
     public enum Status {

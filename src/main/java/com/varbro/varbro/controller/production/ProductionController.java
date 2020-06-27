@@ -3,6 +3,7 @@ package com.varbro.varbro.controller.production;
 import com.varbro.varbro.model.production.Beer;
 import com.varbro.varbro.model.production.Request;
 import com.varbro.varbro.service.production.BeerService;
+import com.varbro.varbro.service.production.RequestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -41,8 +42,8 @@ public class ProductionController {
         Beer beer = beerService.getBeerById(request.getBeer().getId())
                 .orElseThrow(() -> new IllegalArgumentException("Invalid beer Id:" + request.getBeer().getId()));
 
-        request.save(new Request(beer, request.getAmount()));
+        requestService.save(new Request(beer, request.getAmount()));
 
-        return "production/products-request";
+        return "redirect:/default";
     }
 }
