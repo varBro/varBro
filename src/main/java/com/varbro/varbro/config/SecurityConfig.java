@@ -50,14 +50,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
 
         http.authorizeRequests()
-                .antMatchers("/").permitAll()
+                .antMatchers("/", "/login").permitAll()
                 .antMatchers("/user/**").hasAuthority("EMPLOYEE")
-                .antMatchers("/**").hasAuthority("ROLE_ADMIN")
                 .antMatchers("/finance/**").hasAuthority("ROLE_FINANCE")
-                .antMatchers("/logistics/**", "/production/request/**").hasAuthority("ROLE_LOGISTICS")
-                .antMatchers("/logistics/manager/**").access("hasRole('ROLE_LOGISTICS') and hasRole('MANAGER')")
+                .antMatchers("/production/request/add").not().hasAuthority("ROLE_LOGISTICS")
+                .antMatchers("/production/request/*").access("hasRole('ROLE_LOGISTICS') or hasRole('ROLE_PRODUCTION')")
+                .antMatchers("/production/request/**").hasAuthority("ROLE_LOGISTICS")
+                .antMatchers("/production/*").hasAuthority("ROLE_PRODUCTION")
+                .antMatchers("/logistics/order/*").hasAuthority("ROLE_LOGISTICS")
+                .antMatchers("/logistics/manager/**", "/logistics/order/*/**").not().access("hasRole('ROLE_LOGISTICS') and not hasRole('MANAGER')")
+                .antMatchers("/logistics/**").hasAuthority("ROLE_LOGISTICS")
                 .antMatchers("/hr/**").hasAuthority("ROLE_HR")
-                .antMatchers("/production/**").hasAuthority("ROLE_PRODUCTION")
+                .antMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
                 .and()
                 .formLogin()
                 .loginPage("/login")
@@ -71,14 +75,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests()
                 .antMatchers("/js/**",
-                "/css/**",
-                "/img/**",
-                "/webjars/**",
-                "/login**")
+                        "/css/**",
+                        "/img/**",
+                        "/webjars/**",
+                        "/login**")
                 .permitAll()
                 .anyRequest()
                 .authenticated();
-
 
         http
                 .csrf()

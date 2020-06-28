@@ -81,7 +81,7 @@ public class UserController {
         user.setRoles(new HashSet(Arrays.asList(roleService.getRoleByName("EMPLOYEE"), roleService.getRoleByName("ROLE_" + departmentRole))));
         if (user.getPosition() != null)
         {
-            if (user.getPosition().name() == "ADMIN")
+            if (user.getPosition().name().equals("ADMIN"))
                 user.addRole(roleService.getRoleByName("ROLE_" + user.getPosition().name()));
             else
                 user.addRole(roleService.getRoleByName(user.getPosition().name()));

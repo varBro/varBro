@@ -49,9 +49,6 @@ public class Stock {
 
     public LocalDate getLastUpdated() { return this.lastUpdated; }
 
-    @AssertTrue(message = "Product defined in pcs. must be an integer!")
-    public boolean isUnitOK() {
-        return (product.getUnit() != Product.Unit.PCS || quantity == Math.floor(quantity));
-    }
+    public void stockUpdatedDate() { this.lastUpdated = LocalDate.now(); }
 
 }

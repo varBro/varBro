@@ -23,6 +23,11 @@ public class Request {
     @Min(value = 1)
     private int amount;
 
+    @NotNull
+    private boolean enoughIngredients;
+    @NotNull
+    private boolean ready;
+
     public enum Status {
         PENDING,
         RESOLVED
@@ -34,6 +39,16 @@ public class Request {
         this.beer = beer;
         this.amount = amount;
         this.status = Status.PENDING;
+        this.enoughIngredients = false;
+        this.ready = false;
+    }
+
+    public Request(Beer beer, int amount, boolean enoughIngredients) {
+        this.beer = beer;
+        this.amount = amount;
+        this.status = Status.PENDING;
+        this.enoughIngredients = enoughIngredients;
+        this.ready = false;
     }
 
     public long getId() {return this.id;}
@@ -49,6 +64,14 @@ public class Request {
     public void setAmount(int amount) {this.amount = amount;}
 
     public int getAmount() {return this.amount;}
+
+    public boolean isEnoughIngredients() {return enoughIngredients;}
+
+    public boolean isReady() {return ready;}
+
+    public void setEnoughIngredients(boolean enoughIngredients) { this.enoughIngredients = enoughIngredients;}
+
+    public void setReady(boolean ready) {this.ready = ready;}
 
     @Override
     public boolean equals(Object o) {

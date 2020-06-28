@@ -1,0 +1,57 @@
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <title>Request</title>
+</head>
+<body>
+<ol layout:fragment="breadcrumbs" class="breadcrumb pl-5">
+    <li class="breadcrumb-item"><a href="/default">Home</a></li>
+    <li class="breadcrumb-item active">Request</li>
+</ol>
+<section layout:fragment="content">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <h2 class="text-center" th:text="${'REQUEST #' + request.id}"></h2>
+                <div class="profile-user-info">
+                    <div class="profile-info-row">
+                        <div class="profile-info-name"> Beer </div>
+                        <div class="profile-info-value">
+                            <span th:text="${request.beer.name}"></span>
+                        </div>
+                    </div>
+                    <div class="profile-info-row">
+                        <div class="profile-info-name"> Amount </div>
+                        <div class="profile-info-value">
+                            <span th:text="${request.amount + ' litres'}"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-3">
+                    <div class="row" th:each="ingredient, stat: ${ingredients}">
+                        <div class="col-md-3">
+                            <div class="text-right"><span th:text="${ingredient.ingredient.name}"></span></div>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="progress align-self-center">
+                                <div th:if="${percentages[__${stat.index}__]} == 100" class="progress-bar bg-success" role="progressbar"
+                                     th:aria-valuenow="${percentages[__${stat.index}__]}" style="margin-top: auto; margin-bottom: auto;"
+                                     th:style="'width:' + ${percentages[__${stat.index}__] + '%'}" aria-valuemin="0" aria-valuemax="100"></div>
+                                <div th:unless="${percentages[__${stat.index}__]} == 100" class="progress-bar bg-danger" role="progressbar"
+                                     th:aria-valuenow="${percentages[__${stat.index}__]}" style="margin-top: auto; margin-bottom: auto;"
+                                     th:style="'width:' + ${percentages[__${stat.index}__] + '%'}" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <th:block th:if="${#authorization.expression('hasAuthority(''ROLE_LOGISTICS'')')}">
+                    <td th:if="${request.enoughIngredients}"><a class="btn btn-success" role="button">Ready</a></td>
+                    <td th:unless="${request.enoughIngredients}"><a class="btn btn-danger" role="button">Make Order</a></td>
+                </th:block>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>

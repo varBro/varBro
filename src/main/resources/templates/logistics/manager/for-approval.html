@@ -19,6 +19,7 @@
                             <div class="profile-info-name text-center"> Id </div>
                             <div class="profile-info-name text-center"> Date </div>
                             <div class="profile-info-name text-center"> Approve </div>
+                            <div class="profile-info-name text-center"> Reject </div>
                         </div>
                         <div class="profile-info-row" th:each="order : ${orders}">
 
@@ -30,6 +31,9 @@
                             </div>
                             <div class="profile-info-value text-center">
                                 <a class="btn btn-success" th:href="@{/logistics/order/{id}/approve(id=${order.id})}" role="button">Approve</a>
+                            </div>
+                            <div class="profile-info-value text-center">
+                                <a class="btn btn-success" th:href="@{/logistics/order/{id}/reject(id=${order.id})}" role="button">Reject</a>
                             </div>
                         </div>
                     </div>
