@@ -18,6 +18,7 @@
                     <tr>
                         <th scope="col">#</th>
                         <th scope="col">Possible</th>
+                        <th scope="col">Date</th>
                         <th scope="col">Details</th>
                         <th scope="col" th:if="${#authorization.expression('hasAuthority(''ROLE_LOGISTICS'')')}">Action</th>
                     </tr>
@@ -27,10 +28,15 @@
                         <td th:text="${request.id}"></td>
                         <td th:if="${request.enoughIngredients}"><span class="badge badge-success">✓</span></td>
                         <td th:unless="${request.enoughIngredients}"><span class="badge badge-danger">✗</span></td>
+                        <td th:text="${request.time}"></td>
                         <td><a class="btn btn-success" th:href="@{/production/request/{id}(id=${request.id})}" role="button">Details</a></td>
                         <th:block th:if="${#authorization.expression('hasAuthority(''ROLE_LOGISTICS'')')}">
-                        <td th:if="${request.enoughIngredients}"><a class="btn btn-success" role="button">Ready</a></td>
-                        <td th:unless="${request.enoughIngredients}"><a class="btn btn-danger" role="button">Make Order</a></td>
+                        <td th:if="${request.enoughIngredients and request.status == T(com.varbro.varbro.model.Request.Status).PENDING}">
+                            <a class="btn btn-success" role="button" th:href="@{/production/request/{id}/ready(id=${request.id})}">Ready</a>
+                        </td>
+                        <td th:unless="${request.enoughIngredients and request.status == T(com.varbro.varbro.model.Request.Status).READY}">
+                            <a class="btn btn-danger" role="button" th:href="@{/logistics/new-order/request/{id}/(id=${request.id})}">Make Order</a>
+                            </td>
                         </th:block>
                     </tr>
                     </tbody>

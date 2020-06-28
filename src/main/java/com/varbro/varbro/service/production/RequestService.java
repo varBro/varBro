@@ -52,7 +52,7 @@ public class RequestService {
     }
 
     public void updateRequestsAvailability() {
-        Iterable<Request> requests = this.getRequests();
+        Iterable<Request> requests = this.getPendingRequests();
         for (Request request: requests) {
             this.save(this.updateRequestAvailability(request));
         }

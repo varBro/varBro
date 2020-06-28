@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import sun.text.normalizer.NormalizerBase;
 
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
@@ -67,7 +68,7 @@ public class ProductionController {
     public String showRequest(@PathVariable("id") long id, Model model) {
 
         Request request = requestService.getRequestById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid product Id:" + id));
+                .orElseThrow(() -> new IllegalArgumentException("Invalid request Id:" + id));
         Set<BeerIngredient> ingredients = new LinkedHashSet(request.getBeer().getBeerIngredients());
         List<Integer> percentages = new ArrayList<>();
         for (BeerIngredient beerIngredient: ingredients ) {
@@ -86,5 +87,15 @@ public class ProductionController {
         return "production/request/show";
     }
 
+    @GetMapping("/production/request/{id}/ready")
+    public String setRequestToReady(@PathVariable("id") long id) {
+        Request request = requestService.getRequestById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid request Id:" + id));
+        request.setStatus(Request.Status.READY);
+        stockService.updateStocksSubstitute(request);
+        requestService.save(request);
+        requestService.updateRequestsAvailability();
+        return "production/request/list";
+    }
 
 }
