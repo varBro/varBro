@@ -94,6 +94,10 @@ public class LogisticsController {
             if(inStock - quantity < 0)
                 order.getOrderItems().add(new OrderItem(ingredient.getIngredient(), quantity - inStock));
         }
+        double bottlesCount = (double) stockService.getQuantityOfBottles()
+                .orElseThrow(() -> new IllegalArgumentException("No bottles found in stock"));
+        if(bottlesCount - request.getAmount() * 2 < 0)
+            order.getOrderItems().add(new OrderItem(productService.getProductByName("Bottle"), request.getAmount() * 2 - bottlesCount));
         List<Product> products =  productService.getProducts();
         model.addAttribute("products", products);
         return "logistics/new-order";

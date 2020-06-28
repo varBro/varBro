@@ -3,6 +3,7 @@ package com.varbro.varbro.service.logistics;
 
 import com.varbro.varbro.model.logistics.Order;
 import com.varbro.varbro.model.logistics.OrderItem;
+import com.varbro.varbro.model.logistics.Product;
 import com.varbro.varbro.model.logistics.Stock;
 import com.varbro.varbro.model.production.BeerIngredient;
 import com.varbro.varbro.model.production.Request;
@@ -19,6 +20,9 @@ public class StockService {
     @Autowired
     StockRepository stockRepository;
 
+    @Autowired
+    ProductService productService;
+
     public Optional<Stock> getStockByProductId(long id) { return stockRepository.findByProductId(id); }
 
     public void saveStock(Stock product) {
@@ -31,7 +35,9 @@ public class StockService {
         return stockRepository.findAll();
     }
 
-    public Optional<Object> getQuantityOfProductById(long id) {return stockRepository.findQuantityById(id); };
+    public Optional<Object> getQuantityOfProductById(long id) {return stockRepository.findQuantityById(id); }
+
+    public Optional<Object> getQuantityOfBottles() {return stockRepository.findBottlesQuantity(); }
 
     public void deleteAll() { stockRepository.deleteAll(); }
 
@@ -57,5 +63,11 @@ public class StockService {
             stockToUpdate.setLastUpdated(LocalDate.now());
             this.saveStock(stockToUpdate);
         }
+        Product bottle = productService.getProductByName("Bottle");
+        Stock stockToUpdate = this.getStockByProductId(bottle.getId())
+                .orElseThrow(() -> new IllegalArgumentException("Invalid product Id:" + bottle.getId()));
+        stockToUpdate.setQuantity(stockToUpdate.getQuantity() - request.getAmount() * 2);
+        stockToUpdate.setLastUpdated(LocalDate.now());
+        this.saveStock(stockToUpdate);
     }
 }

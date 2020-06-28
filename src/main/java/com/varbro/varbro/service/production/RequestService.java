@@ -72,6 +72,10 @@ public class RequestService {
                 break;
             }
         }
+        double bottlesCount = (double) stockService.getQuantityOfBottles()
+                .orElseThrow(() -> new IllegalArgumentException("No bottles found in stock"));
+        if(bottlesCount < request.getAmount() * 2)
+            request.setEnoughIngredients(false);
         return request;
     }
 }

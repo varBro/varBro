@@ -73,17 +73,23 @@ public class ProductionController {
         for (BeerIngredient beerIngredient: ingredients ) {
             Stock s = stockService.getStockByProductId(beerIngredient.getIngredient().getId())
                     .orElseThrow(() -> new IllegalArgumentException("Invalid product Id:" + beerIngredient.getIngredient().getId()));
-            double ingredientNeededQuantity = request.getAmount() / 1000.0 * beerIngredient.getQuantity();
-            double percentage = s.getQuantity() / ingredientNeededQuantity * 100;
-            if (Math.floor(percentage) < 100 )
-                percentages.add((int) Math.floor(percentage));
-            else
-                percentages.add(100);
+            percentages.add(getPercentage(s.getQuantity(), request.getAmount() / 1000.0 * beerIngredient.getQuantity()));
         }
+        double bottlesCount = (double) stockService.getQuantityOfBottles()
+                .orElseThrow(() -> new IllegalArgumentException("No bottles found in stock"));
+        model.addAttribute("bottle_percentage", getPercentage(bottlesCount, request.getAmount() * 2));
         model.addAttribute("ingredients", ingredients);
         model.addAttribute("percentages", percentages);
         model.addAttribute("request", request);
         return "production/request/show";
+    }
+
+    public int getPercentage(double inStock, double needed) {
+        double percentage = inStock / needed * 100;
+        if (Math.floor(percentage) < 100 )
+            return (int) Math.floor(percentage);
+        else
+            return 100;
     }
 
     @GetMapping("/production/request/{id}/ready")

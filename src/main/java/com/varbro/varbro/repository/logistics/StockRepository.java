@@ -15,4 +15,8 @@ public interface StockRepository extends JpaRepository<Stock, Long> {
     @Query(value = "select quantity from stock s where s.product_id = ?1",
             nativeQuery=true)
     Optional<Object> findQuantityById(long id);
+
+    @Query(value = "select quantity from stock s natural join product p where p.name = 'Bottle'",
+            nativeQuery=true)
+    Optional<Object> findBottlesQuantity();
 }
