@@ -51,25 +51,15 @@ public class ProductionController {
     {
         Beer beer = beerService.getBeerById(request.getBeer().getId())
                 .orElseThrow(() -> new IllegalArgumentException("Invalid beer Id:" + request.getBeer().getId()));
-        double multiplier = request.getAmount() / 1000.0;
-        boolean enoughIngredients = true;
-        for (BeerIngredient beerIngredient: beer.getBeerIngredients() ) {
-            double quantity = beerIngredient.getQuantity() * multiplier;
-            Stock s = stockService.getStockByProductId(beerIngredient.getIngredient().getId())
-                    .orElseThrow(() -> new IllegalArgumentException("Invalid product Id:" + beerIngredient.getIngredient().getId()));
-            if(s.getQuantity() < quantity) {
-                enoughIngredients = false;
-                break;
-            }
-        }
-        requestService.save(new Request(beer, request.getAmount(), enoughIngredients));
+        Request requestToSave = requestService.updateRequestAvailability(new Request(beer, request.getAmount()));
+        requestService.save(requestToSave);
 
         return "redirect:/default";
     }
 
     @GetMapping("/production/request/list")
     public String showRequestsList(Model model) {
-        model.addAttribute("requests", requestService.getRequests());
+        model.addAttribute("requests", requestService.getPendingRequestsOrderedByTime());
         return "production/request/list";
     }
 
@@ -95,4 +85,6 @@ public class ProductionController {
         model.addAttribute("request", request);
         return "production/request/show";
     }
+
+
 }

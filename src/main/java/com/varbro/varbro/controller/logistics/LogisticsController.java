@@ -3,11 +3,16 @@ package com.varbro.varbro.controller.logistics;
 
 import com.varbro.varbro.model.logistics.*;
 
+import com.varbro.varbro.model.production.Beer;
+import com.varbro.varbro.model.production.BeerIngredient;
+import com.varbro.varbro.model.production.Request;
 import com.varbro.varbro.service.RoleService;
 import com.varbro.varbro.service.logistics.ContractorService;
 import com.varbro.varbro.service.logistics.OrderService;
 import com.varbro.varbro.service.logistics.ProductService;
 import com.varbro.varbro.service.logistics.StockService;
+import com.varbro.varbro.service.production.RequestService;
+import com.varbro.varbro.controller.production.ProductionController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -40,6 +45,9 @@ public class LogisticsController {
 
     @Autowired
     ContractorService contractorService;
+
+    @Autowired
+    RequestService requestService;
 
     @ModelAttribute
     public Order order() {
@@ -146,15 +154,9 @@ public class LogisticsController {
         Order order = orderService.getOrderById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid order Id:" + id));
         order.setOrderStatus(Order.Status.RECEIVED);
-        for (OrderItem orderItem : order.getOrderItems() ) {
-            System.out.println(orderItem.getProduct().getId());
-            Stock stockToUpdate = stockService.getStockByProductId(orderItem.getProduct().getId())
-                    .orElseThrow(() -> new IllegalArgumentException("Invalid stock Id:" + id));
-            stockToUpdate.setQuantity(stockToUpdate.getQuantity() + orderItem.getQuantity());
-            stockToUpdate.setLastUpdated(LocalDate.now());
-            stockService.saveStock(stockToUpdate);
-        }
+        stockService.updateStocksAdd(order);
         orderService.saveOrder(order);
+        requestService.updateRequestsAvailability();
         return "redirect:/logistics/current-orders";
     }
 

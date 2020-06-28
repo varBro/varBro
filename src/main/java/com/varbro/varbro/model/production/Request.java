@@ -6,6 +6,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 import java.util.Objects;
 
 @Entity
@@ -14,6 +15,7 @@ public class Request {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "request_id")
     private long id;
+    @NotNull
     @Enumerated(EnumType.STRING)
     private Request.Status status;
     @ManyToOne
@@ -26,11 +28,12 @@ public class Request {
     @NotNull
     private boolean enoughIngredients;
     @NotNull
-    private boolean ready;
+    private LocalDate time;
+
 
     public enum Status {
         PENDING,
-        RESOLVED
+        READY
     }
 
     public Request() {}
@@ -40,7 +43,7 @@ public class Request {
         this.amount = amount;
         this.status = Status.PENDING;
         this.enoughIngredients = false;
-        this.ready = false;
+        this.time = LocalDate.now();
     }
 
     public Request(Beer beer, int amount, boolean enoughIngredients) {
@@ -48,7 +51,7 @@ public class Request {
         this.amount = amount;
         this.status = Status.PENDING;
         this.enoughIngredients = enoughIngredients;
-        this.ready = false;
+        this.time = LocalDate.now();
     }
 
     public long getId() {return this.id;}
@@ -67,11 +70,15 @@ public class Request {
 
     public boolean isEnoughIngredients() {return enoughIngredients;}
 
-    public boolean isReady() {return ready;}
-
     public void setEnoughIngredients(boolean enoughIngredients) { this.enoughIngredients = enoughIngredients;}
 
-    public void setReady(boolean ready) {this.ready = ready;}
+    public void setTime(LocalDate time) {
+        this.time = time;
+    }
+
+    public LocalDate getTime() {
+        return this.time;
+    }
 
     @Override
     public boolean equals(Object o) {
