@@ -31,6 +31,8 @@ public class StockService {
         return stockRepository.findAll();
     }
 
+    public Optional<Object> getQuantityOfProductById(long id) {return stockRepository.findQuantityById(id); };
+
     public void deleteAll() { stockRepository.deleteAll(); }
 
     public void updateStocksAdd(Order order) {
@@ -46,10 +48,12 @@ public class StockService {
 
     public void updateStocksSubstitute(Request request) {
         Set<BeerIngredient> ingredients = new LinkedHashSet(request.getBeer().getBeerIngredients());
+        double multiplier = request.getAmount() / 1000.0;
         for (BeerIngredient beerIngredient: ingredients ) {
             Stock stockToUpdate = this.getStockByProductId(beerIngredient.getIngredient().getId())
                     .orElseThrow(() -> new IllegalArgumentException("Invalid product Id:" + beerIngredient.getIngredient().getId()));
-            stockToUpdate.setQuantity(stockToUpdate.getQuantity() - beerIngredient.getQuantity());
+            double quantity = beerIngredient.getQuantity() * multiplier;
+            stockToUpdate.setQuantity(stockToUpdate.getQuantity() - quantity);
             stockToUpdate.setLastUpdated(LocalDate.now());
             this.saveStock(stockToUpdate);
         }

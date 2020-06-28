@@ -81,6 +81,24 @@ public class LogisticsController {
         return "logistics/manager/contractors";
     }
 
+    @GetMapping("/logistics/new-order/request/{id}")
+    public String orderFromRequest(@PathVariable("id") long id, @ModelAttribute Order order, Model model) {
+        order.getOrderItems().remove(0);
+        Request request = requestService.getRequestById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid request Id:" + id));
+        double multiplier = request.getAmount() / 1000.0;
+        for (BeerIngredient ingredient: request.getBeer().getBeerIngredients()) {
+            double inStock = (double) stockService.getQuantityOfProductById(ingredient.getIngredient().getId())
+                    .orElseThrow(() -> new IllegalArgumentException("Invalid product Id:" + ingredient.getIngredient().getId()));
+            double quantity = ingredient.getQuantity() * multiplier;
+            if(inStock - quantity < 0)
+                order.getOrderItems().add(new OrderItem(ingredient.getIngredient(), quantity - inStock));
+        }
+        List<Product> products =  productService.getProducts();
+        model.addAttribute("products", products);
+        return "logistics/new-order";
+    }
+
     @RequestMapping(value = "/logistics/new-order", params = "addRow")
     public String addRow(@ModelAttribute Order order, Model model)
     {
@@ -201,6 +219,5 @@ public class LogisticsController {
         model.addAttribute("orders", orderService.getOrdersForApproval());
         return "logistics/manager/for-approval";
     }
-
 }
 
