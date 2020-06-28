@@ -13,7 +13,7 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
-                <h2 th:if="${#lists.isEmpty(requests)}">No current requests!</h2>
+                <h2 th:if="${#lists.isEmpty(requests)}" class="text-center">No current requests!</h2>
                 <table th:if="${not #lists.isEmpty(requests)}" class="table table-striped">
                     <thead class="thead-dark">
                     <tr>
