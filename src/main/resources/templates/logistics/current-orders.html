@@ -2,7 +2,7 @@
       layout:decorate="~{layouts/layout}" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
-    <title>Order history</title>
+    <title>Current orders</title>
 </head>
 <body>
 <ol layout:fragment="breadcrumbs" class="breadcrumb pl-5">
@@ -13,38 +13,41 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
-                <h2 class="text-center">IN PROGRESS ORDERS</h2>
-                <form action="#" method="post" th:action="@{/logistics/order/}">
-                <div class="profile-user-info">
-                    <div class="profile-info-row">
-                        <div class="profile-info-name text-center"> Id </div>
-                        <div class="profile-info-name text-center"> Contractor </div>
-                        <div class="profile-info-name text-center"> Date </div>
-                        <div class="profile-info-name text-center"> Arrived </div>
-                    </div>
-                        <div class="profile-info-row" th:each="order : ${orders}">
+                <h2 th:if="${#lists.isEmpty(orders)}" class="text-center">No orders are currently awaited!</h2>
+                <div th:if="${not #lists.isEmpty(orders)}" class="col-md-12">
+                    <h2 class="text-center">ORDERS IN DELIVERY</h2>
+                    <form action="#" method="post" th:action="@{/logistics/order/}">
+                        <div class="profile-user-info">
+                            <div class="profile-info-row">
+                                <div class="profile-info-name text-center"> Id</div>
+                                <div class="profile-info-name text-center"> Contractor</div>
+                                <div class="profile-info-name text-center"> Date</div>
+                                <div class="profile-info-name text-center"> Arrived</div>
+                            </div>
+                            <div class="profile-info-row" th:each="order : ${orders}">
 
-                            <div class="profile-info-value text-center">
-                                <a th:text="${order.id}" th:href="@{/logistics/order/{id}(id=${order.id})}"></a>
+                                <div class="profile-info-value text-center">
+                                    <a th:text="${order.id}" th:href="@{/logistics/order/{id}(id=${order.id})}"></a>
+                                </div>
+                                <div class="profile-info-value text-center">
+                                    <span th:text="${order.contractor.name}"></span>
+                                </div>
+                                <div class="profile-info-value text-center">
+                                    <span th:text="${order.orderTime}"></span>
+                                </div>
+                                <div class="profile-info-value">
+                                    <button class="btn btn-primary text-center"
+                                            th:formaction="@{/logistics/order/{id}/arrived(id=${order.id})}"
+                                            type="submit"
+                                            name="arrived">Arrived
+                                    </button>
+                                </div>
                             </div>
-                            <div class="profile-info-value text-center">
-                                <span th:text="${order.contractor.name}"></span>
-                            </div>
-                            <div class="profile-info-value text-center">
-                                <span th:text="${order.orderTime}"></span>
-                            </div>
-                            <div class="profile-info-value">
-                                <button class="btn btn-primary text-center"
-                                        th:formaction="@{/logistics/order/{id}/arrived(id=${order.id})}" type="submit"
-                                        name="arrived">Arrived</button>
-                            </div>
-
                         </div>
+                    </form>
                 </div>
-                </form>
             </div>
         </div>
-    </div>
     </div>
 </section>
 </body>
