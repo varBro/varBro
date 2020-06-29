@@ -1,11 +1,9 @@
 package com.varbro.varbro.model.finance;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 public class Invoice {
@@ -16,8 +14,8 @@ public class Invoice {
     private LocalDate date;
 
     @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="contractor_id")
-    Contractor contractor;
+    @JoinColumn(name="contractor_finance_id")
+    ContractorFinance contractorFinance;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name="invoice_id")
@@ -28,9 +26,9 @@ public class Invoice {
         products.add(new InvoiceProduct());
     }
 
-    public Invoice(LocalDate date, Contractor contractor, List<InvoiceProduct> products) {
+    public Invoice(LocalDate date, ContractorFinance contractorFinance, List<InvoiceProduct> products) {
         this.date = date;
-        this.contractor = contractor;
+        this.contractorFinance = contractorFinance;
         this.products = products;
     }
 
@@ -62,11 +60,19 @@ public class Invoice {
         this.id = id;
     }
 
-    public Contractor getContractor() {
-        return contractor;
+    public ContractorFinance getContractorFinance() {
+        return contractorFinance;
     }
 
-    public void setContractor(Contractor contractor) {
-        this.contractor = contractor;
+    public void setContractorFinance(ContractorFinance contractorFinance) {
+        this.contractorFinance = contractorFinance;
+    }
+
+    public double getTotalCost() {
+        double totalCost = 0;
+        for(InvoiceProduct product : this.products) {
+            totalCost += product.getPrice();
+        }
+        return totalCost;
     }
 }

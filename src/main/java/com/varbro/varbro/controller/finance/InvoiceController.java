@@ -1,12 +1,12 @@
 package com.varbro.varbro.controller.finance;
 
-import com.varbro.varbro.model.finance.Contractor;
+import com.varbro.varbro.model.finance.ContractorFinance;
 import com.varbro.varbro.model.finance.Invoice;
 import com.varbro.varbro.model.finance.InvoiceProduct;
-import com.varbro.varbro.model.finance.Product;
-import com.varbro.varbro.service.finance.ContractorService;
+import com.varbro.varbro.model.finance.ProductFinance;
+import com.varbro.varbro.service.finance.ContractorServiceFinance;
 import com.varbro.varbro.service.finance.InvoiceService;
-import com.varbro.varbro.service.finance.ProductService;
+import com.varbro.varbro.service.finance.ProductServiceFinance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,20 +18,21 @@ public class InvoiceController {
     private InvoiceService invoiceService;
 
     @Autowired
-    private ContractorService contractorService;
+    private ContractorServiceFinance contractorServiceFinance;
 
     @Autowired
-    private ProductService productService;
+    private ProductServiceFinance productServiceFinance;
 
     @GetMapping("/finance/invoice")
-    public String index() {
+    public String index(Model model) {
+        model.addAttribute("invoices", invoiceService.getInvoices());
         return "finance/invoice/index";
     }
 
     @GetMapping("/finance/invoice/add")
     public String add(@ModelAttribute Invoice invoice, Model model) {
-        model.addAttribute("contractors", contractorService.getContractors());
-        model.addAttribute("products", productService.getProducts());
+        model.addAttribute("contractors", contractorServiceFinance.getContractors());
+        model.addAttribute("products", productServiceFinance.getProducts());
         return "finance/invoice/add";
     }
 
@@ -39,8 +40,8 @@ public class InvoiceController {
     public String addRow(@ModelAttribute Invoice invoice, Model model)
     {
         invoice.addProduct(new InvoiceProduct());
-        model.addAttribute("contractors", contractorService.getContractors());
-        model.addAttribute("products", productService.getProducts());
+        model.addAttribute("contractors", contractorServiceFinance.getContractors());
+        model.addAttribute("products", productServiceFinance.getProducts());
         return "finance/invoice/add";
     }
 
@@ -60,25 +61,25 @@ public class InvoiceController {
 
     @GetMapping("/finance/invoice/add/contractor")
     public String addContractor(Model model) {
-        model.addAttribute("contractor", new Contractor());
+        model.addAttribute("contractor", new ContractorFinance());
         return "finance/invoice/add-contractor";
     }
 
     @PostMapping("/finance/invoice/add/contractor")
-    public String add(@ModelAttribute Contractor contractor) {
-        contractorService.saveContractor(contractor);
+    public String add(@ModelAttribute ContractorFinance contractorFinance) {
+        contractorServiceFinance.saveContractor(contractorFinance);
         return "redirect:/finance/invoice/add";
     }
 
     @GetMapping("/finance/invoice/add/product")
     public String addProduct(Model model) {
-        model.addAttribute("product", new Product());
+        model.addAttribute("product", new ProductFinance());
         return "finance/invoice/add-product";
     }
 
     @PostMapping("/finance/invoice/add/product")
-    public String add(@ModelAttribute Product product) {
-        productService.saveProduct(product);
+    public String add(@ModelAttribute ProductFinance productFinance) {
+        productServiceFinance.saveProduct(productFinance);
         return "redirect:/finance/invoice/add";
     }
 }

@@ -10,15 +10,15 @@ public class InvoiceProduct {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "product_id")
-    Product product;
+    @JoinColumn(name = "product_finance_id")
+    ProductFinance productFinance;
 
     public InvoiceProduct()
     {
     }
 
-    public InvoiceProduct(Product product, double amount) {
-        this.product = product;
+    public InvoiceProduct(ProductFinance productFinance, double amount) {
+        this.productFinance = productFinance;
         this.amount = amount;
     }
 
@@ -32,12 +32,12 @@ public class InvoiceProduct {
         this.id = id;
     }
 
-    public Product getProduct() {
-        return product;
+    public ProductFinance getProductFinance() {
+        return productFinance;
     }
 
-    public void setProduct(Product product) {
-        this.product = product;
+    public void setProductFinance(ProductFinance productFinance) {
+        this.productFinance = productFinance;
     }
 
     public double getAmount() {
@@ -49,6 +49,6 @@ public class InvoiceProduct {
     }
 
     public double getPrice() {
-        return product.getPrice();
+        return productFinance.getPrice() * amount;
     }
 }

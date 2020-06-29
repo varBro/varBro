@@ -32,4 +32,8 @@ public class InvoiceService {
     public Invoice getOne(long id) {
         return invoiceRepository.getOne(id);
     }
+
+    public Iterable<Invoice> getInvoices() {
+        return invoiceRepository.findAll();
+    }
 }

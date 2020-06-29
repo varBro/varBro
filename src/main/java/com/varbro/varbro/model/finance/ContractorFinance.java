@@ -3,16 +3,17 @@ package com.varbro.varbro.model.finance;
 import javax.persistence.*;
 
 @Entity
-public class Contractor {
+@Table(name = "contractor_finance")
+public class ContractorFinance {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name="contractor_id")
+    @Column(name="contractor_finance_id")
     private Long id;
 
-    public Contractor() {
+    public ContractorFinance() {
     }
 
-    public Contractor(String name, String address, String identificationNumber) {
+    public ContractorFinance(String name, String address, String identificationNumber) {
         this.name = name;
         this.address = address;
         this.identificationNumber = identificationNumber;

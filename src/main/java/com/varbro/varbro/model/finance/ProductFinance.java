@@ -3,18 +3,19 @@ package com.varbro.varbro.model.finance;
 import javax.persistence.*;
 
 @Entity
-public class Product {
+@Table(name = "product_finance")
+public class ProductFinance {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name="product_id")
+    @Column(name="product_finance_id")
     private Long id;
     private String name;
     private double price;
 
-    public Product() {
+    public ProductFinance() {
     }
 
-    public Product(String name, double price) {
+    public ProductFinance(String name, double price) {
         this.name = name;
         this.price = price;
     }
