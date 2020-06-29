@@ -1,0 +1,52 @@
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{layouts/layout}">
+<head>
+    <title>Beer recipe</title>
+</head>
+<body>
+<ol layout:fragment="breadcrumbs" class="breadcrumb pl-5">
+    <li class="breadcrumb-item"><a href="/default">Home</a></li>
+    <li class="breadcrumb-item"><a href="/production">Production</a></li>
+    <li class="breadcrumb-item"><a href="/production/beers">Beers</a></li>
+    <li class="breadcrumb-item active">Recipe</li>
+</ol>
+<section layout:fragment="content">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-sm">
+                <div class="content">
+                    <div class="card">
+                        <div class="card-body">
+                            <h1 class="card-text" th:text="${beer.name}"></h1>
+                            <br>
+                            <h6>Composition (kgs per 1000l)</h6>
+                        </div>
+                        <div class="card-body" th:each="ingredient: ${ingredients.keySet()}">
+                            <h4 class="card-text" th:text="${ingredient}"></h4>
+                            <div th:each="ing_map: ${ingredients.get(ingredient)}">
+                                <div th:each="ing: ${ing_map}">
+                                    <a th:text="${ing.key + ': ' + ing.value + ' kg'}"></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm">
+                <div class="content">
+                    <div class="card">
+                        <div class="card-body">
+                            <br>
+                            <h6>Tutaj byndzie przepis</h6>
+                            <br>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+</body>
+</html>

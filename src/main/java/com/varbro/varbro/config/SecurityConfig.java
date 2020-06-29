@@ -6,11 +6,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import javax.sql.DataSource;
 
@@ -20,10 +18,10 @@ import javax.sql.DataSource;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private LoggingAccessDeniedHandler accessDeniedHandler;
+    private CustomLoginSuccessHandler successHandler;
 
     @Autowired
-    private CustomLoginSuccessHandler successHandler;
+    private CustomAuthenticationFailureHandler failureHandler;
 
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
@@ -52,36 +50,42 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
 
         http.authorizeRequests()
-                .antMatchers("/").permitAll()
-                .antMatchers("/login").permitAll()
+                .antMatchers("/", "/login").permitAll()
                 .antMatchers("/user/**").hasAuthority("EMPLOYEE")
-                .antMatchers("/admin/**").hasAuthority("ADMIN")
-                .antMatchers("/finance/**").hasAnyAuthority("ADMIN","ROLE_FINANCE")
-                .anyRequest().authenticated()
+                .antMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
+                .antMatchers("/finance/**").hasAnyAuthority("ROLE_PRODUCTION", "ROLE_ADMIN")
+                .antMatchers("/production/request/add").not().hasAuthority("ROLE_LOGISTICS")
+                .antMatchers("/production/request/*").hasAnyAuthority("ROLE_LOGISTICS", "ROLE_PRODUCTION", "ROLE_ADMIN")
+                .antMatchers("/production/request/**").hasAuthority("ROLE_LOGISTICS")
+                .antMatchers("/production/*").hasAnyAuthority("ROLE_PRODUCTION", "ROLE_ADMIN")
+                .antMatchers("/logistics/manager/**", "/logistics/order/*/**").not().access("hasAuthority('ROLE_LOGISTICS') and not hasAuthority('MANAGER')")
+                .antMatchers("/logistics/manager/**", "/logistics/order/*/**").access("hasAuthority('ROLE_LOGISTICS') and hasAuthority('MANAGER')")
+                .antMatchers("/logistics/**").hasAnyAuthority("ROLE_LOGISTICS", "ROLE_ADMIN")
+                .antMatchers("/hr/**").hasAnyAuthority("ROLE_HR", "ROLE_ADMIN")
                 .and()
-                .csrf().disable().formLogin()
+                .formLogin()
                 .loginPage("/login")
-                //.defaultSuccessUrl("/default")
                 .successHandler(successHandler)
-                .failureUrl("/login?error=true")
+                .failureHandler(failureHandler).permitAll()
                 .usernameParameter("email")
                 .passwordParameter("password")
                 .and()
                 .logout()
-                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                .logoutSuccessUrl("/login?logout").and()
-                .exceptionHandling()
-                .accessDeniedHandler(accessDeniedHandler)
-                .accessDeniedPage("/access-denied");
-    }
+                .logoutSuccessUrl("/login?logout");
 
-    @Override
-    public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers(
-                "/js/**",
-                "/css/**",
-                "/img/**",
-                "/webjars/**");
+        http.authorizeRequests()
+                .antMatchers("/js/**",
+                        "/css/**",
+                        "/img/**",
+                        "/webjars/**",
+                        "/login**")
+                .permitAll()
+                .anyRequest()
+                .authenticated();
+
+        http
+                .csrf()
+                .disable();
     }
 
 }

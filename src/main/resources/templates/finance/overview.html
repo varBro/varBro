@@ -1,0 +1,81 @@
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <title>Financial Overview</title>
+</head>
+<body>
+<ol layout:fragment="breadcrumbs" class="breadcrumb pl-5">
+    <li class="breadcrumb-item"><a href="/default">Home</a></li>
+    <li class="breadcrumb-item active">Users</li>
+</ol>
+<section layout:fragment="content">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <form th:action="@{/finance/overview}" method="post">
+                    <div class="form-group row">
+                        <div class="input-group">
+                            <label for="month-input" class="col-2 col-form-label">Month</label>
+                            <input class="form-control" type="month" th:name="localDate"
+                                   th:value="${localDate}" id="month-input">
+                            <span class="input-group-btn">
+                                <button class="btn btn-primary" type="submit">Search</button>
+                            </span>
+                        </div>
+                    </div>
+                </form>
+                <div class="profile-user-info">
+                    <div class="profile-info-row">
+                        <div class="profile-info-name"> Revenue </div>
+                        <div class="profile-info-value">
+                            <span th:text="${monthlyRevenueSum}"></span>
+                        </div>
+                    </div>
+                    <div class="profile-info-row">
+                        <div class="profile-info-name"> Expenses </div>
+                        <div class="profile-info-value">
+                            <span th:text="${monthlyExpensesSum}"></span>
+                        </div>
+                    </div>
+                    <div class="profile-info-row">
+                        <div class="profile-info-name"> Balance </div>
+                        <div class="profile-info-value">
+                            <span th:text="${balance}"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-2 col-md-12">
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <h2 class="text-center">EXPENSES</h2>
+                        <div class="profile-user-info">
+                            <div class="profile-info-row">
+                                <div class="profile-info-name"> Company </div>
+                                <div class="profile-info-name"> Amount </div>
+                                <div class="profile-info-name"> Date </div>
+                            </div>
+                            <div class="profile-info-row" th:each="expense : ${expenses}">
+                                <div class="profile-info-value">
+                                    <span th:text="${expense.receiverName}"></span>
+                                </div>
+                                <div class="profile-info-value">
+                                    <span th:text="${expense.amount}"></span>
+                                </div>
+                                <div class="profile-info-value">
+                                    <span th:text="${expense.date}"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <h2 class="text-center">REVENUES</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>

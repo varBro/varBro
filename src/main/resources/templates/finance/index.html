@@ -1,0 +1,31 @@
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{layouts/layout}">
+<head>
+    <title>Finance panel</title>
+</head>
+<body>
+<ol layout:fragment="breadcrumbs" class="breadcrumb pl-5">
+    <li class="breadcrumb-item active"><a href="#">Home</a></li>
+</ol>
+<section layout:fragment="content">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="content">
+                    <div class="title m-b-md">
+                        Finance Panel
+                    </div>
+                    <div class="links">
+                        <a th:href="@{/finance/add-expense}">Add new expense</a>
+                        <a th:href="@{/finance/overview}"
+                           th:if="${#authorization.expression('hasAuthority(''MANAGER'')')}">Finances overview</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+</body>
+</html>

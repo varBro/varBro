@@ -1,0 +1,32 @@
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{layouts/layout}">
+<head>
+    <title>Beers list</title>
+</head>
+<body>
+<ol layout:fragment="breadcrumbs" class="breadcrumb pl-5">
+    <li class="breadcrumb-item"><a href="/default">Home</a></li>
+    <li class="breadcrumb-item"><a href="/production">Production</a></li>
+    <li class="breadcrumb-item active">Beers</li>
+</ol>
+<section layout:fragment="content">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="content">
+                    <div class="card">
+                        <div class="card-body" th:each="beer : ${beers}">
+                            <a class="card-text" th:text="${beer.name}">Szybki pils.</a>
+                            <br>
+                            <a class="card-link" th:href="@{/production/beer/{id}(id=${beer.id})}">Show recipe</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+</body>
+</html>

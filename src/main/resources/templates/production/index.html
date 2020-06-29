@@ -1,0 +1,33 @@
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      layout:decorate="~{layouts/layout}">
+<head>
+    <title>Production panel</title>
+</head>
+<body>
+<ol layout:fragment="breadcrumbs" class="breadcrumb pl-5">
+    <li class="breadcrumb-item active"><a href="#">Home</a></li>
+</ol>
+<section layout:fragment="content">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="content">
+                    <div class="title m-b-md">
+                        Production Panel
+                    </div>
+                    <div class="links">
+                        <a th:href="@{/production/beers}">Beers</a>
+                        <a th:href="@{/production/request/list}">Requests</a>
+                        <a th:href="@{/production/request/add}">New Request</a>
+                        <a sec:authorize="hasAuthority('MANAGER')" th:href="@{/production/add-new-recipe}">Add new recipe</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+</body>
+</html>
