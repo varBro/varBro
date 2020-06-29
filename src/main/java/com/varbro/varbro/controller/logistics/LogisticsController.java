@@ -3,11 +3,16 @@ package com.varbro.varbro.controller.logistics;
 
 import com.varbro.varbro.model.logistics.*;
 
+import com.varbro.varbro.model.production.Beer;
+import com.varbro.varbro.model.production.BeerIngredient;
+import com.varbro.varbro.model.production.Request;
 import com.varbro.varbro.service.RoleService;
 import com.varbro.varbro.service.logistics.ContractorService;
 import com.varbro.varbro.service.logistics.OrderService;
 import com.varbro.varbro.service.logistics.ProductService;
 import com.varbro.varbro.service.logistics.StockService;
+import com.varbro.varbro.service.production.RequestService;
+import com.varbro.varbro.controller.production.ProductionController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -41,6 +46,9 @@ public class LogisticsController {
     @Autowired
     ContractorService contractorService;
 
+    @Autowired
+    RequestService requestService;
+
     @ModelAttribute
     public Order order() {
         Order order = new Order();
@@ -71,6 +79,28 @@ public class LogisticsController {
     public String contractors(Model model) {
         model.addAttribute("contractors", contractorService.getContractors());
         return "logistics/manager/contractors";
+    }
+
+    @GetMapping("/logistics/new-order/request/{id}")
+    public String orderFromRequest(@PathVariable("id") long id, @ModelAttribute Order order, Model model) {
+        order.getOrderItems().remove(0);
+        Request request = requestService.getRequestById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid request Id:" + id));
+        double multiplier = request.getAmount() / 1000.0;
+        for (BeerIngredient ingredient: request.getBeer().getBeerIngredients()) {
+            double inStock = (double) stockService.getQuantityOfProductById(ingredient.getIngredient().getId())
+                    .orElseThrow(() -> new IllegalArgumentException("Invalid product Id:" + ingredient.getIngredient().getId()));
+            double quantity = ingredient.getQuantity() * multiplier;
+            if(inStock - quantity < 0)
+                order.getOrderItems().add(new OrderItem(ingredient.getIngredient(), quantity - inStock));
+        }
+        double bottlesCount = (double) stockService.getQuantityOfBottles()
+                .orElseThrow(() -> new IllegalArgumentException("No bottles found in stock"));
+        if(bottlesCount - request.getAmount() * 2 < 0)
+            order.getOrderItems().add(new OrderItem(productService.getProductByName("Bottle"), request.getAmount() * 2 - bottlesCount));
+        List<Product> products =  productService.getProducts();
+        model.addAttribute("products", products);
+        return "logistics/new-order";
     }
 
     @RequestMapping(value = "/logistics/new-order", params = "addRow")
@@ -146,15 +176,9 @@ public class LogisticsController {
         Order order = orderService.getOrderById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid order Id:" + id));
         order.setOrderStatus(Order.Status.RECEIVED);
-        for (OrderItem orderItem : order.getOrderItems() ) {
-            System.out.println(orderItem.getProduct().getId());
-            Stock stockToUpdate = stockService.getStockByProductId(orderItem.getProduct().getId())
-                    .orElseThrow(() -> new IllegalArgumentException("Invalid stock Id:" + id));
-            stockToUpdate.setQuantity(stockToUpdate.getQuantity() + orderItem.getQuantity());
-            stockToUpdate.setLastUpdated(LocalDate.now());
-            stockService.saveStock(stockToUpdate);
-        }
+        stockService.updateStocksAdd(order);
         orderService.saveOrder(order);
+        requestService.updateRequestsAvailability();
         return "redirect:/logistics/current-orders";
     }
 
@@ -199,6 +223,5 @@ public class LogisticsController {
         model.addAttribute("orders", orderService.getOrdersForApproval());
         return "logistics/manager/for-approval";
     }
-
 }
 

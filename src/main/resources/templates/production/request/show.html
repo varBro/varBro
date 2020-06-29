@@ -44,10 +44,29 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="text-right"><span>Bottles</span></div>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="progress align-self-center">
+                                <div th:if="${bottle_percentage} == 100" class="progress-bar bg-success" role="progressbar"
+                                     th:aria-valuenow="${bottle_percentage}" style="margin-top: auto; margin-bottom: auto;"
+                                     th:style="'width:' + ${bottle_percentage + '%'}" aria-valuemin="0" aria-valuemax="100"></div>
+                                <div th:unless="${bottle_percentage} == 100" class="progress-bar bg-danger" role="progressbar"
+                                     th:aria-valuenow="${bottle_percentage}" style="margin-top: auto; margin-bottom: auto;"
+                                     th:style="'width:' + ${bottle_percentage + '%'}" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <th:block th:if="${#authorization.expression('hasAuthority(''ROLE_LOGISTICS'')')}">
-                    <td th:if="${request.enoughIngredients}"><a class="btn btn-success" role="button">Ready</a></td>
-                    <td th:unless="${request.enoughIngredients}"><a class="btn btn-danger" role="button">Make Order</a></td>
+                <th:block th:if="${#authorization.expression('hasAuthority(''ROLE_LOGISTICS'')') and request.status == T(com.varbro.varbro.model.production.Request.Status).PENDING} ">
+                    <td th:if="${request.enoughIngredients}">
+                        <a class="btn btn-success" role="button" th:href="@{/production/request/{id}/ready(id=${request.id})}">Ready</a>
+                    </td>
+                    <td th:unless="${request.enoughIngredients}">
+                        <a class="btn btn-danger" role="button" th:href="@{/logistics/new-order/request/{id}(id=${request.id})}">Make Order</a>
+                    </td>
                 </th:block>
             </div>
         </div>
