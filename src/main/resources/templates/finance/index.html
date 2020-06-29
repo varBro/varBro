@@ -18,6 +18,7 @@
                     </div>
                     <div class="links">
                         <a th:href="@{/finance/add-expense}">Add new expense</a>
+                        <a th:href="@{/finance/invoice}">Invoices</a>
                         <a th:href="@{/finance/overview}"
                            th:if="${#authorization.expression('hasAuthority(''MANAGER'')')}">Finances overview</a>
                     </div>

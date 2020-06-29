@@ -21,7 +21,7 @@
                     </div>
                     <div class="profile-info-row" th:each="stock : ${stocks}">
                         <div class="profile-info-value text-center">
-                            <span th:text="${stock.product.name}"></span>
+                            <span th:text="${stock.productFinance.name}"></span>
                         </div>
                         <div class="profile-info-value text-center">
                             <span th:text="${stock.quantity}"></span>

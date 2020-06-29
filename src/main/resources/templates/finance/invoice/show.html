@@ -1,0 +1,50 @@
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Add invoice</title>
+</head>
+<body>
+<ol layout:fragment="breadcrumbs" class="breadcrumb pl-5">
+    <li class="breadcrumb-item"><a href="/default">Home</a></li>
+    <li class="breadcrumb-item"><a href="/finance">Finance</a></li>
+    <li class="breadcrumb-item"><a href="/finance/invoice">Invoice</a></li>
+    <li class="breadcrumb-item active">Show</li>
+</ol>
+<section layout:fragment="content">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-12">
+                <h2>Invoice:</h2>
+                <label for="date">Date:</label>
+                <div id="date" th:text="${invoice.date}"></div>
+                <label for="contractorFinance">Contractor:</label>
+                <div id="contractorFinance" class="form-row">
+                    <label for="contractorName">Name:</label>
+                    <div id="contractorName" class="form-group col-md-3" th:text="${invoice.contractorFinance.name}"></div>
+                    <label for="contractorAddress">Adress:</label>
+                    <div id="contractorAddress" class="form-group col-md-4" th:text="${invoice.contractorFinance.address}"></div>
+                    <label for="contractorIdNumber">ID's Number:</label>
+                    <div id="contractorIdNumber" class="form-group col-md-3" th:text="${invoice.contractorFinance.identificationNumber}"></div>
+                </div>
+                <label for="products">Products:</label>
+                <div id="products" class="form-row" th:each="productFinance, productStats: ${invoice.products}">
+                    <label for="productName">Name:</label>
+                    <div id="productName" class="form-group col-md-2" th:text="${productFinance.productFinance.name}"></div>
+                    <label for="productAmount">Amount:</label>
+                    <div id="productAmount" class="form-group col-md-2" th:text="${productFinance.amount}"></div>
+                    <label for="productPrice">Price for one:</label>
+                    <div id="productPrice" class="form-group col-md-2" th:text="${productFinance.productFinance.price}"></div>
+                    <label for="productTotal">Product Sum:</label>
+                    <div id="productTotal" class="form-group col-md-2" th:text="${'&#8383;' + productFinance.getPrice()}"></div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-6"></div>
+                    <label for="total">Total:</label>
+                    <div id="total" class="form-group col-md-2" th:text="${invoice.getTotalCost()}"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>

@@ -48,7 +48,7 @@
                                     <span th:text="${order.orderStatus}"></span>
                                 </div>
                                 <div class="profile-info-value text-center">
-                                    <span th:text="${order.contractor.name}"></span>
+                                    <span th:text="${order.contractorFinance.name}"></span>
                                 </div>
                                 <div class="profile-info-value text-center">
                                     <a class="btn btn-primary" data-toggle="collapse"
@@ -65,7 +65,7 @@
                                 </div>
                                 <div class="profile-info-row" th:each="item : ${order.orderItems}">
                                     <div class="profile-info-value text-center">
-                                        <span th:text="${item.product.name}"></span>
+                                        <span th:text="${item.productFinance.name}"></span>
                                     </div>
                                     <div class="profile-info-value text-center">
                                         <span th:text="${item.quantity}"></span>
