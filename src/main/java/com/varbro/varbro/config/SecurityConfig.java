@@ -53,7 +53,7 @@ public class  SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/", "/login").permitAll()
                 .antMatchers("/user/**").hasAuthority("EMPLOYEE")
                 .antMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
-                .antMatchers("/finance/**").hasAnyAuthority("ROLE_PRODUCTION", "ROLE_ADMIN")
+                .antMatchers("/finance/**").hasAnyAuthority("ROLE_FINANCE", "ROLE_ADMIN")
                 .antMatchers("/production/request/add").not().hasAuthority("ROLE_LOGISTICS")
                 .antMatchers("/production/request/*").hasAnyAuthority("ROLE_LOGISTICS", "ROLE_PRODUCTION", "ROLE_ADMIN")
                 .antMatchers("/production/request/**").hasAuthority("ROLE_LOGISTICS")

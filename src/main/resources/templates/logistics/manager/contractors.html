@@ -22,24 +22,24 @@
                         <div class="profile-info-name text-center"> Email </div>
                         <div class="profile-info-name text-center"> Phone </div>
                     </div>
-                    <div class="profile-info-row" th:each="contractorFinance : ${contractorFinances}">
+                    <div class="profile-info-row" th:each="contractor : ${contractors}">
                         <div class="profile-info-value text-center">
-                            <span th:text="${contractorFinance.name}"></span>
+                            <span th:text="${contractor.name}"></span>
                         </div>
                         <div class="profile-info-value text-center">
-                            <span th:text="${contractorFinance.nip}"></span>
+                            <span th:text="${contractor.nip}"></span>
                         </div>
                         <div class="profile-info-value text-center">
-                            <span th:text="${contractorFinance.regon}"></span>
+                            <span th:text="${contractor.regon}"></span>
                         </div>
                         <div class="profile-info-value text-center">
-                            <span th:text="${contractorFinance.address}"></span>
+                            <span th:text="${contractor.address}"></span>
                         </div>
                         <div class="profile-info-value text-center">
-                            <span th:text="${contractorFinance.email}"></span>
+                            <span th:text="${contractor.email}"></span>
                         </div>
                         <div class="profile-info-value text-center">
-                            <span th:text="${contractorFinance.phone}"></span>
+                            <span th:text="${contractor.phone}"></span>
                         </div>
 
                     </div>
