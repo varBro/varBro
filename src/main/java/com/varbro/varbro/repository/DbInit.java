@@ -76,6 +76,8 @@ public class DbInit implements CommandLineRunner {
         this.contractorService.deleteAll();
         this.requestService.deleteAll();
         this.beerService.deleteAll();
+        this.contractorServiceFinance.deleteAll();
+        this.productServiceFinance.deleteAll();
 
         Role Employee = new Role("EMPLOYEE");
         Role Admin = new Role("ROLE_ADMIN");
@@ -185,8 +187,11 @@ public class DbInit implements CommandLineRunner {
         InvoiceProduct invoiceProduct1 = new InvoiceProduct(product1,3.0);
         InvoiceProduct invoiceProduct2 = new InvoiceProduct(product2, 4.0);
 
+        InvoiceProduct invoiceProduct3 = new InvoiceProduct(product1,3.0);
+        InvoiceProduct invoiceProduct4 = new InvoiceProduct(product2, 4.0);
+
         Invoice invoice1 = new Invoice(LocalDate.now(),contractor1, Arrays.asList(invoiceProduct1, invoiceProduct2));
-        Invoice invoice2 = new Invoice(LocalDate.now(),contractor2, Arrays.asList(invoiceProduct2, invoiceProduct1));
+        Invoice invoice2 = new Invoice(LocalDate.now(),contractor2, Arrays.asList(invoiceProduct3, invoiceProduct4));
         List<Invoice> invoices = Arrays.asList(invoice1,invoice2);
         this.invoiceService.saveInvoices(invoices);
     }
