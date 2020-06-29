@@ -1,5 +1,6 @@
 package com.varbro.varbro.service;
 
+import com.varbro.varbro.model.Role;
 import com.varbro.varbro.model.PasswordResetToken;
 import com.varbro.varbro.model.User;
 import com.varbro.varbro.repository.PasswordResetTokenRepository;
@@ -60,6 +61,11 @@ public class UserService {
     public User getUserByEmail(String email) {
 
         return userRepository.findByEmail(email);
+    }
+
+    public List<User> getProductionWorkers() {
+
+        return userRepository.productionWorkers();
     }
 
     public void delete(User user) {
