@@ -43,12 +43,6 @@ public class DbInit implements CommandLineRunner {
     private BeerService beerService;
     private RequestService requestService;
     private VatService vatService;
-
-    public DbInit(UserService userService, RoleService roleService, ProductService productService,
-                  StockService stockService, OrderService orderService, ContractorService contractorService,
-                  BeerService beerService, RequestService requestService, VatService vatService) {
-
-    }
     private InvoiceService invoiceService;
     private ProductServiceFinance productServiceFinance;
     private ContractorServiceFinance contractorServiceFinance;
@@ -56,7 +50,8 @@ public class DbInit implements CommandLineRunner {
 
     public DbInit(UserService userService, RoleService roleService, ProductService productService,
                   StockService stockService, OrderService orderService, ContractorService contractorService,
-                  BeerService beerService, RequestService requestService, InvoiceService invoiceService, ProductServiceFinance productServiceFinance, ContractorServiceFinance contractorServiceFinance) {
+                  BeerService beerService, RequestService requestService, InvoiceService invoiceService,
+                  VatService vatService, ProductServiceFinance productServiceFinance, ContractorServiceFinance contractorServiceFinance) {
         this.userService = userService;
         this.roleService = roleService;
         this.productService = productService;
