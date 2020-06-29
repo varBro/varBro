@@ -15,6 +15,7 @@
             <div class="col-md-8">
                 <h2>New order:</h2>
                 <form action="#" method="post" th:action="@{/logistics/new-order}" th:object="${order}">
+                    <input type="hidden" th:name="request_id" th:value="${request_id}"/>
                     <div class="form-row" th:each="item, itemStat: *{orderItems}">
                         <div class="form-group col-md-5" th:with="productLabel=${itemStat.index + 1}">
                             <label for="productSelect" th:text="${'Product ' + productLabel}"></label>

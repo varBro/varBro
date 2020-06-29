@@ -14,6 +14,7 @@ import java.util.List;
 public interface OrderRepository extends JpaRepository<Order, Long> {
 
     Order findById(long id);
+    Long removeById(long id);
 
     @Query(value = "select * from orders o where extract(month from o.order_time) = ?1 and extract(year from o.order_time) = ?2",
             nativeQuery=true)

@@ -60,6 +60,7 @@ public class ProductionController {
     @GetMapping("/production/request/list")
     public String showRequestsList(Model model) {
         model.addAttribute("requests", requestService.getPendingRequestsOrderedByTime());
+        model.addAttribute("requests_ordered", requestService.getOrderedRequestsOrderedByTime());
         return "production/request/list";
     }
 
