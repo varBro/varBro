@@ -26,9 +26,9 @@
                             <div class="profile-info-name"> Contractor </div>
                             <div class="profile-info-value">
                                 <select id="productSelect" class="form-control selectpicker"
-                                        th:field="*{approved.contractorFinance.name}" >
-                                    <option  th:value="${''}">Select contractorFinance</option>
-                                    <option th:each="contractorFinance : ${contractorFinances}" th:value="${contractorFinance.name}" th:text="${contractorFinance.name}"></option>
+                                        th:field="*{approved.contractor.name}" >
+                                    <option  th:value="${''}">Select contractor</option>
+                                    <option th:each="contractor : ${contractors}" th:value="${contractor.name}" th:text="${contractor.name}"></option>
                                 </select>
                             </div>
                             <button class="btn btn-primary" type="submit" name="submit">SAVE & APPROVE</button>

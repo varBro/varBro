@@ -24,7 +24,7 @@
                     <div class="profile-info-row">
                         <div class="profile-info-name"> Contractor </div>
                         <div class="profile-info-value">
-                            <span th:text="${orderView.contractorFinance?.name}"></span>
+                            <span th:text="${orderView.contractor?.name}"></span>
                         </div>
                     </div>
                     <div class="profile-info-row">
@@ -47,7 +47,7 @@
                     </div>
                     <div class="profile-info-row" th:each="item : ${orderView.orderItems}">
                         <div class="profile-info-value text-center">
-                            <span th:text="${item.productFinance.name}"></span>
+                            <span th:text="${item.product.name}"></span>
                         </div>
                         <div class="profile-info-value text-center">
                             <span th:text="${item.quantity}"></span>
