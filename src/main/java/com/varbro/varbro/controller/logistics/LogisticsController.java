@@ -91,14 +91,11 @@ public class LogisticsController {
             double inStock = (double) stockService.getQuantityOfProductById(ingredient.getIngredient().getId())
                     .orElseThrow(() -> new IllegalArgumentException("Invalid product Id:" + ingredient.getIngredient().getId()));
             double quantity = ingredient.getQuantity() * multiplier;
-            if(inStock - quantity < 0)
-                order.getOrderItems().add(new OrderItem(ingredient.getIngredient(), quantity - inStock));
+            order.getOrderItems().add(new OrderItem(ingredient.getIngredient(), quantity));
         }
-        double bottlesCount = (double) stockService.getQuantityOfBottles()
-                .orElseThrow(() -> new IllegalArgumentException("No bottles found in stock"));
-        if(bottlesCount - request.getAmount() * 2 < 0)
-            order.getOrderItems().add(new OrderItem(productService.getProductByName("Bottle"), request.getAmount() * 2 - bottlesCount));
+        order.getOrderItems().add(new OrderItem(productService.getProductByName("Bottle"), request.getAmount() * 2));
         List<Product> products =  productService.getProducts();
+        model.addAttribute("request_id", request.getId());
         model.addAttribute("products", products);
         return "logistics/new-order";
     }
@@ -123,7 +120,8 @@ public class LogisticsController {
     }
 
     @RequestMapping(value = "/logistics/new-order", params = "submit")
-    public ModelAndView saveOrder(@Valid @ModelAttribute Order order, SessionStatus status, BindingResult bindingResult)
+    public ModelAndView saveOrder(@Valid @ModelAttribute Order order, @RequestParam(value = "request_id", required = false) Long request_id,
+                                  SessionStatus status, BindingResult bindingResult)
     {
         if(!bindingResult.hasErrors()) {
             List<OrderItem> actualOrder = new ArrayList<>();
@@ -134,8 +132,16 @@ public class LogisticsController {
                 }
             }
             Order newOrder = new Order(actualOrder);
+            if(request_id != null) {
+                Request request = requestService.getRequestById(request_id)
+                        .orElseThrow(() -> new IllegalArgumentException("No request by id: " + request_id));
+                newOrder.setRequest(request);
+                request.setStatus(Request.Status.ORDERED);
+                requestService.save(request);
+            }
             orderService.saveOrder(newOrder);
             status.setComplete();
+
             return new ModelAndView("redirect:/logistics/order/" + newOrder.getId());
         }
         return new ModelAndView("redirect:/logistics/new-order");
@@ -176,6 +182,13 @@ public class LogisticsController {
         Order order = orderService.getOrderById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid order Id:" + id));
         order.setOrderStatus(Order.Status.RECEIVED);
+        if(order.getRequest() != null) {
+            Request request = requestService.getRequestById(order.getRequest().getId())
+                    .orElseThrow(() -> new IllegalArgumentException("No request by id: " + order.getRequest().getId()));
+            request.setStatus(Request.Status.READY);
+            stockService.updateStocksSubstitute(request);
+            requestService.save(request);
+        }
         stockService.updateStocksAdd(order);
         orderService.saveOrder(order);
         requestService.updateRequestsAvailability();
@@ -198,6 +211,21 @@ public class LogisticsController {
         model.addAttribute("contractors", contractorService.getContractors());
         model.addAttribute("approved", order);
         return "logistics/order-approve";
+    }
+
+    @GetMapping("/logistics/order/{id}/reject")
+    public String rejectOrder(@PathVariable("id") long id, Model model) {
+        Order order = orderService.getOrderById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid order Id:" + id));
+        if(order.getRequest() != null) {
+            Request request = requestService.getRequestById(order.getRequest().getId())
+                    .orElseThrow(() -> new IllegalArgumentException("No request by id: " + order.getRequest().getId()));
+            request.setStatus(Request.Status.PENDING);
+            requestService.save(request);
+        }
+        orderService.delete(order.getId());
+        model.addAttribute("orders", orderService.getOrdersForApproval());
+        return "logistics/manager/for-approval";
     }
 
     @PostMapping("/logistics/order/{id}/approve")

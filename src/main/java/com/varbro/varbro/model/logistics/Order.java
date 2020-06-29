@@ -2,6 +2,7 @@ package com.varbro.varbro.model.logistics;
 
 
 import com.varbro.varbro.model.User;
+import com.varbro.varbro.model.production.Request;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -26,6 +27,10 @@ public class Order {
     @JoinColumn(name = "contractor_id")
     private Contractor contractor;
 
+    @OneToOne
+    @JoinColumn(name = "request_id")
+    private Request request;
+
     public enum Status {
         PLACED,
         IN_PROGRESS,
@@ -43,6 +48,7 @@ public class Order {
         this.orderTime = LocalDate.now();
         this.orderStatus = Status.PLACED;
         this.contractor = null;
+        this.request = null;
     }
 
     public long getId() {
@@ -80,6 +86,11 @@ public class Order {
     public void setContractor(Contractor contractor) {
         this.contractor = contractor;
     }
+
+    public void setRequest(Request request) {this.request = request;}
+
+    public Request getRequest() { return this.request; }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
