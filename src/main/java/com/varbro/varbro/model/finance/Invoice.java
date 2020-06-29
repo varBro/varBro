@@ -15,7 +15,7 @@ public class Invoice {
 
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="contractor_finance_id")
-    ContractorFinance contractorFinance;
+    ContractorFinance contractor;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name="invoice_id")
@@ -28,7 +28,7 @@ public class Invoice {
 
     public Invoice(LocalDate date, ContractorFinance contractorFinance, List<InvoiceProduct> products) {
         this.date = date;
-        this.contractorFinance = contractorFinance;
+        this.contractor = contractorFinance;
         this.products = products;
     }
 
@@ -60,12 +60,12 @@ public class Invoice {
         this.id = id;
     }
 
-    public ContractorFinance getContractorFinance() {
-        return contractorFinance;
+    public ContractorFinance getContractor() {
+        return contractor;
     }
 
-    public void setContractorFinance(ContractorFinance contractorFinance) {
-        this.contractorFinance = contractorFinance;
+    public void setContractor(ContractorFinance contractorFinance) {
+        this.contractor = contractorFinance;
     }
 
     public double getTotalCost() {

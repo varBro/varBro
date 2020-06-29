@@ -15,10 +15,10 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
-                <h2>New productFinance:</h2>
+                <h2>New product:</h2>
 
 
-                <form action="#" th:action="@{/finance/invoice/add/productFinance}" th:object="${productFinance}" method="post">
+                <form action="#" th:action="@{/finance/invoice/add/product}" th:object="${product}" method="post">
                     <div class="form-group">
                         <label for="productName">Name</label>
                         <input type="text" class="form-control" id="productName" placeholder="Enter productFinance name" th:field="*{name}">
@@ -26,7 +26,7 @@
 
                     <div class="form-group">
                         <label for="productPrice">Price</label>
-                        <input type="text" class="form-control" id="productPrice" placeholder="Enter productFinance price" th:field="*{price}">
+                        &#8383;<input type="text" class="form-control" id="productPrice" placeholder="Enter productFinance price" th:field="*{price}">
                     </div>
 
                     <button type="submit" class="btn btn-primary">Add productFinance</button>

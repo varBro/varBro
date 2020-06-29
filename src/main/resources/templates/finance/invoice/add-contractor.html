@@ -15,9 +15,9 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
-                <h2>New contractorFinance:</h2>
+                <h2>New contractor:</h2>
 
-                <form action="#" th:action="@{/finance/invoice/add/contractorFinance}" th:object="${contractorFinance}" method="post">
+                <form action="#" th:action="@{/finance/invoice/add/contractor}" th:object="${contractor}" method="post">
                     <div class="form-group">
                         <label for="contractorName">Name</label>
                         <input type="text" class="form-control" id="contractorName" placeholder="Enter contractorFinance name" th:field="*{name}">
