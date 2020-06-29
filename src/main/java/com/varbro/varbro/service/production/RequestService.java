@@ -42,6 +42,10 @@ public class RequestService {
 
     public Iterable<Request> getPendingRequests() {return requestRepository.findByStatus(Request.Status.PENDING);}
 
+    public Iterable<Request> getOrderedRequestsOrderedByTime() {
+        return requestRepository.findByStatusOrderByTime(Request.Status.ORDERED);
+    }
+
     public Iterable<Request> getPendingRequestsOrderedByTime() {
         return requestRepository.findByStatusOrderByTime(Request.Status.PENDING);
     }

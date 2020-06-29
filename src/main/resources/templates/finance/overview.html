@@ -71,6 +71,24 @@
                     </div>
                     <div class="col-md-6">
                         <h2 class="text-center">REVENUES</h2>
+                        <div class="profile-user-info">
+                            <div class="profile-info-row">
+                                <div class="profile-info-name"> Company </div>
+                                <div class="profile-info-name"> Amount </div>
+                                <div class="profile-info-name"> Date </div>
+                            </div>
+                            <div class="profile-info-row" th:each="revenue : ${revenues}">
+                                <div class="profile-info-value">
+                                    <span th:text="${revenue.contractorFinance.name}"></span>
+                                </div>
+                                <div class="profile-info-value">
+                                    <span th:text="${revenue.getTotalCost()}"></span>
+                                </div>
+                                <div class="profile-info-value">
+                                    <span th:text="${revenue.date}"></span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

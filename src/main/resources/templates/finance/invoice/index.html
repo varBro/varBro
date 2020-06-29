@@ -1,0 +1,32 @@
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Invoice</title>
+</head>
+<body>
+<ol layout:fragment="breadcrumbs" class="breadcrumb pl-5">
+    <li class="breadcrumb-item"><a href="/default">Home</a></li>
+    <li class="breadcrumb-item"><a href="/finance">Finance</a></li>
+    <li class="breadcrumb-item active">Invoice</li>
+</ol>
+<section layout:fragment="content">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <h2>Invoices:</h2>
+                <div class="form-row" th:each="invoice, invoiceStats: ${invoices}">
+                    <label for="invoiceDate">Date:</label>
+                    <a id="invoiceDate" class="form-group col-md-2" th:href="@{/finance/invoice/__${invoice.id}__/show}" th:text="${invoice.date}"></a>
+                    <label for="invoiceContractor">Contractor:</label>
+                    <div id="invoiceContractor" class="form-group col-md-2" th:text="${invoice.contractorFinance.name}"></div>
+                    <label for="invoiceTotal">Cost:</label>
+                    <div id="invoiceTotal" class="form-group col-md-2" th:text="${'&#8383;' + invoice.getTotalCost()}"></div>
+                </div>
+                <h2>New invoice:</h2>
+                <a th:href="@{/finance/invoice/add}">Add new invoice</a>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>

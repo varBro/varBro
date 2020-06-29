@@ -13,8 +13,8 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
-                <h2 th:if="${#lists.isEmpty(requests)}" class="text-center">No current requests!</h2>
-                <table th:if="${not #lists.isEmpty(requests)}" class="table table-striped">
+                <h2 th:if="${#lists.isEmpty(requests) and #lists.isEmpty(requests_ordered)}" class="text-center">No current requests!</h2>
+                <table th:if="${not #lists.isEmpty(requests) or not #lists.isEmpty(requests_ordered)}" class="table table-striped">
                     <thead class="thead-dark">
                     <tr>
                         <th scope="col">#</th>
@@ -25,6 +25,18 @@
                     </tr>
                     </thead>
                     <tbody>
+                    <tr th:each="request: ${requests_ordered}">
+                        <td th:text="${request.id}"></td>
+                        <td th:if="${request.enoughIngredients}"><span class="badge badge-success">✓</span></td>
+                        <td th:unless="${request.enoughIngredients}"><span class="badge badge-danger">✗</span></td>
+                        <td th:text="${request.time}"></td>
+                        <td><a class="btn btn-success" th:href="@{/production/request/{id}(id=${request.id})}" role="button">Details</a></td>
+                        <th:block th:if="${#authorization.expression('hasAuthority(''ROLE_LOGISTICS'')')}">
+                            <td>
+                                <a class="btn btn-primary" role="button" th:href="@{/logistics/order/{id}(id=${request.order.id})}">Show order</a>
+                            </td>
+                        </th:block>
+                    </tr>
                     <tr th:each="request: ${requests}">
                         <td th:text="${request.id}"></td>
                         <td th:if="${request.enoughIngredients}"><span class="badge badge-success">✓</span></td>

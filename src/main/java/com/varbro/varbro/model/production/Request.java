@@ -29,10 +29,12 @@ public class Request {
     private boolean enoughIngredients;
     @NotNull
     private LocalDate time;
-
+    @OneToOne(mappedBy = "request")
+    private Order order;
 
     public enum Status {
         PENDING,
+        ORDERED,
         READY
     }
 
@@ -79,6 +81,8 @@ public class Request {
     public LocalDate getTime() {
         return this.time;
     }
+
+    public Order getOrder() { return this.order; }
 
     @Override
     public boolean equals(Object o) {

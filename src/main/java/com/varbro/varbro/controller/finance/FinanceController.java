@@ -1,7 +1,9 @@
 package com.varbro.varbro.controller.finance;
 
+import com.varbro.varbro.model.finance.Invoice;
 import com.varbro.varbro.service.RoleService;
 import com.varbro.varbro.service.finance.ExpenseService;
+import com.varbro.varbro.service.finance.InvoiceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,6 +21,9 @@ public class FinanceController {
     RoleService roleService;
     @Autowired
     ExpenseService expenseService;
+
+    @Autowired
+    InvoiceService invoiceService;
 
     @GetMapping("/finance")
     public String financeIndex() {
@@ -47,13 +52,13 @@ public class FinanceController {
     public void addOverviewAtribbutes(Model model, String month, String year)
     {
         BigDecimal expenseSum = expenseService.getSumOfMonthlyExpenses(month, year);
-        BigDecimal revenueSum = BigDecimal.valueOf(0);
+        BigDecimal revenueSum = BigDecimal.valueOf(invoiceService.getSumOfMonthlyInvoices(month, year));
         model.addAttribute("localDate",  year + "-" + month);
         model.addAttribute("monthlyExpensesSum", expenseSum);
         model.addAttribute("monthlyRevenueSum", revenueSum);
         model.addAttribute("balance", revenueSum.subtract(expenseSum));
         model.addAttribute("expenses", expenseService.getMonthlyExpenses(month, year));
-
+        model.addAttribute("revenues", invoiceService.getMonthlyInvoices(month, year));
     }
 
 }
