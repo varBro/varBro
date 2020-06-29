@@ -53,7 +53,7 @@
                         </div>
                         <div class="profile-info-row" th:each="item : ${approved.orderItems}">
                             <div class="profile-info-value text-center">
-                                <span th:text="${item.productFinance.name}"></span>
+                                <span th:text="${item.product.name}"></span>
                             </div>
                             <div class="profile-info-value text-center">
                                 <span th:text="${item.quantity}"></span>
