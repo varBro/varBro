@@ -77,7 +77,7 @@ public class UserService {
         return userRepository.getOne(id);
     }
 
-    public boolean requestPasswordReset(String email) throws MessagingException {
+    public boolean requestPasswordReset(String email) {
         boolean returnValue = false;
 
         User user = userRepository.findByEmail(email);
@@ -96,7 +96,7 @@ public class UserService {
 
         MailService mailService = new MailService();
         mailService.sendPasswordResetRequest(user.getEmail(), token,true);
-
+        returnValue = true;
         return returnValue;
     }
 

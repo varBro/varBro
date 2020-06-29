@@ -2,6 +2,7 @@ package com.varbro.varbro.service;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMailMessage;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -28,15 +29,27 @@ public class MailService {
         javaMailSender.send(mimeMessage);
     }
 
-    public void sendPasswordResetRequest(String to, String token, boolean isHtmlContent) throws MessagingException {
+
+
+    public void sendPasswordResetRequest(String to, String token, boolean isHtmlContent)  {
         final String subject = "Password reset";
-        final String passwordResetBody = "<a href='http://192.168.99.100:8080?token=" + token + "'</a><br/>";
+        final String passwordResetBody = "<a href='http://192.168.99.100:8080?token=" + token + "'</a><br/>" +
+                                         "<a href='http://localhost:8080?token=" + token + "'</a><br/>";
         try {
             sendMail(to, subject, passwordResetBody, isHtmlContent);
-        }
-        catch (MessagingException mex){
+        } catch (MessagingException mex) {
             mex.printStackTrace();
         }
+    }
+
+    //just for test cases
+    public void testMail(String to, String subject, String content) {
+        SimpleMailMessage msg = new SimpleMailMessage();
+        msg.setTo(to);
+        msg.setSubject(subject);
+        msg.setText(content);
+
+        javaMailSender.send(msg);
     }
 
 

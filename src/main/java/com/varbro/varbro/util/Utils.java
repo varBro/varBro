@@ -16,7 +16,6 @@ public class Utils {
                 .setExpiration(new Date(System.currentTimeMillis() + 864000000))
                 .signWith(SignatureAlgorithm.HS512, TextCodec.BASE64.decode("Yn2kjibddFAWtnPJ2AFlL8WXmohJMCvigQggaEypa5E="))
                 .compact();
-        //TO DO - GENERATE TOKEN
         return token;
     }
 }
