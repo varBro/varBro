@@ -1,6 +1,7 @@
 package com.varbro.varbro.controller;
 
 import com.varbro.varbro.model.User;
+import com.varbro.varbro.service.MailService;
 import com.varbro.varbro.service.RoleService;
 import com.varbro.varbro.service.UserService;
 import org.passay.CharacterData;
@@ -8,6 +9,7 @@ import org.passay.CharacterRule;
 import org.passay.EnglishCharacterData;
 import org.passay.PasswordGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -128,6 +130,7 @@ public class UserController {
         userService.saveUser(user);
         return new ModelAndView("redirect:/user/" + user.getId());
     }
+
 
     public String generatePassayPassword() {
         PasswordGenerator gen = new PasswordGenerator();
