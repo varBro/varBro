@@ -18,6 +18,7 @@
                     </div>
                     <div class="links">
                         <a th:href="@{/production/beers}">Beers</a>
+                        <a sec:authorize="hasAuthority('MANAGER')" th:href="@{/production/add-new-recipe}">Add new recipe</a>
                     </div>
                 </div>
             </div>
