@@ -18,7 +18,7 @@ public class ContractorService {
         contractorRepository.save(contractor);
     }
 
-    public void saveContractors(Set<Contractor> contractors) {
+    public void saveContractors(Iterable<Contractor> contractors) {
         contractorRepository.saveAll(contractors);
     }
 

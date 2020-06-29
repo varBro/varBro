@@ -5,7 +5,6 @@ import com.varbro.varbro.model.finance.Invoice;
 import com.varbro.varbro.model.finance.InvoiceProduct;
 import com.varbro.varbro.model.finance.Product;
 import com.varbro.varbro.service.finance.ContractorService;
-import com.varbro.varbro.service.finance.InvoiceProductService;
 import com.varbro.varbro.service.finance.InvoiceService;
 import com.varbro.varbro.service.finance.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +22,6 @@ public class InvoiceController {
 
     @Autowired
     private ProductService productService;
-
-    @Autowired
-    private InvoiceProductService invoiceProductService;
 
     @GetMapping("/finance/invoice")
     public String index() {

@@ -13,19 +13,25 @@ public class Invoice {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="invoice_id")
     private Long id;
-    private double price;
     private LocalDate date;
 
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="contractor_id")
     Contractor contractor;
 
-    @OneToMany(mappedBy = "invoice")
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name="invoice_id")
     private List<InvoiceProduct> products;
 
     public Invoice() {
         products = new ArrayList<InvoiceProduct>();
         products.add(new InvoiceProduct());
+    }
+
+    public Invoice(LocalDate date, Contractor contractor, List<InvoiceProduct> products) {
+        this.date = date;
+        this.contractor = contractor;
+        this.products = products;
     }
 
     public List<InvoiceProduct> getProducts() {
@@ -46,14 +52,6 @@ public class Invoice {
 
     public void setDate(LocalDate date) {
         this.date = date;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
     }
 
     public Long getId() {

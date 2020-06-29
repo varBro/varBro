@@ -17,7 +17,7 @@ public class ProductService {
         productRepository.save(product);
     }
 
-    public void saveProducts(Set<Product> products) {
+    public void saveProducts(Iterable<Product> products) {
         productRepository.saveAll(products);
     }
 

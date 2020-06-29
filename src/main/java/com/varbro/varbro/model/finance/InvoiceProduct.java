@@ -10,10 +10,17 @@ public class InvoiceProduct {
     private Long id;
 
     @ManyToOne
-    Invoice invoice;
-
-    @ManyToOne
+    @JoinColumn(name = "product_id")
     Product product;
+
+    public InvoiceProduct()
+    {
+    }
+
+    public InvoiceProduct(Product product, double amount) {
+        this.product = product;
+        this.amount = amount;
+    }
 
     double amount;
 
@@ -23,14 +30,6 @@ public class InvoiceProduct {
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public Invoice getInvoice() {
-        return invoice;
-    }
-
-    public void setInvoice(Invoice invoice) {
-        this.invoice = invoice;
     }
 
     public Product getProduct() {

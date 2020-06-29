@@ -17,7 +17,7 @@ public class InvoiceService {
         invoiceRepository.save(invoice);
     }
 
-    public void saveInvoices(Set<Invoice> invoices) {
+    public void saveInvoices(Iterable<Invoice> invoices) {
         invoiceRepository.saveAll(invoices);
     }
 

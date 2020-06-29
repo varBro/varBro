@@ -1,0 +1,39 @@
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Add invoice</title>
+</head>
+<body>
+<ol layout:fragment="breadcrumbs" class="breadcrumb pl-5">
+    <li class="breadcrumb-item"><a href="/default">Home</a></li>
+    <li class="breadcrumb-item"><a href="/finance">Finance</a></li>
+    <li class="breadcrumb-item"><a href="/finance/invoice">Invoice</a></li>
+    <li class="breadcrumb-item active">Show</li>
+</ol>
+<section layout:fragment="content">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <h2>Invoice:</h2>
+                <label for="date">Date:</label>
+                <div id="date" th:text="${invoice.date}"></div>
+                <label for="contractor">Contractor:</label>
+                <div id="contractor" class="form-row">
+                    <label for="contractorName">Name:</label>
+                    <div id="contractorName" class="form-group col-md-3" th:text="${invoice.contractor.name}"></div>
+                    <label for="contractorAddress">Adress:</label>
+                    <div id="contractorAddress" class="form-group col-md-4" th:text="${invoice.contractor.address}"></div>
+                    <label for="contractorIdNumber">ID's Number:</label>
+                    <div id="contractorIdNumber" class="form-group col-md-3" th:text="${invoice.contractor.identificationNumber}"></div>
+                </div>
+                <label for="products">Products:</label>
+                <div id="products" class="form-row" th:each="product, productStats: ${invoice.products}">
+                    <label for="productName">Name:</label>
+                    <div id="productName" class="form-group col-md-3" th:text="${invoice.products[__${productStats.index}__].name}"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>

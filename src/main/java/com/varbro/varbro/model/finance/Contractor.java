@@ -8,6 +8,16 @@ public class Contractor {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="contractor_id")
     private Long id;
+
+    public Contractor() {
+    }
+
+    public Contractor(String name, String address, String identificationNumber) {
+        this.name = name;
+        this.address = address;
+        this.identificationNumber = identificationNumber;
+    }
+
     private String name;
     private String address;
     private String identificationNumber;
