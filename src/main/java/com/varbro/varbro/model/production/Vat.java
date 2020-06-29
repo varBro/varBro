@@ -17,10 +17,11 @@ public class Vat {
     @JoinColumn(name = "beer_id")
     private Beer beer;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
 
+    @Enumerated(EnumType.STRING)
     private ProcessPhase processPhase;
     private int capacity;
     private LocalDate startTime;
@@ -28,14 +29,24 @@ public class Vat {
 
     public enum ProcessPhase {
         NOT_STARTED("Not started"),
-        Malting,
-        Mashing,
-        Lautering,
-        Boiling,
-        Fermenting,
-        Conditioning,
-        Filtering,
-        Packaging
+        MALTING("Malting"),
+        MASHING("Mashing"),
+        LAUTERING("Lautering"),
+        BOILING("Boiling"),
+        FERMENTING("Fermenting"),
+        CONDITIONING("Conditioning"),
+        FILTERING("Filtering"),
+        PACKAGING("Packaging");
+
+        private String displayName;
+
+        ProcessPhase(String displayName) {
+            this.displayName = displayName;
+        }
+
+        public String displayName() { return displayName; }
+
+        @Override public String toString() { return displayName; }
     }
 
     public Vat() {}
@@ -67,11 +78,11 @@ public class Vat {
 
     public LocalDate getStartTime() { return startTime; }
 
-    public void setStartTime(LocalDate startTime) { this.startTime = LocalDate.now(); }
+    public void setStartTime() { this.startTime = LocalDate.now(); }
 
     public LocalDate getLastUpdated() { return lastUpdated; }
 
-    public void setLastUpdated(LocalDate lastUpdated) { this.lastUpdated = LocalDate.now(); }
+    public void setLastUpdated() { this.lastUpdated = LocalDate.now(); }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -1,0 +1,61 @@
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{layouts/layout}">
+<head>
+    <title>Vats list</title>
+</head>
+<body>
+<ol layout:fragment="breadcrumbs" class="breadcrumb pl-5">
+    <li class="breadcrumb-item"><a href="/default">Home</a></li>
+    <li class="breadcrumb-item"><a href="/production">Production</a></li>
+    <li class="breadcrumb-item active">Vats</li>
+</ol>
+<section layout:fragment="content">
+    <div class="container" >
+        <div class="row justify-content-center" th:each="vat, iter : ${vats}">
+            <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row align-items-start">
+                                <div class="col">
+                                    <h4 th:text="${'Vat #' + iter.count}"></h4>
+                                </div>
+                                <div class="col">
+                                    <h5 th:text="${'Capacity: ' + vat.capacity + ' liters'}"></h5>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row align-items-center">
+                                <div class="col">
+                                    <p th:text="${'Status: ' + vat.getProcessPhase().displayName()}"></p>
+                                </div>
+                                <div class="col">
+                                    <span th:if="${vat.user}">Assigned to: </span>
+                                    <a th:if="${vat.user}" th:text="${vat.user.getName() + ' ' + vat.user.getSurname()}" th:href="@{/user/{id}(id=${vat.user.getId()})}"></a>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row align-items-end">
+                                <div class="col">
+                                    <p th:if="${vat.startTime}" th:text="${'Started: ' + vat.startTime}"></p>
+                                </div>
+                                <div class="col">
+                                    <p th:if="${vat.lastUpdated}" th:text="${'Last update: ' + vat.getLastUpdated()}"></p>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col align-self-end">
+                                    <a class="card-link" th:href="@{/production/vat/{id}(id=${vat.id})}">Show details</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <br>
+            </div>
+        </div>
+    </div>
+</section>
+
+</body>
+</html>

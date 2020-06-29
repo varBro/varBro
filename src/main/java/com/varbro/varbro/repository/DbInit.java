@@ -5,6 +5,7 @@ import com.varbro.varbro.model.Role;
 import com.varbro.varbro.model.User;
 import com.varbro.varbro.model.production.Beer;
 import com.varbro.varbro.model.production.BeerIngredient;
+import com.varbro.varbro.model.production.Vat;
 import com.varbro.varbro.service.RoleService;
 import com.varbro.varbro.service.UserService;
 import com.varbro.varbro.service.logistics.ContractorService;
@@ -13,6 +14,7 @@ import com.varbro.varbro.service.logistics.ProductService;
 import com.varbro.varbro.service.logistics.StockService;
 import com.varbro.varbro.service.production.BeerService;
 import com.varbro.varbro.service.production.RequestService;
+import com.varbro.varbro.service.production.VatService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,10 +35,11 @@ public class DbInit implements CommandLineRunner {
     private ContractorService contractorService;
     private BeerService beerService;
     private RequestService requestService;
+    private VatService vatService;
 
     public DbInit(UserService userService, RoleService roleService, ProductService productService,
                   StockService stockService, OrderService orderService, ContractorService contractorService,
-                  BeerService beerService, RequestService requestService) {
+                  BeerService beerService, RequestService requestService, VatService vatService) {
         this.userService = userService;
         this.roleService = roleService;
         this.productService = productService;
@@ -45,11 +48,13 @@ public class DbInit implements CommandLineRunner {
         this.contractorService = contractorService;
         this.beerService = beerService;
         this.requestService = requestService;
+        this.vatService = vatService;
     }
 
     @Override
     public void run(String... args) {
 
+        this.vatService.deleteAll();
         this.userService.deleteAll();
         this.roleService.deleteAll();
         this.stockService.deleteAll();
@@ -76,6 +81,7 @@ public class DbInit implements CommandLineRunner {
         User ADMIN = new User("Admin", "Admin", "$2a$10$XHOXjTseWpp9vA9NAe7unOYOQJY58bpZDcxLGn1pkNNf1QJrETfJ6", "admin@admin.com", "213721372", User.Department.IT, "12345678901234567890123456", 99999, "12345678901", User.Position.ADMIN);
         User ADMIN1 = new User("Dummy", "Dummy", "$2a$10$XHOXjTseWpp9vA9NAe7unOYOQJY58bpZDcxLGn1pkNNf1QJrETfJ6", "dummy@test.com", "777777777", User.Department.IT, "09876543210987654321123456", 99999, "09876543211", User.Position.ADMIN);
         User JOHN = new User("John", "Doe", "$2a$10$XHOXjTseWpp9vA9NAe7unOYOQJY58bpZDcxLGn1pkNNf1QJrETfJ6", "john.doe@gmail.com", "666666666", User.Department.PRODUCTION, "12345678900987654321123456", 99999, "09876123455");
+        User JOHN1 = new User("Johnny", "Dore", "$2a$10$XHOXjTseWpp9vA9NAe7unOYOQJY58bpZDcxLGn1pkNNf1QJrETfJ6", "john1.doe@gmail.com", "666666666", User.Department.PRODUCTION, "12345678900987654321123456", 99999, "09876123455");
         User JP = new User("Jan", "Pawel", "$2a$10$XHOXjTseWpp9vA9NAe7unOYOQJY58bpZDcxLGn1pkNNf1QJrETfJ6", "janpawel2@gmail.com", "213721377", User.Department.FINANCE, "21370012345678901234567890", 2137, "21372137213");
         User BARBARA = new User("Baśka", "Kwarc", "$2a$10$XHOXjTseWpp9vA9NAe7unOYOQJY58bpZDcxLGn1pkNNf1QJrETfJ6", "bacha@gmail.com", "666997112", User.Department.HR, "21370012345648592474567890", 3137, "690628475", User.Position.MANAGER);
         User WIESIO = new User("Wiesław", "Paleta", "$2a$10$XHOXjTseWpp9vA9NAe7unOYOQJY58bpZDcxLGn1pkNNf1QJrETfJ6", "wpaleta@gmail.com", "663427112", User.Department.LOGISTICS, "21370012146824753482567890", 5137, "590427475", User.Position.MANAGER);
@@ -88,7 +94,7 @@ public class DbInit implements CommandLineRunner {
         WIESIO.setRoles(new HashSet(Arrays.asList(Employee, Logistics, Manager)));
         PanWIESIO.setRoles(new HashSet(Arrays.asList(Employee, Production, Manager)));
 
-        List<User> users = Arrays.asList(ADMIN, ADMIN1, JOHN, JP, BARBARA, WIESIO, PanWIESIO);
+        List<User> users = Arrays.asList(ADMIN, ADMIN1, JOHN, JOHN1, JP, BARBARA, WIESIO, PanWIESIO);
 
         this.userService.saveUsers(users);
 
@@ -152,6 +158,19 @@ public class DbInit implements CommandLineRunner {
 
         List<Contractor> contractors = Arrays.asList(JANUSZEX, DAMIANPOL);
         this.contractorService.saveContractors(contractors);
+
+        Vat vat1 = new Vat(15000);
+        vat1.setStartTime();
+        vat1.setProcessPhase(Vat.ProcessPhase.MALTING);
+        vat1.setLastUpdated();
+        vat1.setUser(JOHN);
+        Vat vat2 = new Vat(10000);
+        Vat vat3 = new Vat(10000);
+        Vat vat4 = new Vat(5000);
+
+        List<Vat> vats = Arrays.asList(vat1,vat2,vat3,vat4);
+        vatService.saveVats(vats);
+
 
 
     }

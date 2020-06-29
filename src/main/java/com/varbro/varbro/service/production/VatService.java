@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class VatService {
@@ -23,5 +24,11 @@ public class VatService {
 
     public void deleteAll() {
         vatRepository.deleteAll();
+    }
+
+    public Iterable<Vat> getVatsOrderedByCapacity() { return vatRepository.findAllByOrderByCapacityDesc();}
+
+    public Optional<Vat> getVatById(long id) {
+        return vatRepository.findById(id);
     }
 }
