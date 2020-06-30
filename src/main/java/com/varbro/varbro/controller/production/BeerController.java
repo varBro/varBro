@@ -50,15 +50,11 @@ public class BeerController {
 
     @GetMapping("/production/add-new-recipe")
     public String addBeer(Model model) {
-        model.addAttribute("beer", new Beer());
+        Beer beer = new Beer();
+        Set<BeerIngredient> beerIngredients = new HashSet<>();
+        beerIngredients.add(new BeerIngredient());
+        beer.setBeerIngredients(beerIngredients);
+        model.addAttribute("beer", beer);
         return "production/add-new-recipe";
     }
-
-//    @PostMapping("/production/add-new-recipe")
-//    public String addBeerSubmit(@Valid @ModelAttribute("beer") Beer beer, BindingResult bindingResult) {
-//        if (!bindingResult.hasErrors()) {
-//            beerService.saveBeer(beer);
-//        }
-//        return "production/index";
-//    }
 }
