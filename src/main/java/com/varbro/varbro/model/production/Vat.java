@@ -28,6 +28,7 @@ public class Vat {
     private LocalDate lastUpdated;
 
     public enum ProcessPhase {
+        NOT_ASSIGNED("Not assigned"),
         NOT_STARTED("Not started"),
         MALTING("Malting"),
         MASHING("Mashing"),
@@ -52,7 +53,7 @@ public class Vat {
     public Vat() {}
 
     public Vat(int capacity) {
-        this.processPhase = ProcessPhase.NOT_STARTED;
+        this.processPhase = ProcessPhase.NOT_ASSIGNED;
         this.capacity = capacity;
     }
 

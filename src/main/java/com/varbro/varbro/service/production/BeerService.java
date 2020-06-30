@@ -29,6 +29,10 @@ public class BeerService {
         beerRepository.deleteAll();
     }
 
+    public Beer getBeerByName(String name) { return beerRepository.findByName(name); }
+
+    public Iterable<Beer> getBeers() { return beerRepository.findAll(); }
+
     public Iterable<Beer> getBeersOrderedByName() {
         return beerRepository.findAllByOrderByName();
     }

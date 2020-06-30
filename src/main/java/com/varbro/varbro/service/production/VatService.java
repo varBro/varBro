@@ -26,6 +26,8 @@ public class VatService {
         vatRepository.deleteAll();
     }
 
+    public Iterable<Vat> getVats() { return vatRepository.findAll(); }
+
     public Iterable<Vat> getVatsOrderedByCapacity() { return vatRepository.findAllByOrderByCapacityDesc();}
 
     public Optional<Vat> getVatById(long id) {

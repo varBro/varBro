@@ -74,8 +74,6 @@ public class DbInit implements CommandLineRunner {
         this.userService.deleteAll();
         this.roleService.deleteAll();
         this.invoiceService.deleteAll();
-        this.contractorService.deleteAll();
-        this.productService.deleteAll();
         this.stockService.deleteAll();
         this.orderService.deleteAll();
         this.productService.deleteAll();
@@ -190,6 +188,7 @@ public class DbInit implements CommandLineRunner {
         vat1.setProcessPhase(Vat.ProcessPhase.MALTING);
         vat1.setLastUpdated();
         vat1.setUser(JOHN);
+        vat1.setBeer(Ipa);
         Vat vat2 = new Vat(10000);
         Vat vat3 = new Vat(10000);
         Vat vat4 = new Vat(5000);

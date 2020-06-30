@@ -37,6 +37,10 @@ public class UserService {
         return userRepository.findAll();
     }
 
+    public User getUserByNameAndSurname(String name, String surname) {
+        return userRepository.findUserByNameAndSurname(name, surname);
+    }
+
     public Iterable<User> getUsersOrderedBySurname() {
         return userRepository.findAllByOrderBySurname();
     }
