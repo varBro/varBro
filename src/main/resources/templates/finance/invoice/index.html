@@ -18,7 +18,7 @@
                     <label for="invoiceDate">Date:</label>
                     <a id="invoiceDate" class="form-group col-md-2" th:href="@{/finance/invoice/__${invoice.id}__/show}" th:text="${invoice.date}"></a>
                     <label for="invoiceContractor">Contractor:</label>
-                    <div id="invoiceContractor" class="form-group col-md-2" th:text="${invoice.contractorFinance.name}"></div>
+                    <div id="invoiceContractor" class="form-group col-md-2" th:text="${invoice.contractor.name}"></div>
                     <label for="invoiceTotal">Cost:</label>
                     <div id="invoiceTotal" class="form-group col-md-2" th:text="${'&#8383;' + invoice.getTotalCost()}"></div>
                 </div>
