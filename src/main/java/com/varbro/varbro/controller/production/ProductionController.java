@@ -101,7 +101,7 @@ public class ProductionController {
         stockService.updateStocksSubstitute(request);
         requestService.save(request);
         requestService.updateRequestsAvailability();
-        return "production/request/list";
+        return "redirect:/production/request/list";
     }
 
 }
