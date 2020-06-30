@@ -1,15 +1,21 @@
 package com.varbro.varbro.controller.production;
 
+import com.varbro.varbro.model.finance.Expense;
+import com.varbro.varbro.model.logistics.Order;
 import com.varbro.varbro.model.production.Beer;
+import com.varbro.varbro.model.production.BeerIngredient;
 import com.varbro.varbro.service.production.BeerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.validation.Valid;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Controller
 public class BeerController {
@@ -42,4 +48,17 @@ public class BeerController {
         return "production/recipe";
     }
 
+    @GetMapping("/production/add-new-recipe")
+    public String addBeer(Model model) {
+        model.addAttribute("beer", new Beer());
+        return "production/add-new-recipe";
+    }
+
+//    @PostMapping("/production/add-new-recipe")
+//    public String addBeerSubmit(@Valid @ModelAttribute("beer") Beer beer, BindingResult bindingResult) {
+//        if (!bindingResult.hasErrors()) {
+//            beerService.saveBeer(beer);
+//        }
+//        return "production/index";
+//    }
 }

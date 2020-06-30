@@ -14,7 +14,6 @@ import com.varbro.varbro.service.logistics.StockService;
 import com.varbro.varbro.service.production.BeerService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -100,8 +99,8 @@ public class DbInit implements CommandLineRunner {
         List<Stock> stocks = Arrays.asList(BARLEY_STOCK, HOPS_STOCK, YEAST_STOCK, BOTTLE_STOCK);
         this.stockService.saveStocks(stocks);
 
-        beerService.saveBeer(new Beer("Pilsner", new BeerIngredient(HOPS, 5, BeerIngredient.IngredientType.HOP), new BeerIngredient(YEAST, 2, BeerIngredient.IngredientType.YEAST)));
-        Beer Ipa = new Beer("IPA");
+        this.beerService.saveBeer(new Beer("Pilsner", "Dodać składniki i wymieszać", new BeerIngredient(HOPS, 5, BeerIngredient.IngredientType.HOP), new BeerIngredient(YEAST, 2, BeerIngredient.IngredientType.YEAST)));
+        Beer Ipa = new Beer("IPA", "Pozostawić w kadzi na dwa tygodnie");
         BeerIngredient ipaIngredient1 = new BeerIngredient(YEAST, 3, BeerIngredient.IngredientType.YEAST);
         ipaIngredient1.setBeer(Ipa);
         Ipa.getBeerIngredients().add(ipaIngredient1);
