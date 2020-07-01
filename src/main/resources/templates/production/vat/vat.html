@@ -13,17 +13,19 @@
 </ol>
 <section layout:fragment="content">
     <div class="container">
+        <div th:if="${vat.processPhase.displayName() != 'Not assigned'}">
+        <h2 class="text-center" th:text="${'VAT #' + vat.id}"></h2>
         <div class="profile-user-info">
             <div class="profile-info-row">
                 <div class="profile-info-name"> Beer </div>
                 <div class="profile-info-value">
-                    <!--span th:text="${vat.beer.getName()}"></span-->
+                    <span th:if="${vat.beer}" th:text="${vat.beer.getName()}"></span>
                 </div>
             </div>
             <div class="profile-info-row">
                 <div class="profile-info-name"> Amount </div>
                 <div class="profile-info-value">
-                    <span th:if="${vat.processPhase.displayName() != 'Not started'}" th:text="${vat.capacity + ' litres'}"></span>
+                    <span th:text="${vat.capacity + ' litres'}"></span>
                 </div>
             </div>
             <div class="profile-info-row">
@@ -48,16 +50,9 @@
                 <div class="profile-info-name"> Assigned to </div>
                 <div class="profile-info-value">
                     <a th:if="${vat.user}" th:text="${vat.user.getName() + ' ' + vat.user.getSurname()}" th:href="@{/user/{id}(id=${vat.user.getId()})}"></a>
-                    <div class="dropdown" th:if="${vat.user == null}" sec:authorize="hasAuthority('MANAGER')">
-                        <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Assign
-                        </button>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <a class="dropdown-item" href="#" th:each="user : ${users}" th:text="${user.name + ' ' + user.surname}"></a>
-                        </div>
-                    </div>
                 </div>
             </div>
+        </div>
         </div>
     </div>
 </section>
