@@ -6,6 +6,8 @@ import com.varbro.varbro.service.UserService;
 import com.varbro.varbro.service.production.BeerService;
 import com.varbro.varbro.service.production.VatService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -36,7 +38,11 @@ public class VatController {
         Vat vat = vatService.getVatById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid vat Id:" + id));
 
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String email = ((UserDetails)principal).getUsername();
+
         model.addAttribute("vat", vat);
+        model.addAttribute("user", userService.getUserByEmail(email));
 
         return "production/vat/vat";
     }
@@ -76,5 +82,46 @@ public class VatController {
         vatService.saveVat(vat);
         model.addAttribute("vat_assigned", vat);
         return new ModelAndView("redirect:/production/vat/" + vat.getId());
+    }
+
+    /*@GetMapping("/production/vat/{id}/update")
+    public String updateProcess(@PathVariable("id") long id, Model model) {
+        System.out.println("===========jestem w gecie===========");
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String email = ((UserDetails)principal).getUsername();
+
+        Vat vat = vatService.getVatById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid vat Id:" + id));
+
+        model.addAttribute("vat", vat);
+        model.addAttribute("user", userService.getUserByEmail(email));
+        return "production/vat/vat";
+    }*/
+
+    @PostMapping("/production/vat/{id}/update")
+    public String updateProcess(@PathVariable("id") long id, Model model) {
+
+        System.out.println("===========Jestem w poscie=========");
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String email = ((UserDetails)principal).getUsername();
+
+        Vat vat = vatService.getVatById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid vat Id:" + id));
+
+        if(vat.getProcessPhase() == Vat.ProcessPhase.PACKAGING) {
+            vat.setProcessPhase(Vat.ProcessPhase.values()[0]);
+            vat.setLastUpdated();
+            vatService.saveVat(vat);
+            return "redirect:/production/vats";
+        } else {
+            vat.setProcessPhase(vat.getProcessPhase().nextPhase());
+        }
+        System.out.println("=========faza procesu: " + vat.getProcessPhase().displayName());
+        vat.setLastUpdated();
+        vatService.saveVat(vat);
+
+        model.addAttribute("vat", vat);
+        model.addAttribute("user", userService.getUserByEmail(email));
+        return "redirect:/production/vat/" + vat.getId();
     }
 }

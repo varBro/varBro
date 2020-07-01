@@ -47,6 +47,8 @@ public class Vat {
 
         public String displayName() { return displayName; }
 
+        public ProcessPhase nextPhase() { return (values()[ordinal() + 1]); }
+
         @Override public String toString() { return displayName; }
     }
 
