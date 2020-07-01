@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Controller
@@ -84,40 +85,34 @@ public class VatController {
         return new ModelAndView("redirect:/production/vat/" + vat.getId());
     }
 
-    /*@GetMapping("/production/vat/{id}/update")
-    public String updateProcess(@PathVariable("id") long id, Model model) {
-        System.out.println("===========jestem w gecie===========");
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String email = ((UserDetails)principal).getUsername();
-
-        Vat vat = vatService.getVatById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid vat Id:" + id));
-
-        model.addAttribute("vat", vat);
-        model.addAttribute("user", userService.getUserByEmail(email));
-        return "production/vat/vat";
-    }*/
-
     @PostMapping("/production/vat/{id}/update")
     public String updateProcess(@PathVariable("id") long id, Model model) {
 
-        System.out.println("===========Jestem w poscie=========");
+
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String email = ((UserDetails)principal).getUsername();
 
         Vat vat = vatService.getVatById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid vat Id:" + id));
 
-        if(vat.getProcessPhase() == Vat.ProcessPhase.PACKAGING) {
+        if (vat.getProcessPhase() == Vat.ProcessPhase.NOT_STARTED) {
+            vat.setProcessPhase(vat.getProcessPhase().nextPhase());
+            vat.setStartTime(LocalDate.now());
+            vat.setLastUpdated(LocalDate.now());
+
+        } else if (vat.getProcessPhase() == Vat.ProcessPhase.PACKAGING) {
             vat.setProcessPhase(Vat.ProcessPhase.values()[0]);
-            vat.setLastUpdated();
+            vat.resetVat();
+
             vatService.saveVat(vat);
+            model.addAttribute("end", "Production has ended.");
             return "redirect:/production/vats";
+
         } else {
             vat.setProcessPhase(vat.getProcessPhase().nextPhase());
+            vat.setLastUpdated(LocalDate.now());
         }
-        System.out.println("=========faza procesu: " + vat.getProcessPhase().displayName());
-        vat.setLastUpdated();
+
         vatService.saveVat(vat);
 
         model.addAttribute("vat", vat);
