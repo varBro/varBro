@@ -32,7 +32,7 @@
                         <div class="form-group col-md-3" th:with="ingredientLabel=${ingredientStat.index + 1}">
                             <label for="ingredientTypeSelect" th:text="${'Ingredient ' + ingredientLabel}"></label>
                             <select id="ingredientTypeSelect" class="form-control selectpicker" editable="true"
-                                    th:field="*{beerIngredients[__${ingredientStat.index}__]}" >
+                                    th:field="*{beerIngredients[__${ingredientStat.index}__].ingredientType}" >
                                 <option th:each="ingredientType : ${T(com.varbro.varbro.model.production.BeerIngredient.IngredientType).values()}"
                                         th:value="${ingredientType}" th:text="${ingredientType}"></option>
                             </select>
@@ -61,7 +61,7 @@
                             <button class="btn btn-primary btn-circle btn-md text-center" type="submit" name="addRow"><h4>+</h4></button>
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-primary">Add beer recipe</button>
+                    <button type="submit" class="btn btn-primary" name="save">Add beer recipe</button>
                 </form>
             </div>
         </div>

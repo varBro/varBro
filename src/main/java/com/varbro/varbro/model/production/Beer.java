@@ -1,6 +1,7 @@
 package com.varbro.varbro.model.production;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -16,7 +17,7 @@ public class Beer {
     private String recipeDescription;
 
     @OneToMany(mappedBy = "beer", cascade = CascadeType.ALL)
-    private Set<BeerIngredient> beerIngredients;
+    private List<BeerIngredient> beerIngredients;
 
     public Beer() {}
 
@@ -24,7 +25,7 @@ public class Beer {
         this.name = name;
         this.recipeDescription = recipeDescription;
         for(BeerIngredient beerIngredient : beerIngredients) beerIngredient.setBeer(this);
-        this.beerIngredients = Stream.of(beerIngredients).collect(Collectors.toSet());
+        this.beerIngredients = Stream.of(beerIngredients).collect(Collectors.toList());
     }
 
     public long getId() {
@@ -51,12 +52,9 @@ public class Beer {
         this.recipeDescription = recipeDescription;
     }
 
-    public Set<BeerIngredient> getBeerIngredients() {
+    public List<BeerIngredient> getBeerIngredients() {
         return beerIngredients;
     }
 
-    public void setBeerIngredients(Set<BeerIngredient> beerIngredients) {
-        this.beerIngredients = beerIngredients;
-    }
-
+    public void setBeerIngredients(List<BeerIngredient> beerIngredients) { this.beerIngredients = beerIngredients; }
 }
