@@ -38,13 +38,13 @@
                 <div class="profile-info-value" style="float: left" th:switch="${vat.processPhase.displayName()}">
                     <span style="display:inline" th:text="${vat.processPhase}"></span>
                     <a onclick="confirmation(); event.preventDefault(); document.getElementById('form').submit();" th:if="${vat.user.getId() == user.getId()}"
-                       class="btn btn-primary" style="display: inline" th:case="'Not started'" >Start Production</a>
+                       class="btn btn-warning" style="display: inline" th:case="'Not started'" >Start Production</a>
 
                     <a onclick="confirmation(); event.preventDefault(); document.getElementById('form').submit();" th:if="${vat.user.getId() == user.getId()}"
-                       class="btn btn-primary" style="display: inline" th:case="'Packaging'" >Finish production</a>
+                       class="btn btn-warning" style="display: inline" th:case="'Packaging'" >Finish production</a>
 
                     <a onclick="confirmation(); event.preventDefault(); document.getElementById('form').submit();" th:if="${vat.user.getId() == user.getId()}"
-                       class="btn btn-primary" style="display: inline" th:case="*" th:text="${'Start ' + vat.processPhase.nextPhase().displayName()}"></a>
+                       class="btn btn-warning" style="display: inline" th:case="*" th:text="${'Start ' + vat.processPhase.nextPhase().displayName()}"></a>
 
                     <form id="form" th:action="@{/production/vat/{id}/update(id=${vat.id})}"
                           method="POST" style="display: none;">

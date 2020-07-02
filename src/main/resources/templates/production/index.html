@@ -20,7 +20,7 @@
                     <div class="links">
                         <a th:href="@{/production/beers}">Beers</a>
                         <a th:href="@{/production/request/list}">Requests</a>
-                        <a th:href="@{/production/request/add}">New Request</a>
+                        <a sec:authorize="hasAuthority('MANAGER')" th:href="@{/production/request/add}">New Request</a>
                         <a th:href="@{/production/vats}">Vats</a>
                         <a sec:authorize="hasAuthority('MANAGER')" th:href="@{/production/add-new-recipe}">Add new recipe</a>
                     </div>

@@ -103,9 +103,10 @@ public class VatController {
         } else if (vat.getProcessPhase() == Vat.ProcessPhase.PACKAGING) {
             vat.setProcessPhase(Vat.ProcessPhase.values()[0]);
             vat.resetVat();
-
             vatService.saveVat(vat);
-            model.addAttribute("end", "Production has ended.");
+
+            /*tutej trzeba zrobic dodawanie piwa do magazynu*/
+
             return "redirect:/production/vats";
 
         } else {
