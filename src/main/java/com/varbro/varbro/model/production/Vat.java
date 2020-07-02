@@ -47,6 +47,8 @@ public class Vat {
 
         public String displayName() { return displayName; }
 
+        public ProcessPhase nextPhase() { return (values()[ordinal() + 1]); }
+
         @Override public String toString() { return displayName; }
     }
 
@@ -79,11 +81,19 @@ public class Vat {
 
     public LocalDate getStartTime() { return startTime; }
 
-    public void setStartTime() { this.startTime = LocalDate.now(); }
+    public void setStartTime(LocalDate startTime) { this.startTime = startTime; }
 
     public LocalDate getLastUpdated() { return lastUpdated; }
 
-    public void setLastUpdated() { this.lastUpdated = LocalDate.now(); }
+    public void setLastUpdated(LocalDate lastUpdated) { this.lastUpdated = lastUpdated; }
+
+    public void resetVat() {
+        this.setLastUpdated(null);
+        this.setStartTime(null);
+        this.setUser(null);
+        this.setBeer(null);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

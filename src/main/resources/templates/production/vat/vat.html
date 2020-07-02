@@ -3,6 +3,11 @@
       layout:decorate="~{layouts/layout}">
 <head>
     <title>Vat details</title>
+    <script>
+        function confirmation() {
+            confirm("Press to confirm!");
+        }
+    </script>
 </head>
 <body>
 <ol layout:fragment="breadcrumbs" class="breadcrumb pl-5">
@@ -30,8 +35,21 @@
             </div>
             <div class="profile-info-row">
                 <div class="profile-info-name"> Production phase </div>
-                <div class="profile-info-value">
-                    <span th:text="${vat.processPhase}"></span>
+                <div class="profile-info-value" style="float: left" th:switch="${vat.processPhase.displayName()}">
+                    <span style="display:inline" th:text="${vat.processPhase}"></span>
+                    <a onclick="confirmation(); event.preventDefault(); document.getElementById('form').submit();" th:if="${vat.user.getId() == user.getId()}"
+                       class="btn btn-warning" style="display: inline" th:case="'Not started'" >Start Production</a>
+
+                    <a onclick="confirmation(); event.preventDefault(); document.getElementById('form').submit();" th:if="${vat.user.getId() == user.getId()}"
+                       class="btn btn-warning" style="display: inline" th:case="'Packaging'" >Finish production</a>
+
+                    <a onclick="confirmation(); event.preventDefault(); document.getElementById('form').submit();" th:if="${vat.user.getId() == user.getId()}"
+                       class="btn btn-warning" style="display: inline" th:case="*" th:text="${'Start ' + vat.processPhase.nextPhase().displayName()}"></a>
+
+                    <form id="form" th:action="@{/production/vat/{id}/update(id=${vat.id})}"
+                          method="POST" style="display: none;">
+                        <input type="hidden" name="field1" value="value1" />
+                    </form>
                 </div>
             </div>
             <div class="profile-info-row">

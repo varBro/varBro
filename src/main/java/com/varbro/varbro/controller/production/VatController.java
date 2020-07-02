@@ -6,11 +6,14 @@ import com.varbro.varbro.service.UserService;
 import com.varbro.varbro.service.production.BeerService;
 import com.varbro.varbro.service.production.VatService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Controller
@@ -36,7 +39,11 @@ public class VatController {
         Vat vat = vatService.getVatById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid vat Id:" + id));
 
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String email = ((UserDetails)principal).getUsername();
+
         model.addAttribute("vat", vat);
+        model.addAttribute("user", userService.getUserByEmail(email));
 
         return "production/vat/vat";
     }
@@ -76,5 +83,41 @@ public class VatController {
         vatService.saveVat(vat);
         model.addAttribute("vat_assigned", vat);
         return new ModelAndView("redirect:/production/vat/" + vat.getId());
+    }
+
+    @PostMapping("/production/vat/{id}/update")
+    public String updateProcess(@PathVariable("id") long id, Model model) {
+
+
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String email = ((UserDetails)principal).getUsername();
+
+        Vat vat = vatService.getVatById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid vat Id:" + id));
+
+        if (vat.getProcessPhase() == Vat.ProcessPhase.NOT_STARTED) {
+            vat.setProcessPhase(vat.getProcessPhase().nextPhase());
+            vat.setStartTime(LocalDate.now());
+            vat.setLastUpdated(LocalDate.now());
+
+        } else if (vat.getProcessPhase() == Vat.ProcessPhase.PACKAGING) {
+            vat.setProcessPhase(Vat.ProcessPhase.values()[0]);
+            vat.resetVat();
+            vatService.saveVat(vat);
+
+            /*tutej trzeba zrobic dodawanie piwa do magazynu*/
+
+            return "redirect:/production/vats";
+
+        } else {
+            vat.setProcessPhase(vat.getProcessPhase().nextPhase());
+            vat.setLastUpdated(LocalDate.now());
+        }
+
+        vatService.saveVat(vat);
+
+        model.addAttribute("vat", vat);
+        model.addAttribute("user", userService.getUserByEmail(email));
+        return "redirect:/production/vat/" + vat.getId();
     }
 }
