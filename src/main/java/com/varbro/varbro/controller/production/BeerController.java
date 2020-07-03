@@ -1,13 +1,24 @@
 package com.varbro.varbro.controller.production;
 
-import com.google.common.collect.*;
+
 import com.varbro.varbro.model.logistics.Product;
 import com.varbro.varbro.model.production.Beer;
 import com.varbro.varbro.model.production.BeerIngredient;
+import com.varbro.varbro.service.logistics.ProductService;
+import com.google.common.collect.*;
 import com.varbro.varbro.service.production.BeerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+import java.util.*;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,15 +26,16 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
+
 
 @Controller
 public class BeerController {
 
     @Autowired
     BeerService beerService;
+
+    @Autowired
+    ProductService productService;
 
     @GetMapping("/production/beers")
     public String showAll(Model model) {
@@ -59,4 +71,44 @@ public class BeerController {
         return "production/recipe";
     }
 
+    @GetMapping("/production/add-new-recipe")
+    public String addBeer(@ModelAttribute Beer beer, Model model) {
+        List<BeerIngredient> beerIngredients = new ArrayList<>();
+        beerIngredients.add(new BeerIngredient());
+        beer.setBeerIngredients(beerIngredients);
+        model.addAttribute("beer", beer);
+        return "production/add-new-recipe";
+    }
+
+    @PostMapping(value = "/production/add-new-recipe", params = "addRow")
+    public String addRow(@ModelAttribute Beer beer, Model model)
+    {
+        beer.getBeerIngredients().add(new BeerIngredient());
+        model.addAttribute("beer", beer);
+        return "production/add-new-recipe";
+    }
+
+    @PostMapping(value = "/production/add-new-recipe", params = "removeRow")
+    public String removeRow(@ModelAttribute Beer beer, Model model, HttpServletRequest req)
+    {
+        Integer rowId = Integer.valueOf(req.getParameter("removeRow"));
+        beer.getBeerIngredients().remove(rowId.intValue());
+        model.addAttribute("beer", beer);
+        return "production/add-new-recipe";
+    }
+
+    @PostMapping(value = "/production/add-new-recipe", params = "save")
+    public String saveBeer(@Valid @ModelAttribute Beer beer, SessionStatus status, BindingResult bindingResult)
+    {
+        if(!bindingResult.hasErrors()) {
+            for (BeerIngredient beerIngredient : beer.getBeerIngredients()) {
+                beerIngredient.getProduct().setUnit(Product.Unit.KG);
+                beerIngredient.getProduct().setIngredient(true);
+                productService.saveProduct(beerIngredient.getProduct());
+            }
+            beerService.saveBeer(new Beer(beer.getName(),beer.getRecipeDescription(), beer.getBeerIngredients().toArray(new BeerIngredient[beer.getBeerIngredients().size()])));
+            status.setComplete();
+        }
+        return "redirect:/default";
+    }
 }

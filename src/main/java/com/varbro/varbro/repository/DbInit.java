@@ -147,20 +147,20 @@ public class DbInit implements CommandLineRunner {
         List<Stock> stocks = Arrays.asList(MALT_STOCK, HOPS_STOCK, YEAST_STOCK, MALT1_STOCK, HOPS1_STOCK, YEAST1_STOCK, BOTTLE_STOCK);
         this.stockService.saveStocks(stocks);
 
-
         OrderItem ORDER_ITEM = new OrderItem(HOPS, 15);
         List<OrderItem> orderList = Arrays.asList(ORDER_ITEM);
         Order ORDER = new Order(orderList);
 
         orderService.saveOrder(ORDER);
 
-        beerService.saveBeer(new Beer("Pilsner", new BeerIngredient(HOPS, 3.5f, BeerIngredient.IngredientType.HOP), new BeerIngredient(YEAST, 5, BeerIngredient.IngredientType.YEAST),
+        beerService.saveBeer(new Beer("Pilsner", "Dodać składniki i wymieszać", new BeerIngredient(HOPS, 3.5f, BeerIngredient.IngredientType.HOP), new BeerIngredient(YEAST, 5, BeerIngredient.IngredientType.YEAST),
                 new BeerIngredient(MALTS, 1800, BeerIngredient.IngredientType.MALT), new BeerIngredient(HOPS1, 4F, BeerIngredient.IngredientType.HOP), new BeerIngredient(YEAST1, 0.5F, BeerIngredient.IngredientType.YEAST)));
 
-        Beer Ipa = new Beer("IPA");
+        Beer Ipa = new Beer("IPA", "Pozostawić w kadzi na dwa tygodnie");
         BeerIngredient ipaIngredient1 = new BeerIngredient(YEAST, 4.5f, BeerIngredient.IngredientType.YEAST);
         BeerIngredient ipaIngredient2 = new BeerIngredient(HOPS, 7.5f, BeerIngredient.IngredientType.HOP);
         BeerIngredient ipaIngredient3 = new BeerIngredient(MALTS, 1850, BeerIngredient.IngredientType.MALT);
+
         ipaIngredient1.setBeer(Ipa);
         ipaIngredient2.setBeer(Ipa);
         ipaIngredient3.setBeer(Ipa);
