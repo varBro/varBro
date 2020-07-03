@@ -105,6 +105,7 @@ public class DbInit implements CommandLineRunner {
         User BARBARA = new User("Baśka", "Kwarc", "$2a$10$XHOXjTseWpp9vA9NAe7unOYOQJY58bpZDcxLGn1pkNNf1QJrETfJ6", "bacha@gmail.com", "666997112", User.Department.HR, "21370012345648592474567890", 3137, "690628475", User.Position.MANAGER);
         User WIESIO = new User("Wiesław", "Paleta", "$2a$10$XHOXjTseWpp9vA9NAe7unOYOQJY58bpZDcxLGn1pkNNf1QJrETfJ6", "wpaleta@gmail.com", "663427112", User.Department.LOGISTICS, "21370012146824753482567890", 5137, "590427475", User.Position.MANAGER);
         User PanWIESIO = new User("Wiesław", "Puchacki", "$2a$10$XHOXjTseWpp9vA9NAe7unOYOQJY58bpZDcxLGn1pkNNf1QJrETfJ6", "panwiesio@gmail.com", "667647112", User.Department.PRODUCTION, "21370012146420753482567890", 8000, "590422475", User.Position.MANAGER);
+        User ANDREJ = new User("Andrej","Svoboda","$2a$10$XHOXjTseWpp9vA9NAe7unOYOQJY58bpZDcxLGn1pkNNf1QJrETfJ6","asvoboda@seznam.cz","999999999",User.Department.DISTRIBUTION,"09876543210987654321123450",1488,"91042012345");
         ADMIN.setRoles(new HashSet(Arrays.asList(Employee, Admin)));
         ADMIN1.setRoles(new HashSet(Arrays.asList(Employee, Admin)));
         JOHN.setRoles(new HashSet(Arrays.asList(Employee, Production)));
@@ -113,8 +114,9 @@ public class DbInit implements CommandLineRunner {
         BARBARA.setRoles(new HashSet(Arrays.asList(Employee, HR, Manager)));
         WIESIO.setRoles(new HashSet(Arrays.asList(Employee, Logistics, Manager)));
         PanWIESIO.setRoles(new HashSet(Arrays.asList(Employee, Production, Manager)));
+        ANDREJ.setRoles(new HashSet(Arrays.asList(Employee, Distribution, Manager)));
 
-        List<User> users = Arrays.asList(ADMIN, ADMIN1, JOHN, JOHN1, JP, BARBARA, WIESIO, PanWIESIO);
+        List<User> users = Arrays.asList(ADMIN, ADMIN1, JOHN, JOHN1, JP, BARBARA, WIESIO, PanWIESIO,ANDREJ);
 
         this.userService.saveUsers(users);
 
