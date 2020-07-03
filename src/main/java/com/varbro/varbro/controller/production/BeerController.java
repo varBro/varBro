@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Controller
 public class BeerController {
@@ -72,29 +73,27 @@ public class BeerController {
         return "production/add-new-recipe";
     }
 
-//    @RequestMapping(value = "/production/add-new-recipe", params = "removeRow")
-//    public String removeRow(@ModelAttribute Beer beer, Model model, HttpServletRequest req)
-//    {
-//        Integer rowId = Integer.valueOf(req.getParameter("removeRow"));
-//        beer.getBeerIngredients().remove(rowId.intValue());
-//        model.addAttribute("beer", beer);
-//        return "production/add-new-recipe";
-//    }
+    @PostMapping(value = "/production/add-new-recipe", params = "removeRow")
+    public String removeRow(@ModelAttribute Beer beer, Model model, HttpServletRequest req)
+    {
+        Integer rowId = Integer.valueOf(req.getParameter("removeRow"));
+        beer.getBeerIngredients().remove(rowId.intValue());
+        model.addAttribute("beer", beer);
+        return "production/add-new-recipe";
+    }
 
-//    @RequestMapping(value = "/production/add-new-recipe", params = "save")
-//    public String saveBeer(@Valid @ModelAttribute Beer beer, SessionStatus status, BindingResult bindingResult)
-//    {
-//        if(!bindingResult.hasErrors()) {
-//            Set<BeerIngredient> newBeer = new HashSet<>();
-//            for (BeerIngredient beerIngredient : beer.getBeerIngredients()) {
-//                Product p = productService.getProductByName(beerIngredient.getProduct().getName());
-//                if (p != null) {
-//                    newBeer.add(new BeerIngredient(p, beerIngredient.getQuantity(), beerIngredient.getIngredientType()));
-//                }
-//            }
-//            beerService.saveBeer(new Beer(beer.getName(),beer.getRecipeDescription(), (BeerIngredient) newBeer));
-//            status.setComplete();
-//        }
-//        return "redirect:/default";
-//    }
+    @PostMapping(value = "/production/add-new-recipe", params = "save")
+    public String saveBeer(@Valid @ModelAttribute Beer beer, SessionStatus status, BindingResult bindingResult)
+    {
+        if(!bindingResult.hasErrors()) {
+            for (BeerIngredient beerIngredient : beer.getBeerIngredients()) {
+                beerIngredient.getProduct().setUnit(Product.Unit.KG);
+                beerIngredient.getProduct().setIngredient(true);
+                productService.saveProduct(beerIngredient.getProduct());
+            }
+            beerService.saveBeer(new Beer(beer.getName(),beer.getRecipeDescription(), beer.getBeerIngredients().toArray(new BeerIngredient[beer.getBeerIngredients().size()])));
+            status.setComplete();
+        }
+        return "redirect:/default";
+    }
 }
