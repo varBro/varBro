@@ -1,0 +1,69 @@
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <title>Order - approve</title>
+</head>
+<body>
+<ol layout:fragment="breadcrumbs" class="breadcrumb pl-5">
+    <li class="breadcrumb-item"><a href="/default">Home</a></li>
+    <li class="breadcrumb-item active">Order - approve</li>
+</ol>
+<section layout:fragment="content">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <h2 class="text-center" th:text="${'APPROVE ORDER ' + approved.id}"></h2>
+                <form action="#" method="post" th:action="@{/logistics/order/{id}/approve(id=${approved.id})}">
+                    <div class="profile-user-info">
+                        <div class="profile-info-row">
+                            <div class="profile-info-name"> Id </div>
+                            <div class="profile-info-value">
+                                <span th:text="${approved.id}"></span>
+                            </div>
+                        </div>
+                        <div class="profile-info-row">
+                            <div class="profile-info-name"> Contractor </div>
+                            <div class="profile-info-value">
+                                <select id="productSelect" class="form-control selectpicker"
+                                        th:field="*{approved.contractor.name}" >
+                                    <option  th:value="${''}">Select contractor</option>
+                                    <option th:each="contractor : ${contractors}" th:value="${contractor.name}" th:text="${contractor.name}"></option>
+                                </select>
+                            </div>
+                            <button class="btn btn-primary" type="submit" name="submit">SAVE & APPROVE</button>
+                        </div>
+                        <div class="profile-info-row">
+                            <div class="profile-info-name"> Status </div>
+                            <div class="profile-info-value">
+                                <span th:text="${approved.orderStatus}"></span>
+                            </div>
+                        </div>
+                        <div class="profile-info-row">
+                            <div class="profile-info-name"> Placed </div>
+                            <div class="profile-info-value">
+                                <span th:text="${approved.orderTime}"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="profile-user-info">
+                        <div class="profile-info-row">
+                            <div class="profile-info-name text-center"> Product </div>
+                            <div class="profile-info-name text-center"> Quantity </div>
+                        </div>
+                        <div class="profile-info-row" th:each="item : ${approved.orderItems}">
+                            <div class="profile-info-value text-center">
+                                <span th:text="${item.product.name}"></span>
+                            </div>
+                            <div class="profile-info-value text-center">
+                                <span th:text="${item.quantity}"></span>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>

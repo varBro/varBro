@@ -14,6 +14,7 @@ import java.util.List;
 public interface OrderRepository extends JpaRepository<Order, Long> {
 
     Order findById(long id);
+    Long removeById(long id);
 
     @Query(value = "select * from orders o where extract(month from o.order_time) = ?1 and extract(year from o.order_time) = ?2",
             nativeQuery=true)
@@ -27,4 +28,8 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     @Query(value = "select * from orders o where o.order_status = 'IN_PROGRESS'",
             nativeQuery=true)
     List<Order> inProgressOrders();
+
+    @Query(value = "select * from orders o where o.order_status = 'PLACED'",
+            nativeQuery=true)
+    List<Order> ordersForApproval();
 }

@@ -12,7 +12,7 @@ public class OrderItem {
     @Column(name = "order_item_id")
     private long id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
 

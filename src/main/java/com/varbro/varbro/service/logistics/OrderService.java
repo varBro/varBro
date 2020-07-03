@@ -1,17 +1,17 @@
 package com.varbro.varbro.service.logistics;
 
 
-import com.varbro.varbro.model.User;
-import com.varbro.varbro.model.finance.Expense;
 import com.varbro.varbro.model.logistics.Order;
 import com.varbro.varbro.repository.logistics.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class OrderService {
 
     @Autowired
@@ -30,6 +30,8 @@ public class OrderService {
 
     public void deleteAll() {orderRepository.deleteAll();}
 
+    public void delete(long id) { orderRepository.removeById(id);}
+
     public Iterable<Order> getMonthlyOrders(String month, String year)
     {
         return orderRepository.monthlyOrders(month, year);
@@ -38,6 +40,11 @@ public class OrderService {
     public Iterable<Order> getMonthlyOrdersApproved(String month, String year)
     {
         return orderRepository.monthlyOrdersApproved(month, year);
+    }
+
+    public Iterable<Order> getOrdersForApproval()
+    {
+        return orderRepository.ordersForApproval();
     }
 
     public Iterable<Order> getInProgressOrders()

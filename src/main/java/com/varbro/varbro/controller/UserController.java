@@ -1,6 +1,7 @@
 package com.varbro.varbro.controller;
 
 import com.varbro.varbro.model.User;
+import com.varbro.varbro.service.MailService;
 import com.varbro.varbro.service.RoleService;
 import com.varbro.varbro.service.UserService;
 import org.passay.CharacterData;
@@ -8,6 +9,7 @@ import org.passay.CharacterRule;
 import org.passay.EnglishCharacterData;
 import org.passay.PasswordGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -81,7 +83,7 @@ public class UserController {
         user.setRoles(new HashSet(Arrays.asList(roleService.getRoleByName("EMPLOYEE"), roleService.getRoleByName("ROLE_" + departmentRole))));
         if (user.getPosition() != null)
         {
-            if (user.getPosition().name() == "ADMIN")
+            if (user.getPosition().name().equals("ADMIN"))
                 user.addRole(roleService.getRoleByName("ROLE_" + user.getPosition().name()));
             else
                 user.addRole(roleService.getRoleByName(user.getPosition().name()));
@@ -97,7 +99,7 @@ public class UserController {
                 .orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + id));
 
         userService.delete(user);
-        return new ModelAndView("redirect:/users");
+        return new ModelAndView("redirect:/user/users");
     }
 
     @GetMapping("/user/profile")
@@ -128,6 +130,7 @@ public class UserController {
         userService.saveUser(user);
         return new ModelAndView("redirect:/user/" + user.getId());
     }
+
 
     public String generatePassayPassword() {
         PasswordGenerator gen = new PasswordGenerator();

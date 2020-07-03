@@ -1,0 +1,51 @@
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <title>Order history</title>
+</head>
+<body>
+<ol layout:fragment="breadcrumbs" class="breadcrumb pl-5">
+    <li class="breadcrumb-item"><a href="/default">Home</a></li>
+    <li class="breadcrumb-item active">Current orders</li>
+</ol>
+<section layout:fragment="content">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <h2 th:if="${#lists.isEmpty(orders)}" class="text-center">No orders to approve!</h2>
+                <div th:if="${not #lists.isEmpty(orders)}" class="col-md-12">
+                    <h2 class="text-center">ORDERS FOR APPROVAL</h2>
+                    <div class="profile-user-info">
+                        <div class="profile-info-row">
+                            <div class="profile-info-name text-center"> Id</div>
+                            <div class="profile-info-name text-center"> Date</div>
+                            <div class="profile-info-name text-center"> Approve</div>
+                            <div class="profile-info-name text-center"> Reject</div>
+                        </div>
+                        <div class="profile-info-row" th:each="order : ${orders}">
+
+                            <div class="profile-info-value text-center">
+                                <a th:text="${order.id}" th:href="@{/logistics/order/{id}(id=${order.id})}"></a>
+                            </div>
+                            <div class="profile-info-value text-center">
+                                <span th:text="${order.orderTime}"></span>
+                            </div>
+                            <div class="profile-info-value text-center">
+                                <a class="btn btn-success" th:href="@{/logistics/order/{id}/approve(id=${order.id})}"
+                                   role="button">Approve</a>
+                            </div>
+                            <div class="profile-info-value text-center">
+                                <a class="btn btn-success" th:href="@{/logistics/order/{id}/reject(id=${order.id})}"
+                                   role="button">Reject</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</section>
+</body>
+</html>

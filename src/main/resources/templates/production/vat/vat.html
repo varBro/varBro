@@ -1,0 +1,79 @@
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      layout:decorate="~{layouts/layout}">
+<head>
+    <title>Vat details</title>
+    <script>
+        function confirmation() {
+            confirm("Press to confirm!");
+        }
+    </script>
+</head>
+<body>
+<ol layout:fragment="breadcrumbs" class="breadcrumb pl-5">
+    <li class="breadcrumb-item"><a href="/default">Home</a></li>
+    <li class="breadcrumb-item"><a href="/production">Production</a></li>
+    <li class="breadcrumb-item"><a href="/production/vats">Vats</a></li>
+    <li class="breadcrumb-item active">Vat</li>
+</ol>
+<section layout:fragment="content">
+    <div class="container">
+        <div th:if="${vat.processPhase.displayName() != 'Not assigned'}">
+        <h2 class="text-center" th:text="${'VAT #' + vat.id}"></h2>
+        <div class="profile-user-info">
+            <div class="profile-info-row">
+                <div class="profile-info-name"> Beer </div>
+                <div class="profile-info-value">
+                    <span th:if="${vat.beer}" th:text="${vat.beer.getName()}"></span>
+                </div>
+            </div>
+            <div class="profile-info-row">
+                <div class="profile-info-name"> Amount </div>
+                <div class="profile-info-value">
+                    <span th:text="${vat.capacity + ' litres'}"></span>
+                </div>
+            </div>
+            <div class="profile-info-row">
+                <div class="profile-info-name"> Production phase </div>
+                <div class="profile-info-value" style="float: left" th:switch="${vat.processPhase.displayName()}">
+                    <span style="display:inline" th:text="${vat.processPhase}"></span>
+                    <a onclick="confirmation(); event.preventDefault(); document.getElementById('form').submit();" th:if="${vat.user.getId() == user.getId()}"
+                       class="btn btn-warning" style="display: inline" th:case="'Not started'" >Start Production</a>
+
+                    <a onclick="confirmation(); event.preventDefault(); document.getElementById('form').submit();" th:if="${vat.user.getId() == user.getId()}"
+                       class="btn btn-warning" style="display: inline" th:case="'Packaging'" >Finish production</a>
+
+                    <a onclick="confirmation(); event.preventDefault(); document.getElementById('form').submit();" th:if="${vat.user.getId() == user.getId()}"
+                       class="btn btn-warning" style="display: inline" th:case="*" th:text="${'Start ' + vat.processPhase.nextPhase().displayName()}"></a>
+
+                    <form id="form" th:action="@{/production/vat/{id}/update(id=${vat.id})}"
+                          method="POST" style="display: none;">
+                        <input type="hidden" name="field1" value="value1" />
+                    </form>
+                </div>
+            </div>
+            <div class="profile-info-row">
+                <div class="profile-info-name"> Started </div>
+                <div class="profile-info-value">
+                    <span th:text="${vat.startTime}"></span>
+                </div>
+            </div>
+            <div class="profile-info-row">
+                <div class="profile-info-name"> Last updated </div>
+                <div class="profile-info-value">
+                    <span th:text="${vat.lastUpdated}"></span>
+                </div>
+            </div>
+            <div class="profile-info-row">
+                <div class="profile-info-name"> Assigned to </div>
+                <div class="profile-info-value">
+                    <a th:if="${vat.user}" th:text="${vat.user.getName() + ' ' + vat.user.getSurname()}" th:href="@{/user/{id}(id=${vat.user.getId()})}"></a>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+</section>
+
+</body>
+</html>

@@ -1,0 +1,66 @@
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      layout:decorate="~{layouts/layout}">
+<head>
+    <title>Vats list</title>
+</head>
+<body>
+<ol layout:fragment="breadcrumbs" class="breadcrumb pl-5">
+    <li class="breadcrumb-item"><a href="/default">Home</a></li>
+    <li class="breadcrumb-item"><a href="/production">Production</a></li>
+    <li class="breadcrumb-item active">Vats</li>
+</ol>
+<section layout:fragment="content">
+    <div class="container" >
+        <div class="row justify-content-center" th:each="vat : ${vats}">
+            <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row align-items-start">
+                                <div class="col">
+                                    <h4 th:text="${'Vat #' + vat.id}"></h4>
+                                </div>
+                                <div class="col">
+                                    <h5 th:text="${'Capacity: ' + vat.capacity + ' liters'}"></h5>
+                                </div>
+                            </div>
+                            <br>
+                            <div th:if="${vat.processPhase.displayName() != 'Not assigned'}" class="row align-items-center">
+                                <div class="col">
+                                    <p th:text="${'Status: ' + vat.getProcessPhase().displayName()}"></p>
+                                </div>
+                                <div class="col">
+                                    <span>Assigned to: </span>
+                                    <a th:text="${vat.user.getName() + ' ' + vat.user.getSurname()}" th:href="@{/user/{id}(id=${vat.user.getId()})}"></a>
+                                </div>
+                            </div>
+                            <br>
+                            <div th:if="${vat.processPhase.displayName() != 'Not assigned'}" class="row align-items-end">
+                                <div class="col">
+                                    <p th:if="${vat.startTime}" th:text="${'Started: ' + vat.startTime}"></p>
+                                </div>
+                                <div class="col">
+                                    <p th:if="${vat.lastUpdated}" th:text="${'Last update: ' + vat.getLastUpdated()}"></p>
+                                </div>
+                            </div>
+                            <br>
+                            <div th:if="${vat.processPhase.displayName() != 'Not assigned'}" class="row">
+                                <div class="col align-self-end">
+                                    <a class="card-link" th:href="@{/production/vat/{id}(id=${vat.id})}">Show details</a>
+                                </div>
+                            </div>
+                            <div th:if="${vat.processPhase.displayName() == 'Not assigned'}" class="row" sec:authorize="hasAuthority('MANAGER')">
+                                <div class="col align-self-end">
+                                    <a class="btn btn-secondary" th:href="@{/production/vat/{id}/assign(id=${vat.id})}">Assign</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <br>
+            </div>
+        </div>
+    </div>
+</section>
+
+</body>
+</html>

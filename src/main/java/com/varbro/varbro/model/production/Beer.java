@@ -2,6 +2,7 @@ package com.varbro.varbro.model.production;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -56,5 +57,22 @@ public class Beer {
         return beerIngredients;
     }
 
-    public void setBeerIngredients(List<BeerIngredient> beerIngredients) { this.beerIngredients = beerIngredients; }
+    public void setBeerIngredients(List<BeerIngredient> beerIngredients) { 
+        this.beerIngredients = beerIngredients; 
+    }
+  
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Beer beer = (Beer) o;
+        return id == beer.id &&
+                name.equals(beer.name) &&
+                beerIngredients.equals(beer.beerIngredients);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, beerIngredients);
+    }
 }

@@ -2,6 +2,7 @@ package com.varbro.varbro.model.logistics;
 
 
 import com.varbro.varbro.model.User;
+import com.varbro.varbro.model.production.Request;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -14,17 +15,21 @@ import java.util.Objects;
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "orders_id")
+    @Column(name = "order_id")
     private long id;
     private LocalDate orderTime;
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "orders_item_id")
+    @JoinColumn(name = "order_id")
     private List<OrderItem> orderItems;
     @Enumerated(EnumType.STRING)
     private Status orderStatus;
     @ManyToOne
     @JoinColumn(name = "contractor_id")
     private Contractor contractor;
+
+    @OneToOne
+    @JoinColumn(name = "request_id")
+    private Request request;
 
     public enum Status {
         PLACED,
@@ -41,22 +46,38 @@ public class Order {
     public Order(List<OrderItem> orderItems) {
         this.orderItems = orderItems;
         this.orderTime = LocalDate.now();
-        orderStatus = Status.IN_PROGRESS;
+        this.orderStatus = Status.PLACED;
+        this.contractor = null;
+        this.request = null;
     }
 
-    public long getId() {return this.id;}
+    public long getId() {
+        return this.id;
+    }
 
-    public List<OrderItem> getOrderItems() {return this.orderItems;}
+    public List<OrderItem> getOrderItems() {
+        return this.orderItems;
+    }
 
-    public void setOrderItems(List<OrderItem> orderItems) {this.orderItems = orderItems;}
+    public void setOrderItems(List<OrderItem> orderItems) {
+        this.orderItems = orderItems;
+    }
 
-    public void setOrderTime(LocalDate orderTime) { this.orderTime = orderTime; }
+    public void setOrderTime(LocalDate orderTime) {
+        this.orderTime = orderTime;
+    }
 
-    public LocalDate getOrderTime() { return this.orderTime; }
+    public LocalDate getOrderTime() {
+        return this.orderTime;
+    }
 
-    public void setOrderStatus(Status status) { this.orderStatus = status; }
+    public void setOrderStatus(Status status) {
+        this.orderStatus = status;
+    }
 
-    public Status getOrderStatus() { return this.orderStatus; }
+    public Status getOrderStatus() {
+        return this.orderStatus;
+    }
 
     public Contractor getContractor() {
         return contractor;
@@ -65,8 +86,12 @@ public class Order {
     public void setContractor(Contractor contractor) {
         this.contractor = contractor;
     }
-  
-      @Override
+
+    public void setRequest(Request request) {this.request = request;}
+
+    public Request getRequest() { return this.request; }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Order)) return false;
