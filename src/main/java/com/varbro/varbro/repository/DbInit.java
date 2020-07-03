@@ -164,7 +164,8 @@ public class DbInit implements CommandLineRunner {
         ipaIngredient1.setBeer(Ipa);
         ipaIngredient2.setBeer(Ipa);
         ipaIngredient3.setBeer(Ipa);
-        Ipa.setBeerIngredients(new HashSet(Arrays.asList(ipaIngredient1, ipaIngredient2, ipaIngredient3)));
+        List<BeerIngredient> ingredients = Arrays.asList(ipaIngredient1,ipaIngredient2,ipaIngredient3);
+        Ipa.setBeerIngredients(ingredients);
         beerService.saveBeer(Ipa);
 
         Contractor JANUSZEX = new Contractor(
