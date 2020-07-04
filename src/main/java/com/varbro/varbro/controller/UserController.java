@@ -107,7 +107,7 @@ public class UserController {
     }
 
     @GetMapping("/user/profile")
-    public ModelAndView showProfile(Model model) {
+    public ModelAndView showProfile() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String name = authentication.getName();
         User user = userService.getUserByEmail(name);
