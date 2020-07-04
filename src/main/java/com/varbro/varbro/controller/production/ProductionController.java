@@ -1,10 +1,12 @@
 package com.varbro.varbro.controller.production;
 
 import com.varbro.varbro.model.logistics.Stock;
+import com.varbro.varbro.model.production.Batch;
 import com.varbro.varbro.model.production.Beer;
 import com.varbro.varbro.model.production.BeerIngredient;
 import com.varbro.varbro.model.production.Request;
 import com.varbro.varbro.service.logistics.StockService;
+import com.varbro.varbro.service.production.BatchService;
 import com.varbro.varbro.service.production.BeerService;
 import com.varbro.varbro.service.production.RequestService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +17,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import java.util.ArrayList;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
+import java.time.LocalDate;
+import java.util.*;
+import java.util.stream.Stream;
 
 @Controller
 public class ProductionController {
@@ -32,14 +33,16 @@ public class ProductionController {
     @Autowired
     StockService stockService;
 
+    @Autowired
+    BatchService batchService;
+
     @GetMapping("/production")
     public String productionIndex() {
         return "production/index";
     }
 
     @GetMapping("/production/request/add")
-    public String showRequestForm(Model model)
-    {
+    public String showRequestForm(Model model) {
         model.addAttribute("beers", beerService.getBeersOrderedByName());
         model.addAttribute("request", new Request());
 
@@ -47,8 +50,7 @@ public class ProductionController {
     }
 
     @PostMapping("/production/request/add")
-    public String addRequest(@ModelAttribute Request request)
-    {
+    public String addRequest(@ModelAttribute Request request) {
         Beer beer = beerService.getBeerById(request.getBeer().getId())
                 .orElseThrow(() -> new IllegalArgumentException("Invalid beer Id:" + request.getBeer().getId()));
         Request requestToSave = requestService.updateRequestAvailability(new Request(beer, request.getAmount()));
@@ -71,7 +73,7 @@ public class ProductionController {
                 .orElseThrow(() -> new IllegalArgumentException("Invalid request Id:" + id));
         Set<BeerIngredient> ingredients = new LinkedHashSet(request.getBeer().getBeerIngredients());
         List<Integer> percentages = new ArrayList<>();
-        for (BeerIngredient beerIngredient: ingredients ) {
+        for (BeerIngredient beerIngredient : ingredients) {
             Stock s = stockService.getStockByProductId(beerIngredient.getIngredient().getId())
                     .orElseThrow(() -> new IllegalArgumentException("Invalid product Id:" + beerIngredient.getIngredient().getId()));
             percentages.add(getPercentage(s.getQuantity(), request.getAmount() / 1000.0 * beerIngredient.getQuantity()));
@@ -87,7 +89,7 @@ public class ProductionController {
 
     public int getPercentage(double inStock, double needed) {
         double percentage = inStock / needed * 100;
-        if (Math.floor(percentage) < 100 )
+        if (Math.floor(percentage) < 100)
             return (int) Math.floor(percentage);
         else
             return 100;
@@ -102,6 +104,18 @@ public class ProductionController {
         requestService.save(request);
         requestService.updateRequestsAvailability();
         return "redirect:/production/request/list";
+    }
+
+    @GetMapping("/production/manager/stats")
+    public String productionStats(Model model) {
+
+        Map<Integer, Integer> dayToBeerAmount = new LinkedHashMap<>();
+        LocalDate today = LocalDate.now();
+        List<Batch> batches = batchService.getBatchesByMonthAndYearOrderedByDay(today.getMonth().toString(), today.getYear());
+        batches.forEach(e -> dayToBeerAmount.putIfAbsent(e.getDate().getDayOfMonth(), e.getBeerAmountInLiters()));
+        batches.forEach(e -> dayToBeerAmount.computeIfPresent(e.getDate().getDayOfMonth(), (k, v) -> v += e.getBeerAmountInLiters()));
+        model.addAttribute("dayToBeerAmount", dayToBeerAmount);
+        return "production/manager/stats";
     }
 
 }

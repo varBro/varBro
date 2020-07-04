@@ -1,8 +1,10 @@
 package com.varbro.varbro.controller.production;
 
 import com.varbro.varbro.model.User;
+import com.varbro.varbro.model.production.Batch;
 import com.varbro.varbro.model.production.Vat;
 import com.varbro.varbro.service.UserService;
+import com.varbro.varbro.service.production.BatchService;
 import com.varbro.varbro.service.production.BeerService;
 import com.varbro.varbro.service.production.VatService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +29,9 @@ public class VatController {
 
     @Autowired
     BeerService beerService;
+
+    @Autowired
+    BatchService batchService;
 
     @GetMapping("/production/vats")
     public String showAll(Model model) {
@@ -104,6 +109,8 @@ public class VatController {
             vat.setProcessPhase(Vat.ProcessPhase.values()[0]);
             vat.resetVat();
             vatService.saveVat(vat);
+            Batch batch = new Batch(vat);
+            batchService.saveBatch(batch);
 
             /*tutej trzeba zrobic dodawanie piwa do magazynu*/
 
