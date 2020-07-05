@@ -1,5 +1,6 @@
 package com.varbro.varbro.repository;
 
+import com.varbro.varbro.model.distribution.BeerStock;
 import com.varbro.varbro.model.finance.ContractorFinance;
 import com.varbro.varbro.model.finance.Invoice;
 import com.varbro.varbro.model.finance.InvoiceProduct;
@@ -14,6 +15,7 @@ import com.varbro.varbro.model.production.BeerIngredient;
 import com.varbro.varbro.model.production.Vat;
 import com.varbro.varbro.service.RoleService;
 import com.varbro.varbro.service.UserService;
+import com.varbro.varbro.service.distribution.BeerStockService;
 import com.varbro.varbro.service.finance.ContractorServiceFinance;
 import com.varbro.varbro.service.finance.InvoiceService;
 import com.varbro.varbro.service.finance.ProductServiceFinance;
@@ -28,6 +30,7 @@ import com.varbro.varbro.service.production.VatService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Array;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -49,12 +52,14 @@ public class DbInit implements CommandLineRunner {
     private ProductServiceFinance productServiceFinance;
     private ContractorServiceFinance contractorServiceFinance;
     private BatchService batchService;
+    private BeerStockService beerStockService;
 
 
     public DbInit(UserService userService, RoleService roleService, ProductService productService,
                   StockService stockService, OrderService orderService, ContractorService contractorService,
                   BeerService beerService, RequestService requestService, InvoiceService invoiceService,
-                  VatService vatService, ProductServiceFinance productServiceFinance, ContractorServiceFinance contractorServiceFinance) {
+                  VatService vatService, ProductServiceFinance productServiceFinance,
+                  ContractorServiceFinance contractorServiceFinance, BeerStockService beerStockService) {
         this.userService = userService;
         this.roleService = roleService;
         this.productService = productService;
@@ -67,6 +72,7 @@ public class DbInit implements CommandLineRunner {
         this.invoiceService = invoiceService;
         this.productServiceFinance = productServiceFinance;
         this.contractorServiceFinance = contractorServiceFinance;
+        this.beerStockService = beerStockService''
     }
 
 
@@ -82,6 +88,7 @@ public class DbInit implements CommandLineRunner {
         this.productService.deleteAll();
         this.contractorService.deleteAll();
         this.requestService.deleteAll();
+        this.beerStockService.deleteAll();
         this.beerService.deleteAll();
         this.contractorServiceFinance.deleteAll();
         this.productServiceFinance.deleteAll();
@@ -156,8 +163,10 @@ public class DbInit implements CommandLineRunner {
 
         orderService.saveOrder(ORDER);
 
-        beerService.saveBeer(new Beer("Pilsner", "Dodać składniki i wymieszać", new BeerIngredient(HOPS, 3.5f, BeerIngredient.IngredientType.HOP), new BeerIngredient(YEAST, 5, BeerIngredient.IngredientType.YEAST),
-                new BeerIngredient(MALTS, 1800, BeerIngredient.IngredientType.MALT), new BeerIngredient(HOPS1, 4F, BeerIngredient.IngredientType.HOP), new BeerIngredient(YEAST1, 0.5F, BeerIngredient.IngredientType.YEAST)));
+        Beer PILSNER = new Beer("Pilsner", "Dodać składniki i wymieszać", new BeerIngredient(HOPS, 3.5f, BeerIngredient.IngredientType.HOP), new BeerIngredient(YEAST, 5, BeerIngredient.IngredientType.YEAST),
+                new BeerIngredient(MALTS, 1800, BeerIngredient.IngredientType.MALT), new BeerIngredient(HOPS1, 4F, BeerIngredient.IngredientType.HOP), new BeerIngredient(YEAST1, 0.5F, BeerIngredient.IngredientType.YEAST));
+
+        beerService.saveBeer(PILSNER);
 
         Beer Ipa = new Beer("IPA", "Pozostawić w kadzi na dwa tygodnie");
         BeerIngredient ipaIngredient1 = new BeerIngredient(YEAST, 4.5f, BeerIngredient.IngredientType.YEAST);
@@ -170,6 +179,8 @@ public class DbInit implements CommandLineRunner {
         List<BeerIngredient> ingredients = Arrays.asList(ipaIngredient1,ipaIngredient2,ipaIngredient3);
         Ipa.setBeerIngredients(ingredients);
         beerService.saveBeer(Ipa);
+
+        beerStockService.saveStocks(Arrays.asList(new BeerStock(PILSNER, 500), new BeerStock(Ipa, 1043)));
 
         Contractor JANUSZEX = new Contractor(
                 "JANUSZEX S.A.",
