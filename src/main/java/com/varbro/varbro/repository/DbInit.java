@@ -54,7 +54,7 @@ public class DbInit implements CommandLineRunner {
     public DbInit(UserService userService, RoleService roleService, ProductService productService,
                   StockService stockService, OrderService orderService, ContractorService contractorService,
                   BeerService beerService, RequestService requestService, InvoiceService invoiceService,
-                  VatService vatService, ProductServiceFinance productServiceFinance, ContractorServiceFinance contractorServiceFinance) {
+                  VatService vatService, ProductServiceFinance productServiceFinance, ContractorServiceFinance contractorServiceFinance, BatchService batchService) {
         this.userService = userService;
         this.roleService = roleService;
         this.productService = productService;
@@ -67,12 +67,14 @@ public class DbInit implements CommandLineRunner {
         this.invoiceService = invoiceService;
         this.productServiceFinance = productServiceFinance;
         this.contractorServiceFinance = contractorServiceFinance;
+        this.batchService = batchService;
     }
 
 
     @Override
     public void run(String... args) {
 
+        this.batchService.deleteAll();
         this.vatService.deleteAll();
         this.userService.deleteAll();
         this.roleService.deleteAll();
