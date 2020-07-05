@@ -107,10 +107,11 @@ public class VatController {
 
         } else if (vat.getProcessPhase() == Vat.ProcessPhase.PACKAGING) {
             vat.setProcessPhase(Vat.ProcessPhase.values()[0]);
-            vat.resetVat();
-            vatService.saveVat(vat);
             Batch batch = new Batch(vat);
             batchService.saveBatch(batch);
+            vat.resetVat();
+            vatService.saveVat(vat);
+
 
             /*tutej trzeba zrobic dodawanie piwa do magazynu*/
 

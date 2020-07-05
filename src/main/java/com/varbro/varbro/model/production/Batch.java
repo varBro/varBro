@@ -7,6 +7,7 @@ import java.time.LocalDate;
 
 @Entity
 public class Batch {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "batch_id")
