@@ -17,6 +17,10 @@ public class BatchService {
         batchRepository.save(batch);
     }
 
+    public void saveBatches(Iterable<Batch> batches) {
+        batchRepository.saveAll(batches);
+    }
+
     public List<Batch> getBatchesByMonthAndYearOrderedByDay(String month, int year) {
         return batchRepository.findBatchesByMonthAndYearOrderedByDay(month, year);
     }

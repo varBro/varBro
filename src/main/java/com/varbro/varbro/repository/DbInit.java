@@ -8,6 +8,7 @@ import com.varbro.varbro.model.logistics.*;
 import com.varbro.varbro.model.Role;
 import com.varbro.varbro.model.User;
 import com.varbro.varbro.model.logistics.Product;
+import com.varbro.varbro.model.production.Batch;
 import com.varbro.varbro.model.production.Beer;
 import com.varbro.varbro.model.production.BeerIngredient;
 import com.varbro.varbro.model.production.Vat;
@@ -20,6 +21,7 @@ import com.varbro.varbro.service.logistics.ContractorService;
 import com.varbro.varbro.service.logistics.OrderService;
 import com.varbro.varbro.service.logistics.ProductService;
 import com.varbro.varbro.service.logistics.StockService;
+import com.varbro.varbro.service.production.BatchService;
 import com.varbro.varbro.service.production.BeerService;
 import com.varbro.varbro.service.production.RequestService;
 import com.varbro.varbro.service.production.VatService;
@@ -46,6 +48,7 @@ public class DbInit implements CommandLineRunner {
     private InvoiceService invoiceService;
     private ProductServiceFinance productServiceFinance;
     private ContractorServiceFinance contractorServiceFinance;
+    private BatchService batchService;
 
 
     public DbInit(UserService userService, RoleService roleService, ProductService productService,
@@ -197,6 +200,16 @@ public class DbInit implements CommandLineRunner {
         List<Vat> vats = Arrays.asList(vat1,vat2,vat3,vat4);
         vatService.saveVats(vats);
 
+
+        LocalDate date1 = LocalDate.of(2020, 7, 1);
+        LocalDate date2 = LocalDate.of(2020, 7, 3);
+        Batch batch1 = new Batch(vat1);
+        Batch batch2 = new Batch("IPA", vat2, date1);
+        Batch batch3 = new Batch("APA", vat4, date1);
+        Batch batch4 = new Batch("Pilsner", vat3, date2);
+
+        List<Batch> batches = Arrays.asList(batch1, batch2, batch3, batch4);
+        batchService.saveBatches(batches);
 
 
         ProductFinance product1 = new ProductFinance("Piwo", 12.3);

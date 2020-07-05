@@ -31,6 +31,13 @@ public class Batch {
         this.date = LocalDate.now();
     }
 
+    public Batch(String beerName, Vat vat, LocalDate date) {
+        this.beerName = beerName;
+        this.beerAmountInLiters = vat.getCapacity();
+        this.vat = vat;
+        this.date = date;
+    }
+
     public String getBeerName() {
         return beerName;
     }
