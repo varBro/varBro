@@ -14,6 +14,16 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
+            <div th:if="${param.changed}">
+                <div class="alert alert-success">
+                    Password changed successfully
+                </div>
+            </div>
+            <div th:if="${param.reset}">
+            <div class="alert alert-success">
+                Password reseted successfully
+            </div>
+        </div>
             <div class="profile-user-info">
                 <div class="profile-info-row">
                     <div class="profile-info-name"> Name </div>
@@ -76,6 +86,12 @@
                     </div>
                     <div class="profile-info-value" sec:authorize="hasAuthority('ROLE_ADMIN')">
                         <a class="btn btn-secondary" th:href="@{/user/{id}/delete(id=${user.id})}" role="button">Delete</a>
+                    </div>
+                    <div class="profile-info-value" sec:authorize="hasAuthority('ROLE_ADMIN')">
+                        <a class="btn btn-warning" th:href="@{/user/{id}/reset-password(id=${user.id})}" role="button">Reset password</a>
+                    </div>
+                    <div class="profile-info-value" th:if="${#authentication.name == user.email}" >
+                        <a class="btn btn-warning" th:href="@{/user/{id}/change-password(id=${user.id})}" role="button">Change password</a>
                     </div>
                     <div class="profile-info-value" th:if="${user.status == 0}" sec:authorize="hasAuthority('ROLE_ADMIN')">
                         <a class="btn btn-success" th:href="@{/user/{id}/unlock(id=${user.id})}" role="button">Unlock</a>
