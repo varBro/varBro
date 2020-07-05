@@ -72,7 +72,7 @@ public class DbInit implements CommandLineRunner {
         this.invoiceService = invoiceService;
         this.productServiceFinance = productServiceFinance;
         this.contractorServiceFinance = contractorServiceFinance;
-        this.beerStockService = beerStockService''
+        this.beerStockService = beerStockService;
     }
 
 
