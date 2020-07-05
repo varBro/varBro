@@ -1,0 +1,40 @@
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <title>Stock</title>
+</head>
+<body>
+<ol layout:fragment="breadcrumbs" class="breadcrumb pl-5">
+    <li class="breadcrumb-item"><a href="/default">Home</a></li>
+    <li class="breadcrumb-item active">Stock</li>
+</ol>
+<section layout:fragment="content">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="profile-user-info">
+                    <div class="profile-info-row">
+                        <div class="profile-info-name text-center"> Beer </div>
+                        <div class="profile-info-name text-center"> Quantity </div>
+                        <div class="profile-info-name text-center"> Last Update </div>
+                    </div>
+                    <div class="profile-info-row" th:each="stock : ${stocks}">
+                        <div class="profile-info-value text-center">
+                            <span th:text="${stock.beer.name}"></span>
+                        </div>
+                        <div class="profile-info-value text-center">
+                            <span th:text="${stock.quantity}"></span>
+                        </div>
+                        <div class="profile-info-value text-center">
+                            <span th:text="${stock.lastUpdated}"></span>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>
