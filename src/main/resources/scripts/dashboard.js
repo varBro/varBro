@@ -11,9 +11,9 @@
     var myChart = new Chart(ctx, {
         type: 'line',
         data: {
-            labels: [[${dayToBeerAmount.keySet()}]],
+            labels: [[${day_to_beer_amount.keySet()}]],
             datasets: [{
-                data: [[${dayToBeerAmount.values()}]],
+                data: [[${day_to_beer_amount.values()}]],
                 lineTension: 0,
                 backgroundColor: 'transparent',
                 borderColor: '#007bff',

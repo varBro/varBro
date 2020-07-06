@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -30,6 +31,9 @@ public class UserController {
     RoleService roleService;
 
     String departmentRole;
+
+    @Autowired
+    BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @GetMapping("/user")
     public String userIndex() {
@@ -107,6 +111,7 @@ public class UserController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String name = authentication.getName();
         User user = userService.getUserByEmail(name);
+
         return new ModelAndView("redirect:/user/" + user.getId());
     }
 
@@ -118,7 +123,9 @@ public class UserController {
 
     @PostMapping("/user/add-user")
     public ModelAndView addUserSubmit(@ModelAttribute User user) {
-        user.setPassword("$2a$10$XHOXjTseWpp9vA9NAe7unOYOQJY58bpZDcxLGn1pkNNf1QJrETfJ6"); // encoded blyat
+        //user.setPassword("$2y$12$LY7TmjsnBYBu2Y5oIJUZte0r0aU/IiU3e4eppfLg5Gz7lqBGHVYPW"); // encoded brovar
+        user.setPassword(bCryptPasswordEncoder.encode(generatePassword(user)));
+        //haslo - 3 pierwsze litery imienia + 4 ostatnie cyfry nr pesel + 3 pierwsze litery nazwiska
         return getModelAndView(user);
     }
 
@@ -129,6 +136,53 @@ public class UserController {
         user.setStatus(3);
         userService.saveUser(user);
         return new ModelAndView("redirect:/user/" + user.getId());
+    }
+
+    @GetMapping("/user/{id}/reset-password")
+    public ModelAndView resetPassword(@PathVariable("id") long id) {
+        User user = userService.getUserById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + id));
+
+        user.setPassword(bCryptPasswordEncoder.encode(generatePassword(user)));
+        userService.saveUser(user);
+        return new ModelAndView("redirect:/user/" + user.getId() + "?reset=true");
+    }
+
+    @GetMapping("/user/{id}/change-password")
+    public String changePasswordForm(@PathVariable("id") long id, Model model) {
+        User user = userService.getUserById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + id));
+
+        model.addAttribute("user", user);
+        return "user/change-password";
+    }
+
+    @PostMapping("/user/{id}/change-password")
+    public ModelAndView changePassword(@PathVariable("id") long id,
+                                       @RequestParam("old_password") String oldPassword,
+                                       @RequestParam("password") String password,
+                                       @RequestParam("confirmed") String confirmedPassword)
+    {
+        User user = userService.getUserById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + id));
+
+        if(bCryptPasswordEncoder.matches(oldPassword, user.getPassword())) {
+            if (password.equals(confirmedPassword)) {
+                user.setPassword(bCryptPasswordEncoder.encode(password));
+                userService.saveUser(user);
+                return new ModelAndView("redirect:/user/" + user.getId() + "?changed=true");
+            } else {
+                return new ModelAndView("redirect:/user/" + user.getId() + "/change-password?failure=true");
+
+            }
+        } else {
+            return new ModelAndView("redirect:/user/" + user.getId() + "/change-password?unauthorized=true");
+        }
+    }
+
+    public String generatePassword(User user) {
+
+        return user.getName().substring(0,3)+user.getPesel().substring(7,11)+user.getSurname().substring(0,3);
     }
 
 

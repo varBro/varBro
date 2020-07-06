@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 @Controller
@@ -117,7 +118,11 @@ public class ProductionController {
                         batch -> batch.getDate().getDayOfMonth(),
                         Collectors.summingInt(Batch::getBeerAmountInLiters)));
 
-        model.addAttribute("dayToBeerAmount", dayToBeerAmount);
+        IntStream.rangeClosed(1, today.lengthOfMonth()).forEach(i -> dayToBeerAmount.putIfAbsent(i, 0));
+
+        model.addAttribute("day_to_beer_amount", dayToBeerAmount);
+
+        Stream.of(dayToBeerAmount).forEach(System.out::println);
         return "production/manager/stats";
     }
 

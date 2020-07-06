@@ -6,9 +6,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 public class Product {
@@ -21,11 +19,12 @@ public class Product {
         private String name;
         @Enumerated(EnumType.STRING)
         private Unit unit;
+
         @NotNull
         private boolean ingredient;
 
         @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
-        private Set<BeerIngredient> beerIngredients = new HashSet<>();
+        private List<BeerIngredient> beerIngredients = new ArrayList<>();
 
         public enum Unit {
                 PCS {
@@ -68,13 +67,17 @@ public class Product {
 
         public void setUnit(Unit unit) { this.unit = unit; }
 
-        public Set<BeerIngredient> getBeerIngredients() {
+        public List<BeerIngredient> getBeerIngredients() {
                 return beerIngredients;
         }
 
-        public void setBeerIngredients(Set<BeerIngredient> beerIngredients) {
+        public void setBeerIngredients(List<BeerIngredient> beerIngredients) {
                 this.beerIngredients = beerIngredients;
         }
+
+        public boolean isIngredient() { return ingredient; }
+
+        public void setIngredient(boolean ingredient) { this.ingredient = ingredient; }
 
         @Override
         public boolean equals(Object o) {

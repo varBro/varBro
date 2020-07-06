@@ -25,6 +25,9 @@ public class DefaultController {
         else if (request.isUserInRole("ROLE_PRODUCTION")) {
             return "redirect:/production";
         }
+        else if (request.isUserInRole("ROLE_DISTRIBUTION")) {
+            return "redirect:/distribution";
+        }
         return "redirect:/";
     }
 

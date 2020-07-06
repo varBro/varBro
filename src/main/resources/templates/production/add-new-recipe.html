@@ -1,0 +1,71 @@
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Add recipe</title>
+</head>
+<body>
+<ol layout:fragment="breadcrumbs" class="breadcrumb pl-5">
+    <li class="breadcrumb-item"><a href="/default">Home</a></li>
+    <li class="breadcrumb-item active">Add recipe</li>
+</ol>
+<section layout:fragment="content">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <h2>New recipe</h2><br>
+                <form action="#" th:action="@{/production/add-new-recipe}" th:object="${beer}" method="post">
+                    <div class="form-group">
+                        <label for="name">Name of the beer</label>
+                        <input type="text" class="form-control" id="name" placeholder="Enter name of the beer"
+                               style="width: 30%" th:field="*{name}">
+                        <div class="alert alert-danger" th:if="${#fields.hasErrors('name')}"
+                             th:errors="*{name}"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="recipeDescripton">Description of the production process</label><br>
+                        <textarea id="recipeDescripton" placeholder="Enter description" rows="4" cols="60"
+                                  th:field="*{recipeDescription}"></textarea>
+                        <div class="alert alert-danger" th:if="${#fields.hasErrors('recipeDescription')}"
+                             th:errors="*{recipeDescription}"></div>
+                    </div>
+                    <div class="form-row" th:each="ingredient, ingredientStat: *{beerIngredients}">
+                        <div class="form-group col-md-3" th:with="ingredientLabel=${ingredientStat.index + 1}">
+                            <label for="ingredientTypeSelect" th:text="${'Ingredient ' + ingredientLabel}"></label>
+                            <select id="ingredientTypeSelect" class="form-control selectpicker" editable="true"
+                                    th:field="*{beerIngredients[__${ingredientStat.index}__].ingredientType}" >
+                                <option th:each="ingredientType : ${T(com.varbro.varbro.model.production.BeerIngredient.IngredientType).values()}"
+                                        th:value="${ingredientType}" th:text="${ingredientType}"></option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-5">
+                            <label for="ingredientName">Ingredient name</label>
+                            <input id="ingredientName" class="form-control"
+                                   th:field="*{beerIngredients[__${ingredientStat.index}__].product.name}" placeholder="Enter ingredient name">
+                            <div class="alert alert-danger" th:if="${#fields.hasErrors('beerIngredients[__${ingredientStat.index}__].ingredient.name')}"
+                                 th:errors="*{beerIngredients[__${ingredientStat.index}__].product.name}"></div>
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label for="ingredientQuantity">Quantity</label>
+                            <input id="ingredientQuantity" class="form-control" type="number" step="0.01" min="0.00"
+                                   th:field="*{beerIngredients[__${ingredientStat.index}__].quantity}" placeholder="Enter quantity">
+                            <div class="alert alert-danger" th:if="${#fields.hasErrors('beerIngredients[__${ingredientStat.index}__].quantity')}"
+                                 th:errors="*{beerIngredients[__${ingredientStat.index}__].quantity}"></div>
+                        </div>
+                        <div class="form-group col-md-2 text-center align-self-bottom">
+                            <button id="removeBtn" class="btn btn-secondary btn-circle btn-sm text-center" type="submit"
+                                    th:value="${ingredientStat.index}" name="removeRow"><h4>-</h4></button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col align-self-center text-center">
+                            <button class="btn btn-primary btn-circle btn-md text-center" type="submit" name="addRow"><h4>+</h4></button>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary" name="save">Add beer recipe</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>

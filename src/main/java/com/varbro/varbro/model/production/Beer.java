@@ -1,6 +1,7 @@
 package com.varbro.varbro.model.production;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -14,16 +15,18 @@ public class Beer {
     @Column(name = "beer_id")
     private long id;
     private String name;
+    private String recipeDescription;
 
     @OneToMany(mappedBy = "beer", cascade = CascadeType.ALL)
-    private Set<BeerIngredient> beerIngredients;
+    private List<BeerIngredient> beerIngredients;
 
     public Beer() {}
 
-    public Beer(String name, BeerIngredient... beerIngredients) {
+    public Beer(String name, String recipeDescription, BeerIngredient... beerIngredients) {
         this.name = name;
+        this.recipeDescription = recipeDescription;
         for(BeerIngredient beerIngredient : beerIngredients) beerIngredient.setBeer(this);
-        this.beerIngredients = Stream.of(beerIngredients).collect(Collectors.toSet());
+        this.beerIngredients = Stream.of(beerIngredients).collect(Collectors.toList());
     }
 
     public long getId() {
@@ -42,14 +45,22 @@ public class Beer {
         this.name = name;
     }
 
-    public Set<BeerIngredient> getBeerIngredients() {
+    public String getRecipeDescription() {
+        return recipeDescription;
+    }
+
+    public void setRecipeDescription(String recipeDescription) {
+        this.recipeDescription = recipeDescription;
+    }
+
+    public List<BeerIngredient> getBeerIngredients() {
         return beerIngredients;
     }
 
-    public void setBeerIngredients(Set<BeerIngredient> beerIngredients) {
-        this.beerIngredients = beerIngredients;
+    public void setBeerIngredients(List<BeerIngredient> beerIngredients) { 
+        this.beerIngredients = beerIngredients; 
     }
-
+  
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -64,5 +75,4 @@ public class Beer {
     public int hashCode() {
         return Objects.hash(id, name, beerIngredients);
     }
-
 }

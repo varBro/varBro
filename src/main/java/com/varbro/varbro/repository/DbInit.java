@@ -102,14 +102,15 @@ public class DbInit implements CommandLineRunner {
 
         this.roleService.saveRoles(roles);
 
-        User ADMIN = new User("Admin", "Admin", "$2a$10$XHOXjTseWpp9vA9NAe7unOYOQJY58bpZDcxLGn1pkNNf1QJrETfJ6", "admin@admin.com", "213721372", User.Department.IT, "12345678901234567890123456", 99999, "12345678901", User.Position.ADMIN);
-        User ADMIN1 = new User("Dummy", "Dummy", "$2a$10$XHOXjTseWpp9vA9NAe7unOYOQJY58bpZDcxLGn1pkNNf1QJrETfJ6", "dummy@test.com", "777777777", User.Department.IT, "09876543210987654321123456", 99999, "09876543211", User.Position.ADMIN);
-        User JOHN = new User("John", "Doe", "$2a$10$XHOXjTseWpp9vA9NAe7unOYOQJY58bpZDcxLGn1pkNNf1QJrETfJ6", "john.doe@gmail.com", "666666666", User.Department.PRODUCTION, "12345678900987654321123456", 99999, "09876123455");
-        User JOHN1 = new User("Johnny", "Dore", "$2a$10$XHOXjTseWpp9vA9NAe7unOYOQJY58bpZDcxLGn1pkNNf1QJrETfJ6", "johnny.doe@gmail.com", "666664666", User.Department.PRODUCTION, "12345178900987654321123456", 99999, "09576123455");
-        User JP = new User("Jan", "Pawel", "$2a$10$XHOXjTseWpp9vA9NAe7unOYOQJY58bpZDcxLGn1pkNNf1QJrETfJ6", "janpawel2@gmail.com", "213721377", User.Department.FINANCE, "21370012345678901234567890", 2137, "21372137213");
-        User BARBARA = new User("Baśka", "Kwarc", "$2a$10$XHOXjTseWpp9vA9NAe7unOYOQJY58bpZDcxLGn1pkNNf1QJrETfJ6", "bacha@gmail.com", "666997112", User.Department.HR, "21370012345648592474567890", 3137, "690628475", User.Position.MANAGER);
-        User WIESIO = new User("Wiesław", "Paleta", "$2a$10$XHOXjTseWpp9vA9NAe7unOYOQJY58bpZDcxLGn1pkNNf1QJrETfJ6", "wpaleta@gmail.com", "663427112", User.Department.LOGISTICS, "21370012146824753482567890", 5137, "590427475", User.Position.MANAGER);
-        User PanWIESIO = new User("Wiesław", "Puchacki", "$2a$10$XHOXjTseWpp9vA9NAe7unOYOQJY58bpZDcxLGn1pkNNf1QJrETfJ6", "panwiesio@gmail.com", "667647112", User.Department.PRODUCTION, "21370012146420753482567890", 8000, "590422475", User.Position.MANAGER);
+        User ADMIN = new User("Admin", "Admin", "$2y$12$LY7TmjsnBYBu2Y5oIJUZte0r0aU/IiU3e4eppfLg5Gz7lqBGHVYPW", "admin@admin.com", "213721372", User.Department.IT, "12345678901234567890123456", 99999, "12345678901", User.Position.ADMIN);
+        User ADMIN1 = new User("Dummy", "Dummy", "$2y$12$LY7TmjsnBYBu2Y5oIJUZte0r0aU/IiU3e4eppfLg5Gz7lqBGHVYPW", "dummy@test.com", "777777777", User.Department.IT, "09876543210987654321123456", 99999, "09876543211", User.Position.ADMIN);
+        User JOHN = new User("John", "Doe", "$2y$12$LY7TmjsnBYBu2Y5oIJUZte0r0aU/IiU3e4eppfLg5Gz7lqBGHVYPW", "john.doe@gmail.com", "666666666", User.Department.PRODUCTION, "12345678900987654321123456", 99999, "09876123455");
+        User JOHN1 = new User("Johnny", "Dore", "$2y$12$LY7TmjsnBYBu2Y5oIJUZte0r0aU/IiU3e4eppfLg5Gz7lqBGHVYPW", "johnny.doe@gmail.com", "666664666", User.Department.PRODUCTION, "12345178900987654321123456", 99999, "09576123455");
+        User JP = new User("Jan", "Pawel", "$2y$12$LY7TmjsnBYBu2Y5oIJUZte0r0aU/IiU3e4eppfLg5Gz7lqBGHVYPW", "janpawel2@gmail.com", "213721377", User.Department.FINANCE, "21370012345678901234567890", 2137, "21372137213");
+        User BARBARA = new User("Baśka", "Kwarc", "$2y$12$LY7TmjsnBYBu2Y5oIJUZte0r0aU/IiU3e4eppfLg5Gz7lqBGHVYPW", "bacha@gmail.com", "666997112", User.Department.HR, "21370012345648592474567890", 3137, "690628475", User.Position.MANAGER);
+        User WIESIO = new User("Wiesław", "Paleta", "$2y$12$LY7TmjsnBYBu2Y5oIJUZte0r0aU/IiU3e4eppfLg5Gz7lqBGHVYPW", "wpaleta@gmail.com", "663427112", User.Department.LOGISTICS, "21370012146824753482567890", 5137, "590427475", User.Position.MANAGER);
+        User PanWIESIO = new User("Wiesław", "Puchacki", "$2y$12$LY7TmjsnBYBu2Y5oIJUZte0r0aU/IiU3e4eppfLg5Gz7lqBGHVYPW", "panwiesio@gmail.com", "667647112", User.Department.PRODUCTION, "21370012146420753482567890", 8000, "590422475", User.Position.MANAGER);
+        User ANDREJ = new User("Andrej","Svoboda","$2y$12$LY7TmjsnBYBu2Y5oIJUZte0r0aU/IiU3e4eppfLg5Gz7lqBGHVYPW","asvoboda@seznam.cz","999999999",User.Department.DISTRIBUTION,"09876543210987654321123450",1488,"91042012345");
         ADMIN.setRoles(new HashSet(Arrays.asList(Employee, Admin)));
         ADMIN1.setRoles(new HashSet(Arrays.asList(Employee, Admin)));
         JOHN.setRoles(new HashSet(Arrays.asList(Employee, Production)));
@@ -118,8 +119,9 @@ public class DbInit implements CommandLineRunner {
         BARBARA.setRoles(new HashSet(Arrays.asList(Employee, HR, Manager)));
         WIESIO.setRoles(new HashSet(Arrays.asList(Employee, Logistics, Manager)));
         PanWIESIO.setRoles(new HashSet(Arrays.asList(Employee, Production, Manager)));
+        ANDREJ.setRoles(new HashSet(Arrays.asList(Employee, Distribution, Manager)));
 
-        List<User> users = Arrays.asList(ADMIN, ADMIN1, JOHN, JOHN1, JP, BARBARA, WIESIO, PanWIESIO);
+        List<User> users = Arrays.asList(ADMIN, ADMIN1, JOHN, JOHN1, JP, BARBARA, WIESIO, PanWIESIO,ANDREJ);
 
         this.userService.saveUsers(users);
 
@@ -150,24 +152,25 @@ public class DbInit implements CommandLineRunner {
         List<Stock> stocks = Arrays.asList(MALT_STOCK, HOPS_STOCK, YEAST_STOCK, MALT1_STOCK, HOPS1_STOCK, YEAST1_STOCK, BOTTLE_STOCK);
         this.stockService.saveStocks(stocks);
 
-
         OrderItem ORDER_ITEM = new OrderItem(HOPS, 15);
         List<OrderItem> orderList = Arrays.asList(ORDER_ITEM);
         Order ORDER = new Order(orderList);
 
         orderService.saveOrder(ORDER);
 
-        beerService.saveBeer(new Beer("Pilsner", new BeerIngredient(HOPS, 3.5f, BeerIngredient.IngredientType.HOP), new BeerIngredient(YEAST, 5, BeerIngredient.IngredientType.YEAST),
+        beerService.saveBeer(new Beer("Pilsner", "Dodać składniki i wymieszać", new BeerIngredient(HOPS, 3.5f, BeerIngredient.IngredientType.HOP), new BeerIngredient(YEAST, 5, BeerIngredient.IngredientType.YEAST),
                 new BeerIngredient(MALTS, 1800, BeerIngredient.IngredientType.MALT), new BeerIngredient(HOPS1, 4F, BeerIngredient.IngredientType.HOP), new BeerIngredient(YEAST1, 0.5F, BeerIngredient.IngredientType.YEAST)));
 
-        Beer Ipa = new Beer("IPA");
+        Beer Ipa = new Beer("IPA", "Pozostawić w kadzi na dwa tygodnie");
         BeerIngredient ipaIngredient1 = new BeerIngredient(YEAST, 4.5f, BeerIngredient.IngredientType.YEAST);
         BeerIngredient ipaIngredient2 = new BeerIngredient(HOPS, 7.5f, BeerIngredient.IngredientType.HOP);
         BeerIngredient ipaIngredient3 = new BeerIngredient(MALTS, 1850, BeerIngredient.IngredientType.MALT);
+
         ipaIngredient1.setBeer(Ipa);
         ipaIngredient2.setBeer(Ipa);
         ipaIngredient3.setBeer(Ipa);
-        Ipa.setBeerIngredients(new HashSet(Arrays.asList(ipaIngredient1, ipaIngredient2, ipaIngredient3)));
+        List<BeerIngredient> ingredients = Arrays.asList(ipaIngredient1,ipaIngredient2,ipaIngredient3);
+        Ipa.setBeerIngredients(ingredients);
         beerService.saveBeer(Ipa);
 
         Contractor JANUSZEX = new Contractor(
