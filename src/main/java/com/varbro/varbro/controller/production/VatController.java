@@ -1,8 +1,12 @@
 package com.varbro.varbro.controller.production;
 
 import com.varbro.varbro.model.User;
+import com.varbro.varbro.model.distribution.BeerStock;
+import com.varbro.varbro.model.production.Batch;
 import com.varbro.varbro.model.production.Vat;
 import com.varbro.varbro.service.UserService;
+import com.varbro.varbro.service.distribution.BeerStockService;
+import com.varbro.varbro.service.production.BatchService;
 import com.varbro.varbro.service.production.BeerService;
 import com.varbro.varbro.service.production.VatService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +31,12 @@ public class VatController {
 
     @Autowired
     BeerService beerService;
+
+    @Autowired
+    BatchService batchService;
+
+    @Autowired
+    BeerStockService beerStockService;
 
     @GetMapping("/production/vats")
     public String showAll(Model model) {
@@ -101,11 +111,15 @@ public class VatController {
             vat.setLastUpdated(LocalDate.now());
 
         } else if (vat.getProcessPhase() == Vat.ProcessPhase.PACKAGING) {
+            BeerStock beerStock = beerStockService.getStockByBeerId(vat.getBeer().getId())
+                    .orElseThrow(() -> new IllegalArgumentException("Invalid beer Id:" + id));
+            beerStock.add(vat.getCapacity());
+            beerStockService.saveStock(beerStock);
             vat.setProcessPhase(Vat.ProcessPhase.values()[0]);
             vat.resetVat();
             vatService.saveVat(vat);
-
-            /*tutej trzeba zrobic dodawanie piwa do magazynu*/
+            Batch batch = new Batch(vat);
+            batchService.saveBatch(batch);
 
             return "redirect:/production/vats";
 

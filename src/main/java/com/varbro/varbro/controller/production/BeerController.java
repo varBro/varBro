@@ -1,9 +1,11 @@
 package com.varbro.varbro.controller.production;
 
 
+import com.varbro.varbro.model.distribution.BeerStock;
 import com.varbro.varbro.model.logistics.Product;
 import com.varbro.varbro.model.production.Beer;
 import com.varbro.varbro.model.production.BeerIngredient;
+import com.varbro.varbro.service.distribution.BeerStockService;
 import com.varbro.varbro.service.logistics.ProductService;
 import com.google.common.collect.*;
 import com.varbro.varbro.service.production.BeerService;
@@ -36,6 +38,9 @@ public class BeerController {
 
     @Autowired
     ProductService productService;
+
+    @Autowired
+    BeerStockService beerStockService;
 
     @GetMapping("/production/beers")
     public String showAll(Model model) {
@@ -107,6 +112,7 @@ public class BeerController {
                 productService.saveProduct(beerIngredient.getProduct());
             }
             beerService.saveBeer(new Beer(beer.getName(),beer.getRecipeDescription(), beer.getBeerIngredients().toArray(new BeerIngredient[beer.getBeerIngredients().size()])));
+            beerStockService.saveStock(new BeerStock(beerService.getBeerByName(beer.getName())));
             status.setComplete();
         }
         return "redirect:/default";
