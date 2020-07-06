@@ -36,4 +36,18 @@ public class BeerStockService {
     public void deleteAll() {
         beerStockRepository.deleteAll();
     }
+
+    public void addToStock(long id, double quantity) {
+        BeerStock beerStock = beerStockRepository.findByBeerId(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid beer Id:" + id));
+        beerStock.add(quantity);
+        beerStockRepository.save(beerStock);
+    }
+
+    public void substituteFromStock(long id, double quantity) {
+        BeerStock beerStock = beerStockRepository.findByBeerId(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid beer Id:" + id));
+        beerStock.substitute(quantity);
+        beerStockRepository.save(beerStock);
+    }
 }

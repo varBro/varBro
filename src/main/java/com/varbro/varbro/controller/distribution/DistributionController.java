@@ -1,11 +1,14 @@
 package com.varbro.varbro.controller.distribution;
 
+import com.varbro.varbro.model.distribution.BeerStock;
 import com.varbro.varbro.service.distribution.BeerStockService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import sun.text.normalizer.NormalizerBase;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class DistributionController {
@@ -21,6 +24,24 @@ public class DistributionController {
     @GetMapping("/distribution/stock")
     public String showStock(Model model) {
         model.addAttribute("stock", beerStockService.getStocks());
-        return "distribution/stock";
+        return "distribution/stock/show";
     }
+
+    @GetMapping("/distribution/stock/edit")
+    public String editStockForm(Model model) {
+        model.addAttribute("stock", beerStockService.getStocks());
+        return "distribution/stock/edit";
+    }
+
+    @PostMapping("/distribution/stock/edit")
+    public String editStock(@RequestParam(value = "operation") String operation, @ModelAttribute BeerStock stock) {
+        if(operation.equals("ADD")) {
+
+        }
+        else if(operation.equals("SUBSTITUTE")) {
+
+        }
+        return "redirect:/distribution/stock/show";
+    }
+
 }

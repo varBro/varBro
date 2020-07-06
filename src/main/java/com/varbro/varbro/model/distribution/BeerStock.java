@@ -57,6 +57,8 @@ public class BeerStock{
 
     public  void add(double quantity) { this.quantity += quantity; }
 
+    public  void substitute(double quantity) { this.quantity -= quantity; }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

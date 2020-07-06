@@ -111,10 +111,7 @@ public class VatController {
             vat.setLastUpdated(LocalDate.now());
 
         } else if (vat.getProcessPhase() == Vat.ProcessPhase.PACKAGING) {
-            BeerStock beerStock = beerStockService.getStockByBeerId(vat.getBeer().getId())
-                    .orElseThrow(() -> new IllegalArgumentException("Invalid beer Id:" + id));
-            beerStock.add(vat.getCapacity());
-            beerStockService.saveStock(beerStock);
+            beerStockService.addToStock(vat.getBeer().getId(), vat.getCapacity());
             vat.setProcessPhase(Vat.ProcessPhase.values()[0]);
             vat.resetVat();
             vatService.saveVat(vat);
