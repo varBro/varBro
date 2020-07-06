@@ -36,4 +36,36 @@ public class BeerStockService {
     public void deleteAll() {
         beerStockRepository.deleteAll();
     }
+
+    public void addToStock(long id, double quantity) {
+        BeerStock beerStock = beerStockRepository.findByBeerId(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid beer Id:" + id));
+        beerStock.add(quantity);
+        beerStock.setLastUpdated(LocalDate.now());
+        beerStockRepository.save(beerStock);
+    }
+
+    public void substituteFromStock(long id, double quantity) {
+        BeerStock beerStock = beerStockRepository.findByBeerId(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid beer Id:" + id));
+        beerStock.substitute(quantity);
+        beerStock.setLastUpdated(LocalDate.now());
+        beerStockRepository.save(beerStock);
+    }
+
+    public void addToStock(String beerName, double quantity) {
+        BeerStock beerStock = beerStockRepository.findByBeerName(beerName)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid beer name:" + beerName));
+        beerStock.add(quantity);
+        beerStock.setLastUpdated(LocalDate.now());
+        beerStockRepository.save(beerStock);
+    }
+
+    public void substituteFromStock(String beerName, double quantity) {
+        BeerStock beerStock = beerStockRepository.findByBeerName(beerName)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid beer name:" + beerName));
+        beerStock.substitute(quantity);
+        beerStock.setLastUpdated(LocalDate.now());
+        beerStockRepository.save(beerStock);
+    }
 }
