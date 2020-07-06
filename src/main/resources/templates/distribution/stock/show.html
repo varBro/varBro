@@ -16,7 +16,7 @@
                 <div class="profile-user-info">
                     <div class="profile-info-row">
                         <div class="profile-info-name text-center"> Beer </div>
-                        <div class="profile-info-name text-center"> Quantity </div>
+                        <div class="profile-info-name text-center"> Quantity litres / bottles </div>
                         <div class="profile-info-name text-center"> Last Update </div>
                     </div>
                     <div class="profile-info-row" th:each="stock : ${stocks}">
@@ -24,7 +24,7 @@
                             <span th:text="${stock.beer.name}"></span>
                         </div>
                         <div class="profile-info-value text-center">
-                            <span th:text="${stock.quantity}"></span>
+                            <span th:text="${stock.quantity + ' / ' + stock.quantity * 2}"></span>
                         </div>
                         <div class="profile-info-value text-center">
                             <span th:text="${stock.lastUpdated}"></span>

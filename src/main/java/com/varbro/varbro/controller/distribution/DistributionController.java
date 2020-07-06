@@ -31,6 +31,7 @@ public class DistributionController {
     public String editStockForm(Model model) {
         model.addAttribute("beerStocks", beerStockService.getStocks());
         model.addAttribute("stock", new BeerStock());
+        model.addAttribute("operation", "SUBSTITUTE");
         return "distribution/stock/edit";
     }
 
@@ -42,7 +43,7 @@ public class DistributionController {
         else if(operation.equals("SUBSTITUTE")) {
             beerStockService.substituteFromStock(stock.getBeer().getName(), stock.getQuantity());
         }
-        return "distribution/stock/edit";
+        return "redirect:/distribution/stock/edit";
     }
 
 }

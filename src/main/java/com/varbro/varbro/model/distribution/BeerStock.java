@@ -25,7 +25,9 @@ public class BeerStock{
     @JoinColumn(name = "beer_id")
     private Beer beer;
 
-    public BeerStock() {}
+    public BeerStock() {
+        this.lastUpdated = LocalDate.now();
+    }
 
     public BeerStock(Beer beer)
     {
@@ -45,6 +47,8 @@ public class BeerStock{
 
     public Beer getBeer() {return this.beer; }
 
+    public void setBeer(Beer beer) { this.beer = beer; }
+
     public void setQuantity(double quantity) { this.quantity = quantity; }
 
     public double getQuantity() { return this.quantity; }
@@ -55,9 +59,9 @@ public class BeerStock{
 
     public void beerStockUpdatedDate() { this.lastUpdated = LocalDate.now(); }
 
-    public  void add(double quantity) { this.quantity += quantity; }
+    public void add(double quantity) { this.quantity += quantity; }
 
-    public  void substitute(double quantity) { this.quantity -= quantity; }
+    public void substitute(double quantity) { this.quantity -= quantity; }
 
     @Override
     public boolean equals(Object o) {
