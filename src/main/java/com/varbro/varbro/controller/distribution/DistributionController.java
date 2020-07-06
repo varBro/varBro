@@ -23,25 +23,26 @@ public class DistributionController {
 
     @GetMapping("/distribution/stock")
     public String showStock(Model model) {
-        model.addAttribute("stock", beerStockService.getStocks());
+        model.addAttribute("stocks", beerStockService.getStocks());
         return "distribution/stock/show";
     }
 
     @GetMapping("/distribution/stock/edit")
     public String editStockForm(Model model) {
-        model.addAttribute("stock", beerStockService.getStocks());
+        model.addAttribute("beerStocks", beerStockService.getStocks());
+        model.addAttribute("stock", new BeerStock());
         return "distribution/stock/edit";
     }
 
     @PostMapping("/distribution/stock/edit")
     public String editStock(@RequestParam(value = "operation") String operation, @ModelAttribute BeerStock stock) {
         if(operation.equals("ADD")) {
-
+            beerStockService.addToStock(stock.getBeer().getName(), stock.getQuantity());
         }
         else if(operation.equals("SUBSTITUTE")) {
-
+            beerStockService.substituteFromStock(stock.getBeer().getName(), stock.getQuantity());
         }
-        return "redirect:/distribution/stock/show";
+        return "distribution/stock/edit";
     }
 
 }

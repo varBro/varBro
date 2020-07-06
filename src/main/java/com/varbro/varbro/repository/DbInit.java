@@ -59,7 +59,8 @@ public class DbInit implements CommandLineRunner {
                   StockService stockService, OrderService orderService, ContractorService contractorService,
                   BeerService beerService, RequestService requestService, InvoiceService invoiceService,
                   VatService vatService, ProductServiceFinance productServiceFinance,
-                  ContractorServiceFinance contractorServiceFinance, BeerStockService beerStockService) {
+                  ContractorServiceFinance contractorServiceFinance, BeerStockService beerStockService,
+                  BatchService batchService) {
         this.userService = userService;
         this.roleService = roleService;
         this.productService = productService;
@@ -73,6 +74,7 @@ public class DbInit implements CommandLineRunner {
         this.productServiceFinance = productServiceFinance;
         this.contractorServiceFinance = contractorServiceFinance;
         this.beerStockService = beerStockService;
+        this.batchService = batchService;
     }
 
 
@@ -224,7 +226,6 @@ public class DbInit implements CommandLineRunner {
 
         List<Batch> batches = Arrays.asList(batch1, batch2, batch3, batch4);
         batchService.saveBatches(batches);
-
 
         ProductFinance product1 = new ProductFinance("Piwo", 12.3);
         ProductFinance product2 = new ProductFinance("Wino", 32.1);

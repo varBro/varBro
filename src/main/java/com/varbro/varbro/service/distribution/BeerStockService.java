@@ -50,4 +50,18 @@ public class BeerStockService {
         beerStock.substitute(quantity);
         beerStockRepository.save(beerStock);
     }
+
+    public void addToStock(String beerName, double quantity) {
+        BeerStock beerStock = beerStockRepository.findByBeerName(beerName)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid beer name:" + beerName));
+        beerStock.add(quantity);
+        beerStockRepository.save(beerStock);
+    }
+
+    public void substituteFromStock(String beerName, double quantity) {
+        BeerStock beerStock = beerStockRepository.findByBeerName(beerName)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid beer name:" + beerName));
+        beerStock.substitute(quantity);
+        beerStockRepository.save(beerStock);
+    }
 }

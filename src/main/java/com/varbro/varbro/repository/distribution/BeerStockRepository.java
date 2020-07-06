@@ -12,4 +12,5 @@ import java.util.Optional;
 public interface BeerStockRepository extends JpaRepository<BeerStock, Long> {
 
     Optional<BeerStock> findByBeerId(long id);
+    Optional<BeerStock> findByBeerName(String name);
 }

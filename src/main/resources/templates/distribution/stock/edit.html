@@ -1,10 +1,57 @@
-<!DOCTYPE html>
-<html lang="en">
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout}" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Edit stock</title>
 </head>
 <body>
-
+<ol layout:fragment="breadcrumbs" class="breadcrumb pl-5">
+    <li class="breadcrumb-item"><a href="/default">Home</a></li>
+    <li class="breadcrumb-item active">Edit stock</li>
+</ol>
+<section layout:fragment="content">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <h2>Edit stock:</h2>
+                <form action="#" method="post" th:action="@{/distribution/stock/edit}" th:object="${stock}">
+                    <div class="form-row">
+                        <div class="form-group col-md-5">
+                            <label for="productSelect">Beer</label>
+                            <select id="productSelect" class="form-control selectpicker" editable="true"
+                                    th:field="*{beer.name}" >
+                                <option  th:each="beerStock : ${beerStocks}" th:value="${beerStock.beer.name}" th:text="${beerStock.beer.name}"></option>
+                            </select>
+                            <div class="alert alert-danger" th:if="${#fields.hasErrors('beer.name')}"
+                                 th:errors="*{beer.name}"></div>
+                        </div>
+                        <div class="form-group col-md-5">
+                            <label for="quantityInput">Quantity</label>
+                            <input id="quantityInput" class="form-control" type="number"
+                                   th:field="*{quantity}" >
+                            <div class="alert alert-danger" th:if="${#fields.hasErrors('quantity')}"
+                                 th:errors="*{quantity}"></div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="operation">Choose Operation</label>
+                        <div id="operation">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" id="inlineRadio1" th:value="${'ADD'}" th:field="${operation}">
+                                <label class="form-check-label" for="inlineRadio1">ADD</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" id="inlineRadio" th:value="${'SUBSTITUTE'}" th:field="${operation}">
+                                <label class="form-check-label" for="inlineRadio">SUBSTITUTE</label>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" type="submit" name="submit">APPLY</button>
+                    <a class="btn btn-secondary" th:href="@{/distribution/stock/show}">GO BACK</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
 </body>
 </html>
