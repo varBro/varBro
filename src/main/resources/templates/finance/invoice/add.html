@@ -29,7 +29,7 @@
                                     th:text="${contractor.getName()}">
                             </option>
                         </select>
-                        <a th:href="@{/finance/invoice/add/contractor}">Add new contractorFinance</a>
+                        <a th:href="@{/finance/invoice/add/contractor}">Add new contractor</a>
                     </div>
                     <div class="form-group">
                         <label for="invoiceContractor">Products:</label>
@@ -53,10 +53,10 @@
                         </div>
                         <div class="row">
                             <div class="col align-self-center text-center">
-                                <button type="submit" name="addProduct" class="btn btn-primary">Add productFinance</button>
+                                <button type="submit" name="addProduct" class="btn btn-primary">Add product</button>
                             </div>
                         </div>
-                        <a th:href="@{/finance/invoice/add/product}">Add new productFinance</a>
+                        <a th:href="@{/finance/invoice/add/product}">Add new product</a>
                     </div>
                     <button type="submit" class="btn btn-primary">Add invoice</button>
                 </form>

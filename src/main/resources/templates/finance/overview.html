@@ -79,7 +79,7 @@
                             </div>
                             <div class="profile-info-row" th:each="revenue : ${revenues}">
                                 <div class="profile-info-value">
-                                    <span th:text="${revenue.contractorFinance.name}"></span>
+                                    <span th:text="${revenue.contractor.name}"></span>
                                 </div>
                                 <div class="profile-info-value">
                                     <span th:text="${revenue.getTotalCost()}"></span>

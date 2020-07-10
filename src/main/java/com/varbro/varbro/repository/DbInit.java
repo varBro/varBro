@@ -114,9 +114,10 @@ public class DbInit implements CommandLineRunner {
         User ADMIN1 = new User("Dummy", "Dummy", "$2y$12$LY7TmjsnBYBu2Y5oIJUZte0r0aU/IiU3e4eppfLg5Gz7lqBGHVYPW", "dummy@test.com", "777777777", User.Department.IT, "09876543210987654321123456", 99999, "09876543211", User.Position.ADMIN);
         User JOHN = new User("John", "Doe", "$2y$12$LY7TmjsnBYBu2Y5oIJUZte0r0aU/IiU3e4eppfLg5Gz7lqBGHVYPW", "john.doe@gmail.com", "666666666", User.Department.PRODUCTION, "12345678900987654321123456", 99999, "09876123455");
         User JOHN1 = new User("Johnny", "Dore", "$2y$12$LY7TmjsnBYBu2Y5oIJUZte0r0aU/IiU3e4eppfLg5Gz7lqBGHVYPW", "johnny.doe@gmail.com", "666664666", User.Department.PRODUCTION, "12345178900987654321123456", 99999, "09576123455");
-        User JP = new User("Jan", "Pawel", "$2y$12$LY7TmjsnBYBu2Y5oIJUZte0r0aU/IiU3e4eppfLg5Gz7lqBGHVYPW", "janpawel2@gmail.com", "213721377", User.Department.FINANCE, "21370012345678901234567890", 2137, "21372137213");
+        User JP = new User("Jan", "Pawel", "$2y$12$LY7TmjsnBYBu2Y5oIJUZte0r0aU/IiU3e4eppfLg5Gz7lqBGHVYPW", "janpawel@gmail.com", "213721377", User.Department.FINANCE, "21370012345678901234567890", 2137, "21372137213");
         User BARBARA = new User("Baśka", "Kwarc", "$2y$12$LY7TmjsnBYBu2Y5oIJUZte0r0aU/IiU3e4eppfLg5Gz7lqBGHVYPW", "bacha@gmail.com", "666997112", User.Department.HR, "21370012345648592474567890", 3137, "690628475", User.Position.MANAGER);
         User WIESIO = new User("Wiesław", "Paleta", "$2y$12$LY7TmjsnBYBu2Y5oIJUZte0r0aU/IiU3e4eppfLg5Gz7lqBGHVYPW", "wpaleta@gmail.com", "663427112", User.Department.LOGISTICS, "21370012146824753482567890", 5137, "590427475", User.Position.MANAGER);
+        User JAREK = new User("Jarosław", "Dusza", "$2y$12$LY7TmjsnBYBu2Y5oIJUZte0r0aU/IiU3e4eppfLg5Gz7lqBGHVYPW", "jarek@gmail.com", "663427112", User.Department.LOGISTICS, "21370012146824753482567890", 5137, "590427475");
         User PanWIESIO = new User("Wiesław", "Puchacki", "$2y$12$LY7TmjsnBYBu2Y5oIJUZte0r0aU/IiU3e4eppfLg5Gz7lqBGHVYPW", "panwiesio@gmail.com", "667647112", User.Department.PRODUCTION, "21370012146420753482567890", 8000, "590422475", User.Position.MANAGER);
         User ANDREJ = new User("Andrej","Svoboda","$2y$12$LY7TmjsnBYBu2Y5oIJUZte0r0aU/IiU3e4eppfLg5Gz7lqBGHVYPW","asvoboda@seznam.cz","999999999",User.Department.DISTRIBUTION,"09876543210987654321123450",1488,"91042012345");
         ADMIN.setRoles(new HashSet(Arrays.asList(Employee, Admin)));
@@ -128,13 +129,14 @@ public class DbInit implements CommandLineRunner {
         WIESIO.setRoles(new HashSet(Arrays.asList(Employee, Logistics, Manager)));
         PanWIESIO.setRoles(new HashSet(Arrays.asList(Employee, Production, Manager)));
         ANDREJ.setRoles(new HashSet(Arrays.asList(Employee, Distribution, Manager)));
+        JAREK.setRoles(new HashSet(Arrays.asList(Employee, Logistics)));
 
-        List<User> users = Arrays.asList(ADMIN, ADMIN1, JOHN, JOHN1, JP, BARBARA, WIESIO, PanWIESIO,ANDREJ);
+        List<User> users = Arrays.asList(ADMIN, ADMIN1, JOHN, JOHN1, JP, BARBARA, WIESIO, PanWIESIO, ANDREJ, JAREK);
 
         this.userService.saveUsers(users);
 
-        ContractorFinance contractor1 = new ContractorFinance("JanuszeX", "gdziestam", "1234567890");
-        ContractorFinance contractor2 = new ContractorFinance("HalineX", "gdzieindziej", "0987654321");
+        ContractorFinance contractor1 = new ContractorFinance("JanuszeX", "Kraków, Czarnowiejska 12", "1234567890");
+        ContractorFinance contractor2 = new ContractorFinance("HalineX", "Kraków, Czerwone Maki 3", "0987654321");
         List<ContractorFinance> contractorsFinance = Arrays.asList(contractor1, contractor2);
         this.contractorServiceFinance.saveContractors(contractorsFinance);
 
