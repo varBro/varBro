@@ -91,8 +91,6 @@ public class LogisticsController {
                 .orElseThrow(() -> new IllegalArgumentException("Invalid request Id:" + id));
         double multiplier = request.getAmount() / 1000.0;
         for (BeerIngredient ingredient: request.getBeer().getBeerIngredients()) {
-            double inStock = (double) stockService.getQuantityOfProductById(ingredient.getIngredient().getId())
-                    .orElseThrow(() -> new IllegalArgumentException("Invalid product Id:" + ingredient.getIngredient().getId()));
             double quantity = ingredient.getQuantity() * multiplier;
             order.getOrderItems().add(new OrderItem(ingredient.getIngredient(), quantity));
         }
@@ -129,7 +127,7 @@ public class LogisticsController {
         if(!bindingResult.hasErrors()) {
             List<OrderItem> actualOrder = new ArrayList<>();
             for (OrderItem orderItem : order.getOrderItems()) {
-                Product p = productService.getProductByName(orderItem.getProduct().getName());
+                Product p = productService.getProductById(orderItem.getProduct().getId());
                 if (p != null & orderItem.getQuantity() > 0) {
                     actualOrder.add(new OrderItem(p, orderItem.getQuantity()));
                 }

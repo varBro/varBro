@@ -23,7 +23,7 @@ public interface StockRepository extends JpaRepository<Stock, Long> {
     Optional<Object> findBottlesQuantity();
 
     @Query(value = "select stock_id, last_updated, quantity, product_id from stock s natural join product p " +
-            "where p.ingredient = 1", nativeQuery=true)
+            "where p.ingredient = 1 order by p.ingredient_type", nativeQuery=true)
     List<Stock> findIngredients();
 
     @Query(value = "select stock_id, last_updated, quantity, product_id from stock s natural join product p where p.ingredient = 0",

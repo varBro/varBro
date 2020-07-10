@@ -32,8 +32,8 @@
                         <div class="form-group col-md-3" th:with="ingredientLabel=${ingredientStat.index + 1}">
                             <label for="ingredientTypeSelect" th:text="${'Ingredient ' + ingredientLabel}"></label>
                             <select id="ingredientTypeSelect" class="form-control selectpicker" editable="true"
-                                    th:field="*{beerIngredients[__${ingredientStat.index}__].ingredientType}" >
-                                <option th:each="ingredientType : ${T(com.varbro.varbro.model.production.BeerIngredient.IngredientType).values()}"
+                                    th:field="*{beerIngredients[__${ingredientStat.index}__].product.ingredientType}" >
+                                <option th:each="ingredientType : ${T(com.varbro.varbro.model.logistics.Product.IngredientType).values()}"
                                         th:value="${ingredientType}" th:text="${ingredientType}"></option>
                             </select>
                         </div>

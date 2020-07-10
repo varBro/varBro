@@ -76,6 +76,8 @@ public class Product {
 
         public long getId() { return this.id; }
 
+        public void setId(long id) { this.id = id; }
+
         public void setName(String type) { this.name = type; }
 
         public String getName() { return this.name; }

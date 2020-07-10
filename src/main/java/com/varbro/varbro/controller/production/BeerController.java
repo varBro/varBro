@@ -112,10 +112,16 @@ public class BeerController {
     {
         if(!bindingResult.hasErrors()) {
             for (BeerIngredient beerIngredient : beer.getBeerIngredients()) {
-                beerIngredient.getProduct().setUnit(Product.Unit.KG);
-                beerIngredient.getProduct().setIngredient(true);
-                productService.saveProduct(beerIngredient.getProduct());
-                productStockService.saveStock(new Stock(productService.getProductByName(beerIngredient.getProduct().getName()), 0));
+                Product product = productService.getProductByName(beerIngredient.getProduct().getName());
+                if (product == null) {
+                    beerIngredient.getProduct().setUnit(Product.Unit.KG);
+                    beerIngredient.getProduct().setIngredient(true);
+                    productService.saveProduct(beerIngredient.getProduct());
+                    productStockService.saveStock(new Stock(productService.getProductByName(beerIngredient.getProduct().getName()), 0));
+                }
+                else {
+                    beerIngredient.setProduct(product);
+                }
             }
             beerService.saveBeer(new Beer(beer.getName(),beer.getRecipeDescription(), beer.getBeerIngredients().toArray(new BeerIngredient[beer.getBeerIngredients().size()])));
             beerStockService.saveStock(new BeerStock(beerService.getBeerByName(beer.getName())));

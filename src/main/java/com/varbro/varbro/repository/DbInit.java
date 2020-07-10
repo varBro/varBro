@@ -140,8 +140,8 @@ public class DbInit implements CommandLineRunner {
         Product MALTS = new Product("Malt", KG, Product.IngredientType.MALT);
         Product HOPS = new Product("Hops", KG, Product.IngredientType.HOP);
         Product YEAST = new Product("Yeast", KG, Product.IngredientType.YEAST);
-        Product MALTS1 = new Product("Malt1", KG, Product.IngredientType.HOP);
-        Product HOPS1 = new Product("Hops1", KG, Product.IngredientType.MALT);
+        Product MALTS1 = new Product("Malt1", KG, Product.IngredientType.MALT);
+        Product HOPS1 = new Product("Hops1", KG, Product.IngredientType.HOP);
         Product YEAST1 = new Product("Yeast1", KG, Product.IngredientType.YEAST);
         Product BOTTLE = new Product("Bottle", PCS);
 
