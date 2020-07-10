@@ -3,11 +3,14 @@ package com.varbro.varbro.controller.production;
 import com.varbro.varbro.model.User;
 import com.varbro.varbro.model.distribution.BeerStock;
 import com.varbro.varbro.model.production.Batch;
+import com.varbro.varbro.model.production.Beer;
+import com.varbro.varbro.model.production.Request;
 import com.varbro.varbro.model.production.Vat;
 import com.varbro.varbro.service.UserService;
 import com.varbro.varbro.service.distribution.BeerStockService;
 import com.varbro.varbro.service.production.BatchService;
 import com.varbro.varbro.service.production.BeerService;
+import com.varbro.varbro.service.production.RequestService;
 import com.varbro.varbro.service.production.VatService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -34,6 +37,9 @@ public class VatController {
 
     @Autowired
     BatchService batchService;
+
+    @Autowired
+    RequestService requestService;
 
     @Autowired
     BeerStockService beerStockService;
@@ -87,10 +93,14 @@ public class VatController {
                 .orElseThrow(() -> new IllegalArgumentException("Invalid vat Id:" + id));
 
         vat.setUser(userService.getUserByNameAndSurname(assignee.split(" ")[0], assignee.split(" ")[1]));
-        vat.setBeer(beerService.getBeerByName(beer));
-        vat.setProcessPhase(Vat.ProcessPhase.NOT_STARTED);
-
+        Beer b = beerService.getBeerByName(beer);
+        vat.setBeer(b);
+        vat.setProcessPhase(Vat.ProcessPhase.REQUEST_PENDING);
         vatService.saveVat(vat);
+        Request requestToSave = requestService.updateRequestAvailability(new Request(b, vat.getCapacity()));
+        vat.setRequest(requestToSave);
+        requestToSave.setVat(vat);
+        requestService.save(requestToSave);
         model.addAttribute("vat_assigned", vat);
         return new ModelAndView("redirect:/production/vat/" + vat.getId());
     }
@@ -112,7 +122,6 @@ public class VatController {
 
         } else if (vat.getProcessPhase() == Vat.ProcessPhase.PACKAGING) {
             beerStockService.addToStock(vat.getBeer().getId(), vat.getCapacity());
-            vat.setProcessPhase(Vat.ProcessPhase.values()[0]);
             vat.resetVat();
             vatService.saveVat(vat);
             Batch batch = new Batch(vat);

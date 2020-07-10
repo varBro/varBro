@@ -57,6 +57,7 @@ public class Product {
                 this.unit = unit;
                 this.name = name;
                 this.ingredient = false;
+                this.ingredientType = null;
         }
 
         public Product(String name, Unit unit, boolean ingredient)
@@ -64,6 +65,7 @@ public class Product {
                 this.unit = unit;
                 this.name = name;
                 this.ingredient = ingredient;
+                this.ingredientType = null;
         }
 
         public Product(String name, Unit unit, IngredientType type)

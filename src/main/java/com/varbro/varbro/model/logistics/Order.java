@@ -32,10 +32,18 @@ public class Order {
     private Request request;
 
     public enum Status {
-        PLACED,
-        IN_PROGRESS,
-        RECEIVED,
-        APPROVED
+        PLACED("Placed"),
+        IN_PROGRESS("In progress"),
+        RECEIVED("Received"),
+        APPROVED("Approved");
+
+        private String displayName;
+
+        Status(String displayName) {
+            this.displayName = displayName;
+        }
+
+        public String displayName() { return displayName; }
     }
 
     public Order() {

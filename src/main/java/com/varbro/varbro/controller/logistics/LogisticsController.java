@@ -8,6 +8,7 @@ import com.varbro.varbro.model.logistics.*;
 import com.varbro.varbro.model.production.Beer;
 import com.varbro.varbro.model.production.BeerIngredient;
 import com.varbro.varbro.model.production.Request;
+import com.varbro.varbro.model.production.Vat;
 import com.varbro.varbro.service.RoleService;
 import com.varbro.varbro.service.logistics.ContractorService;
 import com.varbro.varbro.service.logistics.OrderService;
@@ -186,9 +187,7 @@ public class LogisticsController {
         if(order.getRequest() != null) {
             Request request = requestService.getRequestById(order.getRequest().getId())
                     .orElseThrow(() -> new IllegalArgumentException("No request by id: " + order.getRequest().getId()));
-            request.setStatus(Request.Status.READY);
-            stockService.updateStocksSubstitute(request);
-            requestService.save(request);
+            requestService.requestReady(request);
         }
         stockService.updateStocksAdd(order);
         orderService.saveOrder(order);
