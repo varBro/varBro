@@ -21,7 +21,11 @@ public class BatchService {
         batchRepository.saveAll(batches);
     }
 
-    public List<Batch> getBatchesByMonthAndYearOrderedByDay(String month, int year) {
+    public void deleteAll() {
+        batchRepository.deleteAll();
+    }
+
+    public List<Batch> getBatchesByMonthAndYearOrderedByDay(int month, int year) {
         return batchRepository.findBatchesByMonthAndYearOrderedByDay(month, year);
     }
 }

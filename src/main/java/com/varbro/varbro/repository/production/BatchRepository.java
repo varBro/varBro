@@ -12,5 +12,5 @@ public interface BatchRepository extends JpaRepository<Batch, Long> {
 
     @Query(value = "SELECT * FROM batch b WHERE extract(month from b.date) = ?1 AND extract(year from b.date) = ?2 ORDER BY extract(day from b.date)",
             nativeQuery = true)
-    List<Batch> findBatchesByMonthAndYearOrderedByDay(String month, int year);
+    List<Batch> findBatchesByMonthAndYearOrderedByDay(int month, int year);
 }

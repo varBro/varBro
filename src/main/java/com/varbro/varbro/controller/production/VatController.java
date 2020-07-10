@@ -122,10 +122,13 @@ public class VatController {
 
         } else if (vat.getProcessPhase() == Vat.ProcessPhase.PACKAGING) {
             beerStockService.addToStock(vat.getBeer().getId(), vat.getCapacity());
-            vat.resetVat();
-            vatService.saveVat(vat);
             Batch batch = new Batch(vat);
             batchService.saveBatch(batch);
+            vat.resetVat();
+            vatService.saveVat(vat);
+
+
+            /*tutej trzeba zrobic dodawanie piwa do magazynu*/
 
             return "redirect:/production/vats";
 

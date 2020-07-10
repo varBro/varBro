@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 @Controller
@@ -108,13 +110,19 @@ public class ProductionController {
 
     @GetMapping("/production/manager/stats")
     public String productionStats(Model model) {
-
-        Map<Integer, Integer> dayToBeerAmount = new LinkedHashMap<>();
         LocalDate today = LocalDate.now();
-        List<Batch> batches = batchService.getBatchesByMonthAndYearOrderedByDay(today.getMonth().toString(), today.getYear());
-        batches.forEach(e -> dayToBeerAmount.putIfAbsent(e.getDate().getDayOfMonth(), e.getBeerAmountInLiters()));
-        batches.forEach(e -> dayToBeerAmount.computeIfPresent(e.getDate().getDayOfMonth(), (k, v) -> v += e.getBeerAmountInLiters()));
-        model.addAttribute("dayToBeerAmount", dayToBeerAmount);
+        List<Batch> batches = batchService.getBatchesByMonthAndYearOrderedByDay(today.getMonthValue(), today.getYear());
+
+        Map<Integer, Integer> dayToBeerAmount = batches.stream().collect(
+                Collectors.groupingBy(
+                        batch -> batch.getDate().getDayOfMonth(),
+                        Collectors.summingInt(Batch::getBeerAmountInLiters)));
+
+        IntStream.rangeClosed(1, today.lengthOfMonth()).forEach(i -> dayToBeerAmount.putIfAbsent(i, 0));
+
+        model.addAttribute("day_to_beer_amount", dayToBeerAmount);
+
+        Stream.of(dayToBeerAmount).forEach(System.out::println);
         return "production/manager/stats";
     }
 

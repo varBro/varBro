@@ -81,6 +81,7 @@ public class DbInit implements CommandLineRunner {
     @Override
     public void run(String... args) {
 
+        this.batchService.deleteAll();
         this.vatService.deleteAll();
         this.userService.deleteAll();
         this.roleService.deleteAll();
