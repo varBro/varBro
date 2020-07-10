@@ -3,11 +3,13 @@ package com.varbro.varbro.controller.production;
 
 import com.varbro.varbro.model.distribution.BeerStock;
 import com.varbro.varbro.model.logistics.Product;
+import com.varbro.varbro.model.logistics.Stock;
 import com.varbro.varbro.model.production.Beer;
 import com.varbro.varbro.model.production.BeerIngredient;
 import com.varbro.varbro.service.distribution.BeerStockService;
 import com.varbro.varbro.service.logistics.ProductService;
 import com.google.common.collect.*;
+import com.varbro.varbro.service.logistics.StockService;
 import com.varbro.varbro.service.production.BeerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -40,6 +42,9 @@ public class BeerController {
     ProductService productService;
 
     @Autowired
+    StockService productStockService;
+
+    @Autowired
     BeerStockService beerStockService;
 
     @GetMapping("/production/beers")
@@ -67,7 +72,7 @@ public class BeerController {
         for( BeerIngredient ingredient : beer.getBeerIngredients()) {
             HashMap<String, Float> ingredients = new HashMap<>();
             ingredients.put(ingredient.getIngredient().getName(), ingredient.getQuantity());
-            beerIngredients.put(ingredient.getIngredientType().toString(),ingredients);
+            beerIngredients.put(ingredient.getIngredientType().toString(), ingredients);
         }
 
         map.addAttribute("ingredients", beerIngredients);
@@ -107,9 +112,16 @@ public class BeerController {
     {
         if(!bindingResult.hasErrors()) {
             for (BeerIngredient beerIngredient : beer.getBeerIngredients()) {
-                beerIngredient.getProduct().setUnit(Product.Unit.KG);
-                beerIngredient.getProduct().setIngredient(true);
-                productService.saveProduct(beerIngredient.getProduct());
+                Product product = productService.getProductByName(beerIngredient.getProduct().getName());
+                if (product == null) {
+                    beerIngredient.getProduct().setUnit(Product.Unit.KG);
+                    beerIngredient.getProduct().setIngredient(true);
+                    productService.saveProduct(beerIngredient.getProduct());
+                    productStockService.saveStock(new Stock(productService.getProductByName(beerIngredient.getProduct().getName()), 0));
+                }
+                else {
+                    beerIngredient.setProduct(product);
+                }
             }
             beerService.saveBeer(new Beer(beer.getName(),beer.getRecipeDescription(), beer.getBeerIngredients().toArray(new BeerIngredient[beer.getBeerIngredients().size()])));
             beerStockService.saveStock(new BeerStock(beerService.getBeerByName(beer.getName())));

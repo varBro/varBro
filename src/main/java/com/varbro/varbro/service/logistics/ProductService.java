@@ -28,7 +28,10 @@ public class ProductService {
     public void deleteAll() { productRepository.deleteAll(); }
 
     public Product getProductByName(String name) {
-
         return productRepository.findByName(name);
+    }
+
+    public Product getProductById(long id) {
+        return productRepository.findById(id);
     }
 }

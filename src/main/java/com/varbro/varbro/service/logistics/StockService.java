@@ -39,6 +39,10 @@ public class StockService {
 
     public Optional<Object> getQuantityOfBottles() {return stockRepository.findBottlesQuantity(); }
 
+    public List<Stock> getIngredientStocks() {return stockRepository.findIngredients(); }
+
+    public List<Stock> getNotIngredientStocks() {return stockRepository.findNotIngredients(); }
+
     public void deleteAll() { stockRepository.deleteAll(); }
 
     public void updateStocksAdd(Order order) {

@@ -47,7 +47,7 @@
                     </div>
                     <div class="profile-info-row" th:each="item : ${orderView.orderItems}">
                         <div class="profile-info-value text-center">
-                            <span th:text="${item.product.name}"></span>
+                            <span th:text="${item.product.name + ' ' + item.product.ingredientType?.name() }"></span>
                         </div>
                         <div class="profile-info-value text-center">
                             <span th:text="${item.quantity}"></span>
