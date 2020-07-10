@@ -137,12 +137,12 @@ public class DbInit implements CommandLineRunner {
         List<ContractorFinance> contractorsFinance = Arrays.asList(contractor1, contractor2);
         this.contractorServiceFinance.saveContractors(contractorsFinance);
 
-        Product MALTS = new Product("Malt", KG, true);
-        Product HOPS = new Product("Hops", KG, true);
-        Product YEAST = new Product("Yeast", KG, true);
-        Product MALTS1 = new Product("Malt1", KG, true);
-        Product HOPS1 = new Product("Hops1", KG, true);
-        Product YEAST1 = new Product("Yeast1", KG, true);
+        Product MALTS = new Product("Malt", KG, Product.IngredientType.MALT);
+        Product HOPS = new Product("Hops", KG, Product.IngredientType.HOP);
+        Product YEAST = new Product("Yeast", KG, Product.IngredientType.YEAST);
+        Product MALTS1 = new Product("Malt1", KG, Product.IngredientType.HOP);
+        Product HOPS1 = new Product("Hops1", KG, Product.IngredientType.MALT);
+        Product YEAST1 = new Product("Yeast1", KG, Product.IngredientType.YEAST);
         Product BOTTLE = new Product("Bottle", PCS);
 
         List<Product> products = Arrays.asList(MALTS, HOPS, YEAST, MALTS1, HOPS1, YEAST1, BOTTLE);
@@ -165,15 +165,15 @@ public class DbInit implements CommandLineRunner {
 
         orderService.saveOrder(ORDER);
 
-        Beer PILSNER = new Beer("Pilsner", "Dodać składniki i wymieszać", new BeerIngredient(HOPS, 3.5f, BeerIngredient.IngredientType.HOP), new BeerIngredient(YEAST, 5, BeerIngredient.IngredientType.YEAST),
-                new BeerIngredient(MALTS, 1800, BeerIngredient.IngredientType.MALT), new BeerIngredient(HOPS1, 4F, BeerIngredient.IngredientType.HOP), new BeerIngredient(YEAST1, 0.5F, BeerIngredient.IngredientType.YEAST));
+        Beer PILSNER = new Beer("Pilsner", "Dodać składniki i wymieszać", new BeerIngredient(HOPS, 3.5f), new BeerIngredient(YEAST, 5),
+                new BeerIngredient(MALTS, 1800), new BeerIngredient(HOPS1, 4F), new BeerIngredient(YEAST1, 0.5F));
 
         beerService.saveBeer(PILSNER);
 
         Beer Ipa = new Beer("IPA", "Pozostawić w kadzi na dwa tygodnie");
-        BeerIngredient ipaIngredient1 = new BeerIngredient(YEAST, 4.5f, BeerIngredient.IngredientType.YEAST);
-        BeerIngredient ipaIngredient2 = new BeerIngredient(HOPS, 7.5f, BeerIngredient.IngredientType.HOP);
-        BeerIngredient ipaIngredient3 = new BeerIngredient(MALTS, 1850, BeerIngredient.IngredientType.MALT);
+        BeerIngredient ipaIngredient1 = new BeerIngredient(YEAST, 4.5f);
+        BeerIngredient ipaIngredient2 = new BeerIngredient(HOPS, 7.5f);
+        BeerIngredient ipaIngredient3 = new BeerIngredient(MALTS, 1850);
 
         ipaIngredient1.setBeer(Ipa);
         ipaIngredient2.setBeer(Ipa);
