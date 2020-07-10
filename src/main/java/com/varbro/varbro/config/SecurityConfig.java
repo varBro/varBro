@@ -59,7 +59,7 @@ public class  SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/production/request/**").hasAuthority("ROLE_LOGISTICS")
                 .antMatchers("/production/*").hasAnyAuthority("ROLE_PRODUCTION", "ROLE_ADMIN")
                 .antMatchers("/logistics/manager/**", "/logistics/order/*/**").not().access("hasAuthority('ROLE_LOGISTICS') and not hasAuthority('MANAGER')")
-                .antMatchers("/logistics/manager/**", "/logistics/order/*/**").access("hasAuthority('ROLE_LOGISTICS') and hasAuthority('MANAGER')")
+                .antMatchers("/logistics/manager/**", "/logistics/order/*/**").access("(hasAuthority('ROLE_LOGISTICS') and hasAuthority('MANAGER')) or hasAuthority('ROLE_ADMIN')")
                 .antMatchers("/logistics/**").hasAnyAuthority("ROLE_LOGISTICS", "ROLE_ADMIN")
                 .antMatchers("/hr/**").hasAnyAuthority("ROLE_HR", "ROLE_ADMIN")
                 .and()
