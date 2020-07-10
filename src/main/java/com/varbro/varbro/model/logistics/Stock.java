@@ -39,7 +39,9 @@ public class Stock {
     }
 
 
-    public Product getProduct() {return this.product; }
+    public Product getProduct() { return this.product; }
+
+    public void setProduct(Product product) { this.product = product; }
 
     public void setQuantity(double quantity) { this.quantity = quantity; }
 
@@ -50,5 +52,9 @@ public class Stock {
     public LocalDate getLastUpdated() { return this.lastUpdated; }
 
     public void stockUpdatedDate() { this.lastUpdated = LocalDate.now(); }
+
+    public void add(double quantity) { this.quantity += quantity; }
+
+    public void substitute(double quantity) { this.quantity -= quantity; }
 
 }

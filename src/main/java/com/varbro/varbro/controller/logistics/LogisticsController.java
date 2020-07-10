@@ -1,21 +1,17 @@
 package com.varbro.varbro.controller.logistics;
 
 
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.SetMultimap;
+import com.varbro.varbro.model.distribution.BeerStock;
 import com.varbro.varbro.model.logistics.*;
 
-import com.varbro.varbro.model.production.Beer;
 import com.varbro.varbro.model.production.BeerIngredient;
 import com.varbro.varbro.model.production.Request;
-import com.varbro.varbro.model.production.Vat;
 import com.varbro.varbro.service.RoleService;
 import com.varbro.varbro.service.logistics.ContractorService;
 import com.varbro.varbro.service.logistics.OrderService;
 import com.varbro.varbro.service.logistics.ProductService;
 import com.varbro.varbro.service.logistics.StockService;
 import com.varbro.varbro.service.production.RequestService;
-import com.varbro.varbro.controller.production.ProductionController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -68,7 +64,26 @@ public class LogisticsController {
     {
         model.addAttribute("ingredientStocks", stockService.getIngredientStocks());
         model.addAttribute("notIngredientStocks", stockService.getNotIngredientStocks());
-        return "logistics/stock";
+        return "logistics/stock/show";
+    }
+
+    @GetMapping("/logistics/stock/edit")
+    public String editStockForm(Model model) {
+        model.addAttribute("productStocks", stockService.getStocks());
+        model.addAttribute("stock", new Stock());
+        model.addAttribute("operation", "SUBSTITUTE");
+        return "logistics/stock/edit";
+    }
+
+    @PostMapping("/logistics/stock/edit")
+    public String editStock(@RequestParam(value = "operation") String operation, @ModelAttribute Stock stock) {
+        if(operation.equals("ADD")) {
+            stockService.addToStock(stock.getProduct().getId(), stock.getQuantity());
+        }
+        else if(operation.equals("SUBSTITUTE")) {
+            stockService.substituteFromStock(stock.getProduct().getId(), stock.getQuantity());
+        }
+        return "redirect:/logistics/stock";
     }
 
     @GetMapping("/logistics/new-order")
