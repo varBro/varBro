@@ -5,6 +5,7 @@ import com.varbro.varbro.model.logistics.Stock;
 import com.varbro.varbro.model.production.Beer;
 import com.varbro.varbro.model.production.BeerIngredient;
 import com.varbro.varbro.model.production.Request;
+import com.varbro.varbro.model.production.Vat;
 import com.varbro.varbro.repository.production.BeerRepository;
 import com.varbro.varbro.repository.production.RequestRepository;
 import com.varbro.varbro.service.logistics.StockService;
@@ -25,6 +26,9 @@ public class RequestService {
 
     @Autowired
     StockService stockService;
+
+    @Autowired
+    VatService vatService;
 
     public void save(Request request) {
         requestRepository.save(request);
@@ -81,5 +85,19 @@ public class RequestService {
         if(bottlesCount < request.getAmount() * 2)
             request.setEnoughIngredients(false);
         return request;
+    }
+
+    public void requestReady(Request request) {
+        request.setStatus(Request.Status.READY);
+        stockService.updateStocksSubstitute(request);
+        System.out.println("SAVING REQUEST");
+        this.save(request);
+        System.out.println("GETTING VAT" + request.getVat().getId());
+        Vat vat = vatService.getVatById(request.getVat().getId())
+                .orElseThrow(() -> new IllegalArgumentException("Invalid vat Id:" + request.getVat().getId()));
+        System.out.println("SETTING VAT STATUS");
+        vat.setProcessPhase(Vat.ProcessPhase.NOT_STARTED);
+        System.out.println("SAVING VAT");
+        vatService.saveVat(vat);
     }
 }

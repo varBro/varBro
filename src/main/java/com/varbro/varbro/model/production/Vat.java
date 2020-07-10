@@ -21,6 +21,10 @@ public class Vat {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @OneToOne
+    @JoinColumn(name = "request_id")
+    private Request request;
+
     @Enumerated(EnumType.STRING)
     private ProcessPhase processPhase;
     private int capacity;
@@ -29,6 +33,7 @@ public class Vat {
 
     public enum ProcessPhase {
         NOT_ASSIGNED("Not assigned"),
+        REQUEST_PENDING("Waiting for products"),
         NOT_STARTED("Not started"),
         MALTING("Malting"),
         MASHING("Mashing"),
@@ -79,6 +84,10 @@ public class Vat {
 
     public void setCapacity(int capacity) { this.capacity = capacity; }
 
+    public Request getRequest() { return this.request; }
+
+    public void setRequest(Request request) { this.request = request; }
+
     public LocalDate getStartTime() { return startTime; }
 
     public void setStartTime(LocalDate startTime) { this.startTime = startTime; }
@@ -88,10 +97,12 @@ public class Vat {
     public void setLastUpdated(LocalDate lastUpdated) { this.lastUpdated = lastUpdated; }
 
     public void resetVat() {
+        setProcessPhase(ProcessPhase.NOT_ASSIGNED);
         this.setLastUpdated(null);
         this.setStartTime(null);
         this.setUser(null);
         this.setBeer(null);
+        this.setRequest(null);
     }
 
     @Override
