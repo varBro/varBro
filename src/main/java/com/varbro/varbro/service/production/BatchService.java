@@ -17,7 +17,7 @@ public class BatchService {
         batchRepository.save(batch);
     }
 
-    public void saveBatches(Iterable<Batch> batches) {
+    public void saveBatches(List<Batch> batches) {
         batchRepository.saveAll(batches);
     }
 

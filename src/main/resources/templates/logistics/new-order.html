@@ -20,8 +20,11 @@
                         <div class="form-group col-md-5" th:with="productLabel=${itemStat.index + 1}">
                             <label for="productSelect" th:text="${'Product ' + productLabel}"></label>
                             <select id="productSelect" class="form-control selectpicker" editable="true"
-                                    th:field="*{orderItems[__${itemStat.index}__].product.name}" >
-                                <option th:each="product : ${products}" th:value="${product.name}" th:text="${product.name}"></option>
+                                    th:field="*{orderItems[__${itemStat.index}__].product.id}" >
+                                <option th:each="product : ${products}" th:value="${product.id}"
+                                        th:text="${product.ingredientType != null} ?
+                                        ${product.name + ' ' + product.ingredientType.name()} :
+                                        ${product.name}"></option>
                             </select>
                             <div class="alert alert-danger" th:if="${#fields.hasErrors('orderItems[__${itemStat.index}__].product.name')}"
                                  th:errors="*{orderItems[__${itemStat.index}__].product.name}"></div>

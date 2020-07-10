@@ -1,9 +1,9 @@
 package com.varbro.varbro.controller.logistics;
 
 
+import com.varbro.varbro.model.distribution.BeerStock;
 import com.varbro.varbro.model.logistics.*;
 
-import com.varbro.varbro.model.production.Beer;
 import com.varbro.varbro.model.production.BeerIngredient;
 import com.varbro.varbro.model.production.Request;
 import com.varbro.varbro.service.RoleService;
@@ -12,7 +12,6 @@ import com.varbro.varbro.service.logistics.OrderService;
 import com.varbro.varbro.service.logistics.ProductService;
 import com.varbro.varbro.service.logistics.StockService;
 import com.varbro.varbro.service.production.RequestService;
-import com.varbro.varbro.controller.production.ProductionController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -63,8 +62,28 @@ public class LogisticsController {
     @GetMapping("/logistics/stock")
     public String currentStock(Model model)
     {
-        model.addAttribute("stocks", stockService.getStocks());
-        return "logistics/stock";
+        model.addAttribute("ingredientStocks", stockService.getIngredientStocks());
+        model.addAttribute("notIngredientStocks", stockService.getNotIngredientStocks());
+        return "logistics/stock/show";
+    }
+
+    @GetMapping("/logistics/stock/edit")
+    public String editStockForm(Model model) {
+        model.addAttribute("productStocks", stockService.getStocks());
+        model.addAttribute("stock", new Stock());
+        model.addAttribute("operation", "SUBSTITUTE");
+        return "logistics/stock/edit";
+    }
+
+    @PostMapping("/logistics/stock/edit")
+    public String editStock(@RequestParam(value = "operation") String operation, @ModelAttribute Stock stock) {
+        if(operation.equals("ADD")) {
+            stockService.addToStock(stock.getProduct().getId(), stock.getQuantity());
+        }
+        else if(operation.equals("SUBSTITUTE")) {
+            stockService.substituteFromStock(stock.getProduct().getId(), stock.getQuantity());
+        }
+        return "redirect:/logistics/stock";
     }
 
     @GetMapping("/logistics/new-order")
@@ -88,8 +107,6 @@ public class LogisticsController {
                 .orElseThrow(() -> new IllegalArgumentException("Invalid request Id:" + id));
         double multiplier = request.getAmount() / 1000.0;
         for (BeerIngredient ingredient: request.getBeer().getBeerIngredients()) {
-            double inStock = (double) stockService.getQuantityOfProductById(ingredient.getIngredient().getId())
-                    .orElseThrow(() -> new IllegalArgumentException("Invalid product Id:" + ingredient.getIngredient().getId()));
             double quantity = ingredient.getQuantity() * multiplier;
             order.getOrderItems().add(new OrderItem(ingredient.getIngredient(), quantity));
         }
@@ -126,7 +143,7 @@ public class LogisticsController {
         if(!bindingResult.hasErrors()) {
             List<OrderItem> actualOrder = new ArrayList<>();
             for (OrderItem orderItem : order.getOrderItems()) {
-                Product p = productService.getProductByName(orderItem.getProduct().getName());
+                Product p = productService.getProductById(orderItem.getProduct().getId());
                 if (p != null & orderItem.getQuantity() > 0) {
                     actualOrder.add(new OrderItem(p, orderItem.getQuantity()));
                 }
@@ -185,9 +202,7 @@ public class LogisticsController {
         if(order.getRequest() != null) {
             Request request = requestService.getRequestById(order.getRequest().getId())
                     .orElseThrow(() -> new IllegalArgumentException("No request by id: " + order.getRequest().getId()));
-            request.setStatus(Request.Status.READY);
-            stockService.updateStocksSubstitute(request);
-            requestService.save(request);
+            requestService.requestReady(request);
         }
         stockService.updateStocksAdd(order);
         orderService.saveOrder(order);

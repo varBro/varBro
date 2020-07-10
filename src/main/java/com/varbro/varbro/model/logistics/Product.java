@@ -23,6 +23,9 @@ public class Product {
         @NotNull
         private boolean ingredient;
 
+        @Enumerated(EnumType.STRING)
+        private IngredientType ingredientType;
+
         @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
         private List<BeerIngredient> beerIngredients = new ArrayList<>();
 
@@ -40,6 +43,12 @@ public class Product {
                         }
                 }
         }
+
+        public enum IngredientType {
+                HOP,
+                YEAST,
+                MALT
+        }
         
         public Product() {}
 
@@ -48,6 +57,7 @@ public class Product {
                 this.unit = unit;
                 this.name = name;
                 this.ingredient = false;
+                this.ingredientType = null;
         }
 
         public Product(String name, Unit unit, boolean ingredient)
@@ -55,9 +65,20 @@ public class Product {
                 this.unit = unit;
                 this.name = name;
                 this.ingredient = ingredient;
+                this.ingredientType = null;
+        }
+
+        public Product(String name, Unit unit, IngredientType type)
+        {
+                this.unit = unit;
+                this.name = name;
+                this.ingredient = true;
+                this.ingredientType = type;
         }
 
         public long getId() { return this.id; }
+
+        public void setId(long id) { this.id = id; }
 
         public void setName(String type) { this.name = type; }
 
@@ -78,6 +99,12 @@ public class Product {
         public boolean isIngredient() { return ingredient; }
 
         public void setIngredient(boolean ingredient) { this.ingredient = ingredient; }
+
+        public IngredientType getIngredientType() {
+                return ingredientType;
+        }
+
+        public void setIngredientType(IngredientType ingredientType) {this.ingredientType = ingredientType;}
 
         @Override
         public boolean equals(Object o) {

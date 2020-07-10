@@ -20,21 +20,11 @@ public class BeerIngredient implements Serializable {
 
     private float quantity;
 
-    @Enumerated(EnumType.STRING)
-    private IngredientType ingredientType;
-
-    public enum IngredientType {
-        HOP,
-        YEAST,
-        MALT
-    }
-
     public BeerIngredient() {}
 
-    public BeerIngredient(Product product, float quantity, IngredientType ingredientType) {
+    public BeerIngredient(Product product, float quantity) {
         this.product = product;
         this.quantity = quantity;
-        this.ingredientType = ingredientType;
     }
 
     public Beer getBeer() {
@@ -45,12 +35,8 @@ public class BeerIngredient implements Serializable {
         this.beer = beer;
     }
 
-    public IngredientType getIngredientType() {
-        return ingredientType;
-    }
-
-    public void setIngredientType(IngredientType ingredientType) {
-        this.ingredientType = ingredientType;
+    public Product.IngredientType getIngredientType() {
+        return product.getIngredientType();
     }
 
     public Product getIngredient() { return product; }

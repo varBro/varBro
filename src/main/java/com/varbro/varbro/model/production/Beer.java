@@ -1,6 +1,7 @@
 package com.varbro.varbro.model.production;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -14,7 +15,9 @@ public class Beer {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "beer_id")
     private long id;
+    @NotBlank
     private String name;
+    @NotBlank
     private String recipeDescription;
 
     @OneToMany(mappedBy = "beer", cascade = CascadeType.ALL)

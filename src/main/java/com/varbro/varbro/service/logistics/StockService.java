@@ -1,6 +1,7 @@
 package com.varbro.varbro.service.logistics;
 
 
+import com.varbro.varbro.model.distribution.BeerStock;
 import com.varbro.varbro.model.logistics.Order;
 import com.varbro.varbro.model.logistics.OrderItem;
 import com.varbro.varbro.model.logistics.Product;
@@ -8,6 +9,7 @@ import com.varbro.varbro.model.logistics.Stock;
 import com.varbro.varbro.model.production.BeerIngredient;
 import com.varbro.varbro.model.production.Request;
 import com.varbro.varbro.repository.logistics.StockRepository;
+import com.varbro.varbro.service.production.RequestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +24,9 @@ public class StockService {
 
     @Autowired
     ProductService productService;
+
+    @Autowired
+    RequestService requestService;
 
     public Optional<Stock> getStockByProductId(long id) { return stockRepository.findByProductId(id); }
 
@@ -38,6 +43,10 @@ public class StockService {
     public Optional<Object> getQuantityOfProductById(long id) {return stockRepository.findQuantityById(id); }
 
     public Optional<Object> getQuantityOfBottles() {return stockRepository.findBottlesQuantity(); }
+
+    public List<Stock> getIngredientStocks() {return stockRepository.findIngredients(); }
+
+    public List<Stock> getNotIngredientStocks() {return stockRepository.findNotIngredients(); }
 
     public void deleteAll() { stockRepository.deleteAll(); }
 
@@ -69,5 +78,23 @@ public class StockService {
         stockToUpdate.setQuantity(stockToUpdate.getQuantity() - request.getAmount() * 2);
         stockToUpdate.setLastUpdated(LocalDate.now());
         this.saveStock(stockToUpdate);
+    }
+
+    public void substituteFromStock(long id, double quantity) {
+        Stock stock = this.getStockByProductId(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid beer Id:" + id));
+        stock.substitute(quantity);
+        stock.setLastUpdated(LocalDate.now());
+        this.saveStock(stock);
+        requestService.updateRequestsAvailability();
+    }
+
+    public void addToStock(long id, double quantity) {
+        Stock stock = this.getStockByProductId(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid beer Id:" + id));
+        stock.add(quantity);
+        stock.setLastUpdated(LocalDate.now());
+        this.saveStock(stock);
+        requestService.updateRequestsAvailability();
     }
 }

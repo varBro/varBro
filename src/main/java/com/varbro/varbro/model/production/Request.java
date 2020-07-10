@@ -32,6 +32,9 @@ public class Request {
     @OneToOne(mappedBy = "request")
     private Order order;
 
+    @OneToOne (mappedBy="request")
+    private Vat vat;
+
     public enum Status {
         PENDING,
         ORDERED,
@@ -54,6 +57,15 @@ public class Request {
         this.status = Status.PENDING;
         this.enoughIngredients = enoughIngredients;
         this.time = LocalDate.now();
+    }
+
+    public Request(Beer beer, int amount, Vat vat) {
+        this.beer = beer;
+        this.amount = amount;
+        this.status = Status.PENDING;
+        this.enoughIngredients = false;
+        this.time = LocalDate.now();
+        this.vat = vat;
     }
 
     public long getId() {return this.id;}
@@ -83,6 +95,10 @@ public class Request {
     }
 
     public Order getOrder() { return this.order; }
+
+    public Vat getVat() { return this.vat; }
+
+    public void setVat(Vat vat) { this.vat = vat; }
 
     @Override
     public boolean equals(Object o) {
