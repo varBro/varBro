@@ -1,6 +1,8 @@
 package com.varbro.varbro.controller.logistics;
 
 
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.SetMultimap;
 import com.varbro.varbro.model.logistics.*;
 
 import com.varbro.varbro.model.production.Beer;
@@ -63,7 +65,8 @@ public class LogisticsController {
     @GetMapping("/logistics/stock")
     public String currentStock(Model model)
     {
-        model.addAttribute("stocks", stockService.getStocks());
+        model.addAttribute("ingredientStocks", stockService.getIngredientStocks());
+        model.addAttribute("notIngredientStocks", stockService.getNotIngredientStocks());
         return "logistics/stock";
     }
 

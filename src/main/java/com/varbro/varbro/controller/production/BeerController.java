@@ -72,7 +72,7 @@ public class BeerController {
         for( BeerIngredient ingredient : beer.getBeerIngredients()) {
             HashMap<String, Float> ingredients = new HashMap<>();
             ingredients.put(ingredient.getIngredient().getName(), ingredient.getQuantity());
-            beerIngredients.put(ingredient.getIngredientType().toString(),ingredients);
+            beerIngredients.put(ingredient.getIngredientType().toString(), ingredients);
         }
 
         map.addAttribute("ingredients", beerIngredients);
