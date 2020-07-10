@@ -36,7 +36,7 @@
                         <div class="profile-info-row">
                             <div class="profile-info-name"> Status </div>
                             <div class="profile-info-value">
-                                <span th:text="${approved.orderStatus}"></span>
+                                <span th:text="${approved.orderStatus.displayName()}"></span>
                             </div>
                         </div>
                         <div class="profile-info-row">
@@ -53,7 +53,9 @@
                         </div>
                         <div class="profile-info-row" th:each="item : ${approved.orderItems}">
                             <div class="profile-info-value text-center">
-                                <span th:text="${item.product.name}"></span>
+                                <span th:text="${item.product.ingredientType != null} ?
+                                        ${item.product.name + ' ' + item.product.ingredientType.name()} :
+                                        ${item.product.name}"></span>
                             </div>
                             <div class="profile-info-value text-center">
                                 <span th:text="${item.quantity}"></span>
